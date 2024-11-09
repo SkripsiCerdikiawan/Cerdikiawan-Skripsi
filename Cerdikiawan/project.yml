@@ -18,19 +18,51 @@ targets:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleShortVersionString: $(MARKETING_VERSION)
         LSRequiresIPhoneOS: YES
-        UILaunchScreen: ""
+        UILaunchStoryboardName: "LaunchScreen"
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES
         UISupportedInterfaceOrientations~iphone:
-          [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+          [
+            UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationPortraitUpsideDown,
+            UIInterfaceOrientationLandscapeLeft,
+            UIInterfaceOrientationLandscapeRight,
+          ]
         UISupportedInterfaceOrientations~ipad:
-          [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+          [
+            UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationPortraitUpsideDown,
+            UIInterfaceOrientationLandscapeLeft,
+            UIInterfaceOrientationLandscapeRight,
+          ]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: id.ac.binus.skripsicerdikiawan.Cerdikiawan
       INFOPLIST_FILE: Cerdikiawan/Info.plist
+  CerdikiawanTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [CerdikiawanTests]
+    dependencies:
+      - target: Cerdikiawan
+    info:
+      path: CerdikiawanTests/Info.plist
+      properties:
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundlePackageType: BNDL
+    settings:
+      base:
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Cerdikiawan.app/Cerdikiawan"
+        BUNDLE_LOADER: "$(TEST_HOST)"
 schemes:
-  Cerdikiawan:
+  FamilyStoryADA:
     build:
       targets:
-       Cerdikiawan: all
+        Cerdikiawan: all
+        CerdikiawanTests: all
+    test:
+      targets:
+        - name: CerdikiawanTests
+          gatherCoverageData: true
