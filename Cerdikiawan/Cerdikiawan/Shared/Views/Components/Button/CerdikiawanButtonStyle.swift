@@ -16,7 +16,7 @@ enum CerdikiawanButtonStyle {
     var labelColor: Color {
         switch self {
         case .disabled:
-            return Color(.gray)
+            return Color(.secondaryLabel)
         default:
             return Color(.cWhite)
         }
@@ -31,7 +31,7 @@ enum CerdikiawanButtonStyle {
         case .destructive:
             return Color(.cDarkRed)
         case .disabled:
-            return Color(.systemGray4)
+            return Color(.systemFill)
         }
     }
 }

@@ -33,7 +33,7 @@ struct CerdikiawanButton: View {
 
 #Preview {
     CerdikiawanButton(
-        style: .primary,
+        style: .disabled,
         label: "Button",
         action: {
             debugPrint("Button Pressed")
