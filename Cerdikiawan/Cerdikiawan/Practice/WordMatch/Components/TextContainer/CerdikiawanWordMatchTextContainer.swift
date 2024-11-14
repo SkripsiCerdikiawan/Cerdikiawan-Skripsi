@@ -18,7 +18,7 @@ struct CerdikiawanWordMatchTextContainer: View {
                 .font(state.font)
                 .fontWeight(state.fontWeight)
                 .foregroundStyle(state.textColor)
-                .padding(.vertical, 16)
+                .padding(.vertical, 4)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .multilineTextAlignment(.center)
         }
@@ -30,7 +30,7 @@ struct CerdikiawanWordMatchTextContainer: View {
         .clipShape(
             RoundedRectangle(cornerRadius: 8)
         )
-        .frame(width: 172, height: 88)
+        .frame(width: 172, height: 72)
         .onTapGesture {
             if state == .filled {
                 onTap?()
