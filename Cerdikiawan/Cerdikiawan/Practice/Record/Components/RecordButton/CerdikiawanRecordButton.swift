@@ -19,7 +19,7 @@ struct CerdikiawanRecordButton: View {
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .foregroundStyle(state.foregroundStyle)
-                        .frame(width: 30, height: 30)
+                        .frame(width: 40, height: 40)
                 }
                 .frame(width: 125, height: 125)
             }
@@ -33,9 +33,6 @@ struct CerdikiawanRecordButton: View {
                 .foregroundStyle(state.fontColor)
         }
         .frame(maxWidth: 125)
-        .onTapGesture {
-            onTapAction()
-        }
         
     }
 }
@@ -43,7 +40,7 @@ struct CerdikiawanRecordButton: View {
 
 #Preview {
     CerdikiawanRecordButton(
-        state: .replay,
+        state: .normal,
         onTapAction: {
             print("Tapped!")
         }
