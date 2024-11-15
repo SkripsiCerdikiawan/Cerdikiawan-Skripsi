@@ -9,37 +9,41 @@ import SwiftUI
 
 struct CerdikiawanMultipleChoiceButton: View {
     var label: String
-    var state: CerdikiawanMultipleChoiceButtonState
+    var type: CerdikiawanMultipleChoiceButtonType
     var action: () -> Void
     
     var body: some View {
-        ZStack(alignment: .leading) {
-            if let image = state.icon {
-                image.imageScale(.medium).foregroundStyle(state.textColor)
-                    .padding(.leading, 16)
+        Button(
+            action: {
+                if type == .normal || type == .selected {
+                    action()
+                }
+            },
+            label: {
+                ZStack(alignment: .leading) {
+                    if let image = type.icon {
+                        Image(systemName: image)
+                            .imageScale(.medium)
+                            .foregroundStyle(type.textColor)
+                            .padding(.leading, 16)
+                    }
+                    
+                    Text(label)
+                        .foregroundStyle(type.textColor)
+                        .font(type.font)
+                        .fontWeight(type.fontWeight)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 24)
+                }
             }
-            
-            Text(label)
-                .foregroundStyle(state.textColor)
-                .font(state.font)
-                .fontWeight(state.fontWeight)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 24)
-        }
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(state.borderColor, lineWidth: state.borderWidth)
         )
-        .background(state.backgroundColor)
-        .clipShape(
-            RoundedRectangle(cornerRadius: 8)
+        .buttonStyle(
+            CerdikiawanMultipleChoiceButtonStyle(type: type)
         )
-        .onTapGesture {
-            action()
-        }
     }
 }
+
 
 #Preview {
     ZStack {
@@ -48,28 +52,28 @@ struct CerdikiawanMultipleChoiceButton: View {
         VStack(spacing: 16) {
             CerdikiawanMultipleChoiceButton(
                 label: "Choice",
-                state: .normal,
+                type: .normal,
                 action: {
                     debugPrint("Choice 1 selected")
                 }
             )
             CerdikiawanMultipleChoiceButton(
                 label: "Choice",
-                state: .selected,
+                type: .selected,
                 action: {
                     debugPrint("Choice 2 selected")
                 }
             )
             CerdikiawanMultipleChoiceButton(
                 label: "Choice",
-                state: .correct,
+                type: .correct,
                 action: {
                     debugPrint("Choice 3 selected")
                 }
             )
             CerdikiawanMultipleChoiceButton(
                 label: "Choice",
-                state: .incorrect,
+                type: .incorrect,
                 action: {
                     debugPrint("Choice 4 selected")
                 }

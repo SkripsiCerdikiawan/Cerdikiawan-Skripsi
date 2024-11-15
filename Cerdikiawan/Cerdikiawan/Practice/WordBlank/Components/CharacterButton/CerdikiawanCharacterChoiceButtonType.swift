@@ -1,5 +1,5 @@
 //
-//  CerdikiawanCharacterChoiceButtonState.swift
+//  CerdikiawanCharacterChoiceButtonType.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 13/11/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum CerdikiawanCharacterChoiceButtonState {
+enum CerdikiawanCharacterChoiceButtonType {
     case normal
     case selected
     case correct
@@ -74,6 +74,17 @@ enum CerdikiawanCharacterChoiceButtonState {
             return .medium
         case .incorrect:
             return .medium
+        }
+    }
+    
+    var scaleEffect: CGFloat {
+        switch self {
+        case .normal:
+            return 0.9
+        case .selected:
+            return 0.9
+        default:
+            return 1
         }
     }
 }

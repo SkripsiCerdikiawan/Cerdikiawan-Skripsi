@@ -9,34 +9,29 @@ import SwiftUI
 
 struct CerdikiawanWordMatchTextContainer: View {
     var label: String
-    var state: CerdikiawanWordMatchTextContainerState
+    var type: CerdikiawanWordMatchTextContainerType
     var onTap: (() -> Void)?
     
-    var body: some View {
-        VStack {
-            Text(label)
-                .font(state.font)
-                .fontWeight(state.fontWeight)
-                .foregroundStyle(state.textColor)
-                .padding(.vertical, 4)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .multilineTextAlignment(.center)
-        }
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(state.borderColor, lineWidth: state.borderWidth)
-        )
-        .background(state.backgroundColor)
-        .clipShape(
-            RoundedRectangle(cornerRadius: 8)
-        )
-        .frame(width: 172, height: 72)
-        .onTapGesture {
-            if state == .filled {
-                onTap?()
+    var body: some View {        
+        Button(
+            action: {
+                if type == .filled {
+                    onTap?()
+                }
+            },
+            label: {
+                Text(label)
+                    .font(type.font)
+                    .fontWeight(type.fontWeight)
+                    .foregroundStyle(type.textColor)
+                    .padding(.vertical, 4)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .multilineTextAlignment(.center)
             }
-        }
-        .disabled(state == .disabled)
+        )
+        .buttonStyle(
+            CerdikiawanWordMatchTextContainerStyle(type: type)
+        )
 
     }
 }
@@ -48,46 +43,73 @@ struct CerdikiawanWordMatchTextContainer: View {
             HStack(spacing: 16) {
                 CerdikiawanWordMatchTextContainer(
                     label: "Kehilangan Cairan Tubuh",
-                    state: .question
+                    type: .question,
+                    onTap: {
+                        debugPrint("Button Pressed")
+                    }
                 )
                 CerdikiawanWordMatchTextContainer(
                     label: "Text",
-                    state: .blank
-                )
-            }
-            HStack(spacing: 16) {
-                CerdikiawanWordMatchTextContainer(
-                    label: "Text",
-                    state: .question
-                )
-                CerdikiawanWordMatchTextContainer(
-                    label: "Text",
-                    state: .filled
+                    type: .blank,
+                    onTap: {
+                        debugPrint("Button Pressed")
+                    }
                 )
             }
             HStack(spacing: 16) {
                 CerdikiawanWordMatchTextContainer(
                     label: "Text",
-                    state: .question
+                    type: .question,
+                    onTap: {
+                        debugPrint("Button Pressed")
+                    }
                 )
                 CerdikiawanWordMatchTextContainer(
                     label: "Text",
-                    state: .correct
+                    type: .filled,
+                    onTap: {
+                        debugPrint("Button Pressed")
+                    }
                 )
             }
             HStack(spacing: 16) {
                 CerdikiawanWordMatchTextContainer(
                     label: "Text",
-                    state: .question
+                    type: .question,
+                    onTap: {
+                        debugPrint("Button Pressed")
+                    }
                 )
                 CerdikiawanWordMatchTextContainer(
                     label: "Text",
-                    state: .incorrect
+                    type: .correct,
+                    onTap: {
+                        debugPrint("Button Pressed")
+                    }
+                )
+            }
+            HStack(spacing: 16) {
+                CerdikiawanWordMatchTextContainer(
+                    label: "Text",
+                    type: .question,
+                    onTap: {
+                        debugPrint("Button Pressed")
+                    }
+                )
+                CerdikiawanWordMatchTextContainer(
+                    label: "Text",
+                    type: .incorrect,
+                    onTap: {
+                        debugPrint("Button Pressed")
+                    }
                 )
             }
             CerdikiawanWordMatchTextContainer(
                 label: "Text",
-                state: .disabled
+                type: .disabled,
+                onTap: {
+                    debugPrint("Button Pressed")
+                }
             )
         }
         .padding(16)
