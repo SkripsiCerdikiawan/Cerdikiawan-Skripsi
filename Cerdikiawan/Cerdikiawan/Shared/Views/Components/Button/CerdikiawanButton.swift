@@ -8,36 +8,60 @@
 import SwiftUI
 
 struct CerdikiawanButton: View {
-    var style: CerdikiawanButtonStyle = .primary
+    var type: CerdikiawanButtonType = .primary
     var label: String
     var action: () -> Void
     
     var body: some View {
-        VStack {
-            Text(label)
-                .foregroundStyle(style.labelColor)
-                .padding(16)
-        }
-        .frame(maxWidth: .infinity)
-        .background(style.fillColor)
-        .clipShape(
-            RoundedRectangle(cornerRadius: 10)
-        )
-        .onTapGesture {
-            if self.style != .disabled {
-                action()
+        Button(
+            action: {
+                if type != .disabled {
+                    action()
+                }
+            },
+            label: {
+                Text(label)
+                    .padding(16)
             }
-        }
+        )
+        .buttonStyle(CerdikiawanButtonStyle(type: type))
+        .disabled(type == .disabled)
     }
 }
 
 #Preview {
-    CerdikiawanButton(
-        style: .disabled,
-        label: "Button",
-        action: {
-            debugPrint("Button Pressed")
-        }
-    )
+    VStack(spacing: 16) {
+        CerdikiawanButton(
+            type: .primary,
+            label: "Button",
+            action: {
+                debugPrint("Button Pressed")
+            }
+        )
+        
+        CerdikiawanButton(
+            type: .secondary,
+            label: "Button",
+            action: {
+                debugPrint("Button Pressed")
+            }
+        )
+        
+        CerdikiawanButton(
+            type: .destructive,
+            label: "Button",
+            action: {
+                debugPrint("Button Pressed")
+            }
+        )
+        
+        CerdikiawanButton(
+            type: .disabled,
+            label: "Button",
+            action: {
+                debugPrint("Button Pressed")
+            }
+        )
+    }
     .padding(.horizontal, 16)
 }

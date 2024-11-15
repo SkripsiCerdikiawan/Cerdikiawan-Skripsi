@@ -9,29 +9,27 @@ import SwiftUI
 
 struct CerdikiawanCharacterChoiceButton: View {
     var label: String
-    var state: CerdikiawanCharacterChoiceButtonState
+    var type: CerdikiawanCharacterChoiceButtonType
     var action: () -> Void
     
-    var body: some View {
-        VStack {
-            Text(label)
-                .foregroundStyle(state.textColor)
-                .font(state.font)
-                .fontWeight(state.fontWeight)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(state.borderColor, lineWidth: state.borderWidth)
+    var body: some View {        
+        Button(
+            action: {
+                if type == .normal || type == .selected {
+                    action()
+                }
+            },
+            label: {
+                Text(label)
+                    .foregroundStyle(type.textColor)
+                    .font(type.font)
+                    .fontWeight(type.fontWeight)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         )
-        .background(state.backgroundColor)
-        .clipShape(
-            RoundedRectangle(cornerRadius: 8)
+        .buttonStyle(
+            CerdikiawanCharacterChoiceButtonStyle(type: type)
         )
-        .onTapGesture {
-            action()
-        }
-        .frame(width: 80, height: 80)
     }
 }
 
@@ -46,42 +44,42 @@ struct CerdikiawanCharacterChoiceButton: View {
         LazyVGrid(columns: columns) {
             CerdikiawanCharacterChoiceButton(
                 label: "T",
-                state: .normal,
+                type: .normal,
                 action: {
                     debugPrint("Character T is Pressed")
                 }
             )
             CerdikiawanCharacterChoiceButton(
                 label: "T",
-                state: .normal,
+                type: .selected,
                 action: {
                     debugPrint("Character T is Pressed")
                 }
             )
             CerdikiawanCharacterChoiceButton(
                 label: "T",
-                state: .normal,
+                type: .normal,
                 action: {
                     debugPrint("Character T is Pressed")
                 }
             )
             CerdikiawanCharacterChoiceButton(
                 label: "T",
-                state: .normal,
+                type: .correct,
                 action: {
                     debugPrint("Character T is Pressed")
                 }
             )
             CerdikiawanCharacterChoiceButton(
                 label: "T",
-                state: .normal,
+                type: .incorrect,
                 action: {
                     debugPrint("Character T is Pressed")
                 }
             )
             CerdikiawanCharacterChoiceButton(
                 label: "T",
-                state: .normal,
+                type: .normal,
                 action: {
                     debugPrint("Character T is Pressed")
                 }

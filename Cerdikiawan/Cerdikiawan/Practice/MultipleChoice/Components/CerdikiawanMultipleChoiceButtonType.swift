@@ -1,5 +1,5 @@
 //
-//  CerdikiawanWordMatchTextContainerState.swift
+//  CerdikiawanMultipleChoiceButtonType.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 13/11/24.
@@ -7,13 +7,11 @@
 
 import SwiftUI
 
-enum CerdikiawanWordMatchTextContainerState {
-    case question
-    case blank
-    case filled
+enum CerdikiawanMultipleChoiceButtonType {
+    case normal
+    case selected
     case correct
     case incorrect
-    case disabled
     
     var borderRadius: CGFloat {
         return 8
@@ -25,52 +23,51 @@ enum CerdikiawanWordMatchTextContainerState {
     
     var backgroundColor: Color {
         switch self {
-        case .question:
+        case .normal:
             return Color(.cWhite)
-        case .blank:
-            return Color(.cWhite)
-        case .filled:
+        case .selected:
             return Color(.cOrange)
         case .correct:
             return Color(.cLightBlue)
         case .incorrect:
             return Color(.cRed)
-        case .disabled:
-            return Color(.systemFill)
         }
     }
     
     var borderColor: Color {
         switch self {
-        case .question:
-            return Color.clear
-        case .blank:
-            return Color(.cDarkOrange)
-        case .filled:
+        case .normal:
+            return Color(.gray)
+        case .selected:
             return Color(.cDarkOrange)
         case .correct:
             return Color(.cDarkBlue)
         case .incorrect:
             return Color(.cDarkRed)
-        case .disabled:
-            return Color(.secondaryLabel)
         }
     }
     
     var textColor: Color {
         switch self {
-        case .question:
+        case .normal:
             return Color(.cBlack)
-        case .blank:
-            return Color(.cWhite)
-        case .filled:
+        case .selected:
             return Color(.cBlack)
         case .correct:
             return Color(.cDarkBlue)
         case .incorrect:
             return Color(.cDarkRed)
-        case .disabled:
-            return Color(.secondaryLabel)
+        }
+    }
+    
+    var icon: String? {
+        switch self {
+        case .correct:
+            return "checkmark"
+        case .incorrect:
+            return "xmark"
+        default:
+            return nil
         }
     }
     
@@ -80,12 +77,25 @@ enum CerdikiawanWordMatchTextContainerState {
     
     var fontWeight: Font.Weight {
         switch self {
-        case .question:
+        case .normal:
             return .regular
-        case .blank:
-            return .regular
-        default:
+        case .selected:
             return .medium
+        case .correct:
+            return .medium
+        case .incorrect:
+            return .medium
+        }
+    }
+    
+    var scaleEffect: CGFloat {
+        switch self {
+        case .normal:
+            return 0.9
+        case .selected:
+            return 0.9
+        default:
+            return 1
         }
     }
 }

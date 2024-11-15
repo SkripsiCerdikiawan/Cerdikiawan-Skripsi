@@ -13,7 +13,7 @@ struct CerdikiawanAttemptCard: View {
     var idePokokPercentage: Int
     var implisitPercentage: Int
     
-    var buttonStyle: CerdikiawanButtonStyle
+    var buttonStyle: CerdikiawanButtonType
     var onTapButtonAction: () -> Void
     
     var body: some View {
@@ -66,7 +66,7 @@ struct CerdikiawanAttemptCard: View {
             }
             
             CerdikiawanButton(
-                style: buttonStyle,
+                type: buttonStyle,
                 label: buttonStyle == .primary ? "Putar Rekaman" : "Hentikan",
                 action: {
                     onTapButtonAction()
@@ -80,7 +80,6 @@ struct CerdikiawanAttemptCard: View {
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color(.cWhite))
         )
-        .animation(.easeInOut(duration: 0.2), value: buttonStyle)
     }
 }
 
