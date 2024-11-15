@@ -1,17 +1,19 @@
 //
-//  CerdikiawanLevelSelectionCard.swift
+//  CerdikiawanReportLevelCard.swift
 //  Cerdikiawan
 //
-//  Created by Hans Arthur Cupiterson on 12/11/24.
+//  Created by Hans Arthur Cupiterson on 15/11/24.
 //
 
 import SwiftUI
 
-struct CerdikiawanLevelSelectionCard: View {
+struct CerdikiawanReportLevelCard: View {
     var imageName: String
     var title: String
     var description: String
-    var availableBalanceToGain: Int
+   
+    var style: CerdikiawanReportLevelCardStyle
+    
     var onTapGesture: () -> Void
     
     var body: some View {
@@ -34,16 +36,13 @@ struct CerdikiawanLevelSelectionCard: View {
                 
                 HStack {
                     HStack {
-                        Text("Bisa dapat")
-                        HStack(spacing: 0) {
-                            Image(systemName: "dollarsign.square")
-                                .imageScale(.small)
-                            Text("\(availableBalanceToGain)")
-                        }
+                        Text(style.displayedText)
+                            .foregroundStyle(style.foregroundColor)
                     }
                     Spacer()
                     Image(systemName: "chevron.forward")
                         .imageScale(.small)
+                        .foregroundStyle(style.foregroundColor)
                 }
                 .foregroundStyle(Color(.cDarkBlue))
                 .font(.subheadline)
@@ -75,15 +74,14 @@ struct CerdikiawanLevelSelectionCard: View {
 #Preview {
     ZStack {
         Color(ColorResource.cGray).ignoresSafeArea()
-        CerdikiawanLevelSelectionCard(
+        CerdikiawanReportLevelCard(
             imageName: "DEBUG_IMAGE",
-            title: "Perjalanan Budi Ke Pasar",
+            title: "Perjalanan Budi ke Pasar",
             description: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
-            availableBalanceToGain: 10,
+            style: .havePlay,
             onTapGesture: {
-                
+                print("Level Tapped!")
             }
         )
-        
     }
 }
