@@ -7,30 +7,43 @@
 
 import SwiftUI
 
-enum CerdikiawanResultStyle {
-    case greatscore
+enum CerdikiawanScoreStyle {
+    case great
     case normal
-    case lowscore
+    case low
     
     var foregroundPrimaryColor: Color {
         switch self {
-        case .greatscore:
+        case .great:
             return Color(.cDarkBlue)
         case .normal:
             return Color(.cDarkOrange)
-        case .lowscore:
+        case .low:
             return Color(.cDarkRed)
         }
     }
     
     var foregroundSecondaryColor: Color {
         switch self {
-        case .greatscore:
+        case .great:
             return Color(.cLightBlue)
         case .normal:
             return Color(.cOrange)
-        case .lowscore:
+        case .low:
             return Color(.cRed)
+        }
+    }
+    
+    static func determineStyle(value: Int) -> Self {
+        switch value {
+        case -1..<25:
+            return .low
+        case 25..<80:
+            return .normal
+        case 80..<101:
+            return .great
+        default:
+            return .normal
         }
     }
 }
