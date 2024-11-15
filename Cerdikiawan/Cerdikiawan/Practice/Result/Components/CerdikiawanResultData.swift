@@ -77,8 +77,7 @@ private struct ResultScoreBoxContainer: View {
                 
                 VStack {
                     CerdikiawanPieBar(
-                        style: style,
-                        value: value
+                        value: calculatePercentage()
                     )
                 }
             }
@@ -139,7 +138,7 @@ private struct ResultGainedBalanceBox: View {
         Color(.cGray).ignoresSafeArea()
         CerdikiawanResultData(
             result: .init(
-                correctCount: 7,
+                correctCount: 5,
                 inCorrectCount: 3,
                 totalQuestions: 10,
                 baseBalance: 5

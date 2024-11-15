@@ -31,9 +31,6 @@ struct CerdikiawanReportSummary: View {
                 Spacer()
                 
                 CerdikiawanPieBar(
-                    style: style,
-                    minValue: CGFloat(minValue),
-                    maxValue: CGFloat(maxValue),
                     value: CGFloat(value)
                 )
             }
@@ -71,7 +68,7 @@ struct CerdikiawanReportSummary: View {
     ZStack {
         Color(.cGray).ignoresSafeArea()
         CerdikiawanReportSummary(
-            value: 100
+            value: 90
         )
         .padding(.horizontal, 16)
         
