@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct CerdikiawanPieBar: View {
-    let style: CerdikiawanResultStyle
+    let style: CerdikiawanScoreStyle
     
-    let minValue: CGFloat = 0
-    let maxValue: CGFloat = 100
+    var minValue: CGFloat = 0
+    var maxValue: CGFloat = 100
     let value: CGFloat
     
     var body: some View {
@@ -32,7 +32,7 @@ struct CerdikiawanPieBar: View {
 
 #Preview {
     CerdikiawanPieBar(
-        style: .greatscore,
+        style: .great,
         value: 80
     )
 }

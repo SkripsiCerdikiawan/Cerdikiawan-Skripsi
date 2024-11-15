@@ -60,6 +60,7 @@ private struct ResultMediumBoxContainer: View {
 private struct ResultScoreBoxContainer: View {
     var result: ResultDataEntity
     @State var value: CGFloat = 0
+    @State var style: CerdikiawanScoreStyle = .normal
     
     var body: some View {
         HStack {
@@ -68,7 +69,7 @@ private struct ResultScoreBoxContainer: View {
                     Text("\(Int(value))%")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundStyle(determineStyle().foregroundPrimaryColor)
+                        .foregroundStyle(style.foregroundPrimaryColor)
                     Text("Skor didapatkan")
                 }
                 
@@ -76,7 +77,7 @@ private struct ResultScoreBoxContainer: View {
                 
                 VStack {
                     CerdikiawanPieBar(
-                        style: determineStyle(),
+                        style: style,
                         value: value
                     )
                 }
@@ -90,25 +91,12 @@ private struct ResultScoreBoxContainer: View {
         )
         .onAppear() {
             value = calculatePercentage()
+            style = CerdikiawanScoreStyle.determineStyle(value: Int(value))
         }
     }
     
     func calculatePercentage() -> CGFloat {
         return CGFloat((Double(result.correctCount) / Double(result.totalQuestions)) * 100)
-    }
-
-    
-    func determineStyle() -> CerdikiawanResultStyle {
-        switch calculatePercentage() {
-        case 0..<25:
-            return .lowscore
-        case 25..<80:
-            return .normal
-        case 80..<100:
-            return .greatscore
-        default:
-            return .normal
-        }
     }
 }
 
