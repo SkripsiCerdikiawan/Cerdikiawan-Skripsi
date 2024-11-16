@@ -37,10 +37,10 @@ class SupabaseStoryRepository: StoryRepository {
     
     //fetch stories based on storyId
     func fetchStoryById(request: StoryRequest) async throws -> (SupabaseStory?, ErrorStatus) {
-        let stories = try await fetchStories().0
+        let (stories, status) = try await fetchStories()
         
         if let storyId = request.storyId {
-            guard let story = stories.first(where: {$0.storyId == storyId} ) else {
+            guard status == .success, let story = stories.first(where: {$0.storyId == storyId} ) else {
                 return (nil, .notFound)
             }
             
