@@ -8,7 +8,7 @@
 import Foundation
 
 struct SupabaseProfileOwnedCharacter: Codable {
-    let profileId: UUID
-    let characterId: UUID
-    let isChosen: Bool
+    let ProfileID: UUID
+    let CharacterID: UUID
+    let IsChosen: Bool
 }

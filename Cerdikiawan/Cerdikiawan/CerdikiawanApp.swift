@@ -12,6 +12,9 @@ struct CerdikiawanApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    
+                }
         }
     }
 }

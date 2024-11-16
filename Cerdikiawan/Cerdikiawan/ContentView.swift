@@ -1,24 +1,22 @@
-//
-//  ContentView.swift
-//  Cerdikiawan
-//
-//  Created by Nathanael Juan Gauthama on 29/09/24.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = StoryViewModel()
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+//            if viewModel.isLoading {
+//                ProgressView("Loading...")
+//            } else {
+//                List(viewModel.stories, id: \.self) { story in
+//                    Text(story.title) // Customize with your story properties
+//                }
+//            }
         }
-        .padding()
+        .onAppear {
+            Task {
+                await viewModel.loadStories()
+            }
+        }
     }
-}
-
-#Preview {
-    ContentView()
 }

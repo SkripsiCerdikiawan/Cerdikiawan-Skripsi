@@ -8,8 +8,8 @@
 import Foundation
 
 struct SupabaseMultiChoiceAnswer: Codable {
-    let answerId: UUID
-    let questionId: UUID
-    let answerContent: String
-    let answerStatus: Bool
+    let AnswerID: UUID
+    let QuestionID: UUID
+    let AnswerContent: String
+    let AnswerStatus: Bool
 }

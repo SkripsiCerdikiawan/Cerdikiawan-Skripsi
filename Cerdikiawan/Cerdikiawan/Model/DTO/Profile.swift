@@ -8,8 +8,8 @@
 import Foundation
 
 struct SupabaseProfile: Codable {
-    let profileId: UUID
-    let profileName: String
-    let profileBalance: Int
-    let profileBirthDate: Date
+    let ProfileID: UUID
+    let ProfileName: String
+    let ProfileBalance: Int
+    let ProfileBirthDate: Date
 }

@@ -8,8 +8,8 @@
 import Foundation
 
 struct SupabaseWordMatchAnswer: Codable {
-    let answerId: UUID
-    let questionId: UUID
-    let questionPrompt: String
-    let answerPrompt: String
+    let AnswerID: UUID
+    let QuestionID: UUID
+    let QuestionPrompt: String
+    let AnswerPrompt: String
 }

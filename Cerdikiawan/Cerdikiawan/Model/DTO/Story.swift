@@ -8,9 +8,9 @@
 import Foundation
 
 struct SupabaseStory: Codable {
-    let storyId: UUID
-    let storyName: String
-    let storyDescription: String
-    let storyLevel: Int
-    let storyCoverImagePath: String
+    let StoryID: UUID
+    let StoryName: String
+    let StoryDescription: String
+    let StoryLevel: Int
+    let StoryCoverImagePath: String
 }

@@ -8,8 +8,8 @@
 import Foundation
 
 struct SupabaseCharacter: Codable {
-    let characterId: UUID
-    let characterImagePath: String
-    let characterPrice: Int
-    let characterDescription: String
+    let CharacterID: UUID
+    let CharacterImagePath: String
+    let CharacterPrice: Int
+    let CharacterDescription: String
 }
