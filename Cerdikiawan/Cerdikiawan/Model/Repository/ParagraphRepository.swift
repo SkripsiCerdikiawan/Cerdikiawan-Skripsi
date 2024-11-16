@@ -14,7 +14,7 @@ protocol ParagraphRepository {
 
 class SupabaseParagraphRepository: SupabaseRepository, ParagraphRepository {
     
-    public static var shared: ParagraphRepository = SupabaseParagraphRepository()
+    public static let shared = SupabaseParagraphRepository()
     private override init() {}
     
     func fetchParagraphs() async throws -> ([SupabaseParagraph], ErrorStatus) {

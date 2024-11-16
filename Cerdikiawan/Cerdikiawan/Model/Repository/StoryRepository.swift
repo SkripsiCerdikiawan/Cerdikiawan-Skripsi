@@ -15,7 +15,7 @@ protocol StoryRepository {
 
 class SupabaseStoryRepository: SupabaseRepository, StoryRepository {
     
-    public static var shared = SupabaseStoryRepository()
+    public static let shared = SupabaseStoryRepository()
     private override init () {}
     
     //Fetch all stories

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SupabaseMultiChoiceAnswer: Codable {
+struct SupabaseMultiChoiceAnswer: SupabaseAnswer {
     let answerId: UUID
     let questionId: UUID
     let answerContent: String

@@ -14,7 +14,7 @@ protocol PageRepository {
 
 class SupabasePageRepository: SupabaseRepository, PageRepository {
     
-    public static var shared = SupabasePageRepository()
+    public static let shared = SupabasePageRepository()
     private override init () {}
     
     func fetchPages() async throws -> ([SupabasePage], ErrorStatus) {
