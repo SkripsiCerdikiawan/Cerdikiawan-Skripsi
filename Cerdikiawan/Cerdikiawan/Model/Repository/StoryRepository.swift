@@ -13,26 +13,30 @@ protocol StoryRepository {
     func fetchStoryById(request: StoryRequest) async throws -> (SupabaseStory?, ErrorStatus)
 }
 
-class SupabaseStoryRepository: StoryRepository {
-    let client = SupabaseClient(supabaseURL: URL(string: APIKey.dbUrl)!, supabaseKey: APIKey.key)
+class SupabaseStoryRepository: SupabaseRepository, StoryRepository {
     
     public static var shared = SupabaseStoryRepository()
-    
-    private init () {}
+    private override init () {}
     
     //Fetch all stories
     func fetchStories() async throws -> ([SupabaseStory], ErrorStatus) {
-        let stories: [SupabaseStory] = try await client
-          .from("Story")
-          .select()
-          .execute()
-          .value
+        let response = try await client
+            .from("Story")
+            .select()
+            .execute()
         
-        guard !stories.isEmpty else {
-            return ([], .notFound)
+        guard response.status == 200 else {
+            return ([], .serverError)
         }
+            
+        let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseStory].self)
         
-        return (stories, .success)
+        switch result {
+            case .success(let stories):
+                return (stories, .success)
+            case .failure(_):
+                return ([], .jsonError)
+        }
     }
     
     //fetch stories based on storyId
@@ -40,10 +44,12 @@ class SupabaseStoryRepository: StoryRepository {
         let (stories, status) = try await fetchStories()
         
         if let storyId = request.storyId {
-            guard status == .success, let story = stories.first(where: {$0.storyId == storyId} ) else {
+            guard status == .success else {
+                return (nil, .serverError)
+            }
+            guard let story = stories.first(where: {$0.storyId == storyId} ) else {
                 return (nil, .notFound)
             }
-            
             return (story, .success)
         } else {
             return (nil, .invalidInput)

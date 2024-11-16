@@ -7,9 +7,18 @@
 
 import Foundation
 
-enum ErrorStatus {
+enum ErrorStatus: Error {
     case success
     case notFound
     case invalidInput
     case serverError
+    case jsonError
+}
+
+enum JsonError: Error {
+    case success
+    case notFound
+    case decodedFailed(Error)
+    case encodedFailed(Error)
+    case dataCorrupted
 }
