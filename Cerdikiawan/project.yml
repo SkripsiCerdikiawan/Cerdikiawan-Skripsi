@@ -33,13 +33,6 @@ targets:
             UIInterfaceOrientationLandscapeLeft,
             UIInterfaceOrientationLandscapeRight,
           ]
-        UISupportedInterfaceOrientations~ipad:
-          [
-            UIInterfaceOrientationPortrait,
-            UIInterfaceOrientationPortraitUpsideDown,
-            UIInterfaceOrientationLandscapeLeft,
-            UIInterfaceOrientationLandscapeRight,
-          ]
     dependencies:
       - package: supabase-swift
         products:
@@ -65,7 +58,7 @@ targets:
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Cerdikiawan.app/Cerdikiawan"
         BUNDLE_LOADER: "$(TEST_HOST)"
 schemes:
-  FamilyStoryADA:
+  Cerdikiawan:
     build:
       targets:
         Cerdikiawan: all
