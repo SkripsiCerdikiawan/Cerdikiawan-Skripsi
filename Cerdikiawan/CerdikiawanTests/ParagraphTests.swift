@@ -9,7 +9,7 @@ import Testing
 @testable import Cerdikiawan
 import Foundation
 
-struct ParagraphTest {
+struct ParagraphTests {
     var paragraphRepository: ParagraphRepository
     
     init() async throws {
