@@ -16,7 +16,7 @@ struct QuestionTests {
         questionRepository = SupabaseQuestionRepository.shared
     }
     
-    @Test func fetchQuestions() async throws {
+    @Test func testFetchQuestions() async throws {
         //TODO: Add auth process
         let (questions, status) = try await questionRepository.fetchQuestions()
         
@@ -29,7 +29,7 @@ struct QuestionTests {
         )
     }
     
-    @Test func fetchQuestionsByQuestionId() async throws {
+    @Test func testFetchQuestionsByQuestionId() async throws {
         let request = QuestionRequest(questionId: UUID(uuidString: "d0e1622e-d118-423a-b47b-e41c2ada775b"))
         let (questions, status) = try await questionRepository.fetchQuestionsById(request: request)
         
@@ -38,16 +38,16 @@ struct QuestionTests {
         )
         
         #expect(!questions.isEmpty,
-                "Page should not be empty"
+                "Question should not be empty"
         )
         
         #expect(questions.count == 1 &&
                 questions.contains(where: { $0.questionId == request.questionId }),
-                "Page should match the intended pageId"
+                "Question should match the intended questionId"
         )
     }
 
-    @Test func fetchQuestionsByPageId() async throws {
+    @Test func testFetchQuestionsByPageId() async throws {
         let request = QuestionRequest(pageId: UUID(uuidString: "ae244295-e2cc-4279-a32e-e3f3e034a05c"))
         let (questions, status) = try await questionRepository.fetchQuestionsById(request: request)
         
@@ -56,16 +56,16 @@ struct QuestionTests {
         )
         
         #expect(!questions.isEmpty,
-                "Page should not be empty"
+                "Question should not be empty"
         )
         
         #expect(questions.count == 2 &&
                 questions.contains(where: { $0.pageId == request.pageId }),
-                "Page should match the intended pageId"
+                "Question should match the intended pageId"
         )
     }
     
-    @Test func fetchQuestionsUsingInvalidId() async throws {
+    @Test func testFetchQuestionsUsingInvalidId() async throws {
         let request = QuestionRequest(questionId: UUID(uuidString: "wrong id"))
         let (questions, status) = try await questionRepository.fetchQuestionsById(request: request)
         

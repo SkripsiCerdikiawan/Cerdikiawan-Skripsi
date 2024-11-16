@@ -9,7 +9,7 @@ import Foundation
 
 protocol AnswerRepository {
     func fetchAnswers() async throws -> ([SupabaseAnswer], ErrorStatus)
-    func fetchAnswersById(request: AnswerRequest) async throws -> ([SupabaseAnswer], ErrorStatus)
+    func fetchAnswersById<T: SupabaseAnswer>(request: AnswerRequest) async throws -> ([T], ErrorStatus)
 }
 
 internal class SupabaseAnswerRepository: SupabaseRepository, AnswerRepository {
@@ -21,7 +21,7 @@ internal class SupabaseAnswerRepository: SupabaseRepository, AnswerRepository {
     }
     
     
-    func fetchAnswersById(request: AnswerRequest) async throws -> ([any SupabaseAnswer], ErrorStatus) {
+    func fetchAnswersById<T: SupabaseAnswer>(request: AnswerRequest) async throws -> ([T], ErrorStatus) {
         let (answers, status) = try await fetchAnswers()
         
         guard status == .success else {
@@ -46,7 +46,7 @@ internal class SupabaseAnswerRepository: SupabaseRepository, AnswerRepository {
             return ([], .notFound)
         }
         
-        return (sortedAnswers, .success)
+        return (sortedAnswers as![T], .success)
     }
 }
 
