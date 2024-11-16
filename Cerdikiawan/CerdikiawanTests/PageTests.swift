@@ -5,7 +5,6 @@
 //  Created by Nathanael Juan Gauthama on 16/11/24.
 //
 
-
 import Testing
 @testable import Cerdikiawan
 import Foundation
@@ -17,7 +16,7 @@ struct PageTests {
         pageRepository = SupabasePageRepository.shared
     }
     
-    @Test func fetchPages() async throws {
+    @Test func testFetchPages() async throws {
         let (pages, status) = try await pageRepository.fetchPages()
         
         #expect(status == .success,
@@ -29,7 +28,7 @@ struct PageTests {
         )
     }
     
-    @Test func fetchPagesByPageId() async throws {
+    @Test func testFetchPagesByPageId() async throws {
         let request = PageRequest(pageId: UUID(uuidString: "ae244295-e2cc-4279-a32e-e3f3e034a05c"))
         let (pages, status) = try await pageRepository.fetchPagesById(request: request)
         
@@ -47,7 +46,7 @@ struct PageTests {
         )
     }
     
-    @Test func fetchPagesByStoryId() async throws {
+    @Test func testFetchPagesByStoryId() async throws {
         let request = PageRequest(storyId: UUID(uuidString: "ccbed71f-ea39-425d-8238-838f74498a93"))
         let (pages, status) = try await pageRepository.fetchPagesById(request: request)
         
@@ -62,6 +61,16 @@ struct PageTests {
         #expect(pages.count == 2 &&
                 pages.allSatisfy( { $0.storyId == request.storyId } ),
                 "Page should match the intended storyId"
+        )
+    }
+    
+    @Test func testFetchInvalidId() async throws {
+        let request = PageRequest(pageId: UUID(uuidString: "wrong id"))
+        let (pages, status) = try await pageRepository.fetchPagesById(request: request)
+        
+        #expect(pages.isEmpty &&
+                status == .invalidInput,
+                "Input must be invalid"
         )
     }
 }

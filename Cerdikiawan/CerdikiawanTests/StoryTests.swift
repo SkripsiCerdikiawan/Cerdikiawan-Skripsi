@@ -16,7 +16,7 @@ struct StoryTests {
         storyRepository = SupabaseStoryRepository.shared
     }
     
-    @Test func fetchStories() async throws {
+    @Test func testFetchStories() async throws {
         //TODO: Add auth process
         let (stories, status) = try await storyRepository.fetchStories()
         
@@ -29,7 +29,7 @@ struct StoryTests {
         )
     }
     
-    @Test func fetchStoryById() async throws {
+    @Test func testFetchStoryById() async throws {
         //TODO: Add auth process
         let request = StoryRequest(storyId: UUID(uuidString: "ccbed71f-ea39-425d-8238-838f74498a93"))
         let (story, status) = try await storyRepository.fetchStoryById(request: request)
@@ -47,7 +47,7 @@ struct StoryTests {
         )
     }
     
-    @Test func fetchInvalidId() async throws {
+    @Test func testFetchInvalidId() async throws {
         let request = StoryRequest()
         let (story, status) = try await storyRepository.fetchStoryById(request: request)
         
