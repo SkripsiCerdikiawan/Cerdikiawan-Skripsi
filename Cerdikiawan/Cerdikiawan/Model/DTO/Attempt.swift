@@ -8,12 +8,12 @@
 import Foundation
 
 struct SupabaseAttempt: Codable {
-    let AttemptID: UUID
-    let ProfileID: UUID
-    let StoryID: UUID
-    let AttemptDateTime: Date
-    let KosakataPercentage: Float
-    let IdePokokPercentage: Float
-    let ImplisitPercentage: Float
-    let RecordSoundPath: String
+    let attemptId: UUID
+    let profileId: UUID
+    let storyId: UUID
+    let attemptDateTime: Date
+    let kosakataPercentage: Float
+    let idePokokPercentage: Float
+    let implisitPercentage: Float
+    let recordSoundPath: String
 }

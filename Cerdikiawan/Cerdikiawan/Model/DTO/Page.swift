@@ -8,7 +8,7 @@
 import Foundation
 
 struct SupabasePage: Codable {
-    let PageID: UUID
-    let StoryID: UUID
-    let PagePicturePath: String
+    let pageId: UUID
+    let storyId: UUID
+    let pagePicturePath: String
 }

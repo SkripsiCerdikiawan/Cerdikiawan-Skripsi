@@ -8,12 +8,12 @@
 import Foundation
 
 struct SupabaseQuestion: Codable {
-    let QuestionID: UUID
-    let PageID: UUID
-    let QuestionType: String
-    let QuestionCategory: String
-    let QuestionContent: String
-    let QuestionFeedbackIfTrue: String
-    let QuestionFeedbackIfFalse: String
-    let QuestionPointGain: Int
+    let questionId: UUID
+    let pageId: UUID
+    let questionType: String
+    let questionCategory: String
+    let questionContent: String
+    let questionFeedbackIfTrue: String
+    let questionFeedbackIfFalse: String
+    let questionPointGain: Int
 }

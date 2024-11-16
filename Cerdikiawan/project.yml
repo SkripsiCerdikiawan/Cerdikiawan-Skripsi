@@ -33,13 +33,6 @@ targets:
             UIInterfaceOrientationLandscapeLeft,
             UIInterfaceOrientationLandscapeRight,
           ]
-        UISupportedInterfaceOrientations~ipad:
-          [
-            UIInterfaceOrientationPortrait,
-            UIInterfaceOrientationPortraitUpsideDown,
-            UIInterfaceOrientationLandscapeLeft,
-            UIInterfaceOrientationLandscapeRight,
-          ]
     dependencies:
       - package: supabase-swift
         products:

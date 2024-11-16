@@ -6,22 +6,47 @@
 //
 
 import Foundation
+import Supabase
 
-protocol
+protocol StoryRepository {
+    func fetchStories() async throws -> ([SupabaseStory], ErrorStatus)
+    func fetchStoryById(request: StoryRequest) async throws -> (SupabaseStory?, ErrorStatus)
+}
 
-class StoryRepository: SupabaseDatabaseRepository {
+class SupabaseStoryRepository: StoryRepository {
+    let client = SupabaseClient(supabaseURL: URL(string: APIKey.dbUrl)!, supabaseKey: APIKey.key)
     
-    public static var shared = SupabaseDatabaseRepository()
+    public static var shared = SupabaseStoryRepository()
     
-//    private override init () {}
+    private init () {}
     
-    func fetchStories() async throws -> [SupabaseStory] {
-        let story: [SupabaseStory] = try await client
+    //Fetch all stories
+    func fetchStories() async throws -> ([SupabaseStory], ErrorStatus) {
+        let stories: [SupabaseStory] = try await client
           .from("Story")
           .select()
           .execute()
           .value
-        print(story)
-        return story
+        
+        guard !stories.isEmpty else {
+            return ([], .notFound)
+        }
+        
+        return (stories, .success)
+    }
+    
+    //fetch stories based on storyId
+    func fetchStoryById(request: StoryRequest) async throws -> (SupabaseStory?, ErrorStatus) {
+        let stories = try await fetchStories().0
+        
+        if let storyId = request.storyId {
+            guard let story = stories.first(where: {$0.storyId == storyId} ) else {
+                return (nil, .notFound)
+            }
+            
+            return (story, .success)
+        } else {
+            return (nil, .invalidInput)
+        }
     }
 }

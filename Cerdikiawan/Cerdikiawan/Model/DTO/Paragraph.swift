@@ -8,8 +8,8 @@
 import Foundation
 
 struct SupabaseParagraph: Codable {
-    let ParagraphID: UUID
-    let PageID: UUID
-    let ParagraphText: String
-    let ParagraphSoundPath: String
+    let paragraphId: UUID
+    let pageId: UUID
+    let paragraphText: String
+    let paragraphSoundPath: String
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct SupabaseShop: Codable {
-    let ShopID: UUID
-    let CharacterID: UUID
-    let ShopPrice: Int
+    let shopId: UUID
+    let characterId: UUID
+    let shopPrice: Int
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct SupabaseWordBlankAnswer: Codable {
-    let AnswerID: UUID
-    let QuestionID: UUID
-    let AnswerContent: String
+    let answerId: UUID
+    let questionId: UUID
+    let answerContent: String
 }
