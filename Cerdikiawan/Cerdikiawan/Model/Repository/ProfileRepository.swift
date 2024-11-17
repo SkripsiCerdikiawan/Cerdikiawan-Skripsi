@@ -42,7 +42,26 @@ class SupabaseProfileRepository: SupabaseRepository, ProfileRepository {
     }
     
     func createNewProfile(request: ProfileInsertRequest) async throws -> (SupabaseProfile?, ErrorStatus) {
-        return (nil, .notFound)
+        let profile = SupabaseProfile(profileId: request.profileId,
+                                      profileName: request.profileName,
+                                      profileBalance: request.profileBalance,
+                                      profileBirthDate: request.profileBirthDate
+        )
+        
+        do {
+            let response = try await client
+                .from("Profile")
+                .insert(profile)
+                .execute()
+            
+            guard response.status == 201 else {
+                return (nil, .serverError)
+            }
+            
+            return (profile, .success)
+        } catch {
+            return (nil, .serverError)
+        }
     }
     
     func updateProfile(request: ProfileUpdateRequest) async throws -> (SupabaseProfile?, ErrorStatus) {

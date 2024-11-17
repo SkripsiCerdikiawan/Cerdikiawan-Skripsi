@@ -19,14 +19,16 @@ struct ProfileInsertRequest: ProfileRequest {
     let profileId: UUID
     var profileName: String
     var profileBalance: Int
-    var profileBirthDate: Date
+    /// Format: yyyy-mm-dd
+    var profileBirthDate: String
 }
 
 struct ProfileUpdateRequest: ProfileRequest {
     let profileId: UUID
     var profileName: String?
     var profileBalance: Int?
-    var profileBirthDate: Date?
+    /// Format: yyyy-mm-dd
+    var profileBirthDate: String?
 }
 
 struct ProfileDeleteRequest: ProfileRequest {

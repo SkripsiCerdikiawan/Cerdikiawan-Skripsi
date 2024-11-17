@@ -28,4 +28,21 @@ struct ProfileTests {
         #expect(profile != nil, "Profile is nil")
     }
     
+    @Test func insertNewProfile() async throws {
+        guard let profileId = UUID(uuidString: "c96ea4c9-34a1-4c83-84f7-ad9e269de2f3") else {
+            #expect(Bool(false), "Invalid profileId")
+            return
+        }
+        let request = ProfileInsertRequest(profileId: profileId,
+                                           profileName: "Hans",
+                                           profileBalance: 0,
+                                           profileBirthDate: "2003-12-12"
+        )
+        
+        let (profile, status) = try await profileRepository.createNewProfile(request: request)
+        
+        #expect(status == .success, "Failed to insert new profile")
+        #expect(profile != nil, "Profile is nil")
+    }
+    
 }
