@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct SupabaseWordMatchAnswer: Codable {
+struct SupabaseWordMatchAnswer: SupabaseAnswer {
     let answerId: UUID
     let questionId: UUID
-    let questionPrompt: String
+    var questionPrompt: String? = ""
     let answerPrompt: String
 }
