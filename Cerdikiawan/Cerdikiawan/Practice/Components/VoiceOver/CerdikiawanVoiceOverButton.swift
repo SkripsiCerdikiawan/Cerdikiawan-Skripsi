@@ -8,31 +8,27 @@
 import SwiftUI
 
 struct CerdikiawanVoiceOverButton: View {
-    var state: CerdikiawanVoiceOverButtonState
+    var state: CerdikiawanVoiceOverButtonType
     var onTapAction: () -> Void
     
     var body: some View {
-        VStack {
-            Image(systemName: "speaker.wave.2")
-                .imageScale(.medium)
-                .foregroundStyle(state.foregroundColor)
-        }
-        .frame(width: 40, height: 40)
-        .background(state.backgroundColor)
-        .onTapGesture {
-            if state == .enabled {
+        Button(
+            action: {
                 onTapAction()
+            },
+            label: {
+                Image(systemName: "speaker.wave.2")
+                    .imageScale(.medium)
+                    .foregroundStyle(state.foregroundColor)
             }
-        }
-        .clipShape(
-            RoundedRectangle(cornerRadius: 8)
         )
+        .buttonStyle(CerdikiawanVoiceOverButtonStyle(type: state))
     }
 }
 
 #Preview {
     CerdikiawanVoiceOverButton(
-        state: .enabled,
+        state: .disabled,
         onTapAction: {
             print("Voice Over Button tapped")
         }

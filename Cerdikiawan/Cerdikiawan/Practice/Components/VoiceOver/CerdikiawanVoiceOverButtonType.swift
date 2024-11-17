@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum CerdikiawanVoiceOverButtonState {
+enum CerdikiawanVoiceOverButtonType {
     case disabled
     case enabled
     
@@ -25,5 +25,9 @@ enum CerdikiawanVoiceOverButtonState {
         case .enabled:
             return Color(.cDarkBlue)
         }
+    }
+    
+    var scaleEffect: CGFloat {
+        return 0.9
     }
 }
