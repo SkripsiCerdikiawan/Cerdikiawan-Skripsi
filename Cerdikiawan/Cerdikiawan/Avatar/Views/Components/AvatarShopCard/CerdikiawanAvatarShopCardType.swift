@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum CerdikiawanCharacterShopCardType {
+enum CerdikiawanAvatarShopCardType {
     case canBuy
     case notEnoughBalance
     case owned
@@ -73,9 +73,9 @@ enum CerdikiawanCharacterShopCardType {
     }
 }
 
-extension CerdikiawanCharacterShopCardType: Equatable {
+extension CerdikiawanAvatarShopCardType: Equatable {
     // Conform to equatable
-    static func == (lhs: CerdikiawanCharacterShopCardType, rhs: CerdikiawanCharacterShopCardType) -> Bool {
+    static func == (lhs: CerdikiawanAvatarShopCardType, rhs: CerdikiawanAvatarShopCardType) -> Bool {
         switch (lhs, rhs){
         case (.canBuy, .canBuy),
             (.notEnoughBalance, .notEnoughBalance),

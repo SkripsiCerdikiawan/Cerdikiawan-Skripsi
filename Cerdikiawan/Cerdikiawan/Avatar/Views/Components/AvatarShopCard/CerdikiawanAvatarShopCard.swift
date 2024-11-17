@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct CerdikiawanCharacterShopCard: View {
+struct CerdikiawanAvatarShopCard: View {
     var shopAvatar: ShopAvatarEntity
-    var type: CerdikiawanCharacterShopCardType
+    var type: CerdikiawanAvatarShopCardType
     var onTapAction: () -> Void
     
     var body: some View {
@@ -60,28 +60,28 @@ struct CerdikiawanCharacterShopCard: View {
         Color(.cGray).ignoresSafeArea()
         ScrollView {
             VStack {
-                CerdikiawanCharacterShopCard(
+                CerdikiawanAvatarShopCard(
                     shopAvatar: ShopAvatarEntity.mock()[0],
                     type: .notEnoughBalance,
                     onTapAction: {
                         debugPrint("Not Enough Balance Pressed")
                     }
                 )
-                CerdikiawanCharacterShopCard(
+                CerdikiawanAvatarShopCard(
                     shopAvatar: ShopAvatarEntity.mock()[0],
                     type: .canBuy,
                     onTapAction: {
                         debugPrint("Can Buy Pressed")
                     }
                 )
-                CerdikiawanCharacterShopCard(
+                CerdikiawanAvatarShopCard(
                     shopAvatar: ShopAvatarEntity.mock()[0],
                     type: .owned,
                     onTapAction: {
                         debugPrint("Owned Pressed")
                     }
                 )
-                CerdikiawanCharacterShopCard(
+                CerdikiawanAvatarShopCard(
                     shopAvatar: ShopAvatarEntity.mock()[0],
                     type: .active,
                     onTapAction: {
