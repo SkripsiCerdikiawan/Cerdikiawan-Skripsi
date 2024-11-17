@@ -15,17 +15,17 @@ enum CerdikiawanAvatarState {
     func displayImage(avatar: AvatarEntity) -> Image {
         switch self {
         case .happy:
-            if let image = UIImage(named: "\(avatar.name.uppercased())-HAPPY") {
+            if let image = UIImage(named: "\(avatar.name.uppercased())_HAPPY") {
                 return Image(uiImage: image)
             }
             return Image(.BUDI_HAPPY)
         case .normal:
-            if let image = UIImage(named: "\(avatar.name.uppercased())-DEFAULT") {
+            if let image = UIImage(named: "\(avatar.name.uppercased())_DEFAULT") {
                 return Image(uiImage: image)
             }
             return Image(.BUDI_DEFAULT)
         case .sad:
-            if let image = UIImage(named: "\(avatar.name.uppercased())-SAD") {
+            if let image = UIImage(named: "\(avatar.name.uppercased())_SAD") {
                 return Image(uiImage: image)
             }
             return Image(.BUDI_SAD)

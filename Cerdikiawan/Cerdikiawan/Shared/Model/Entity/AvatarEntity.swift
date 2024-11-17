@@ -11,3 +11,12 @@ struct AvatarEntity {
     let id: String
     let name: String
 }
+
+extension AvatarEntity {
+    static func mock() -> AvatarEntity {
+        return .init(
+            id: "id-01",
+            name: "juan"
+        )
+    }
+}
