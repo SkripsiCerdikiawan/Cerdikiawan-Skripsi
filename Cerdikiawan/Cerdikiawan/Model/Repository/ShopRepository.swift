@@ -31,6 +31,9 @@ class SupabaseShopRepository: SupabaseRepository, ShopRepository {
         
         switch result {
             case .success(let shops):
+                guard shops.isEmpty == false else {
+                    return ([], .notFound)
+                }
                 return (shops, .success)
             case .failure(_):
                 return ([], .jsonError)

@@ -33,6 +33,9 @@ class SupabaseStoryRepository: SupabaseRepository, StoryRepository {
         
         switch result {
             case .success(let stories):
+                guard stories.isEmpty == false else {
+                    return ([], .notFound)
+                }
                 return (stories, .success)
             case .failure(_):
                 return ([], .jsonError)

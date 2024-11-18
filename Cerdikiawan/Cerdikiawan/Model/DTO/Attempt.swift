@@ -11,7 +11,7 @@ struct SupabaseAttempt: Codable {
     let attemptId: UUID
     let profileId: UUID
     let storyId: UUID
-    let attemptDateTime: Date
+    let attemptDateTime: String
     let kosakataPercentage: Float
     let idePokokPercentage: Float
     let implisitPercentage: Float

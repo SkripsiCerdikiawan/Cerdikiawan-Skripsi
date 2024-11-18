@@ -31,6 +31,9 @@ class SupabaseQuestionRepository: SupabaseRepository, QuestionRepository {
         
         switch result {
             case .success(let questions):
+                guard questions.isEmpty == false else {
+                    return ([], .notFound)
+                }
                 return (questions, .success)
             case .failure(_):
                 return ([], .jsonError)
