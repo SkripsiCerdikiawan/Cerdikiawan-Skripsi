@@ -35,19 +35,19 @@ struct CerdikiawanMultipleChoiceContainer: View {
     }
     
     func determineType(answer: String) -> CerdikiawanMultipleChoiceButtonType {
-        if state == .answering {
+        switch state {
+        case .answering:
             // State to selected if answer is the same with selectedAnswerID
             if answer == self.selectedAnswerID {
                 return .selected
             }
-        }
-        else if state == .feedback {
+        case .feedback:
             // if at feedback and answer is the correct answer, return correct
             if answer == data.correctAnswerID {
                 return .correct
             }
             // if at feedback and the selected answer is not correct, return incorrect
-            else if self.selectedAnswerID == answer && answer != data.correctAnswerID {
+            else if self.selectedAnswerID == answer {
                 return .incorrect
             }
         }

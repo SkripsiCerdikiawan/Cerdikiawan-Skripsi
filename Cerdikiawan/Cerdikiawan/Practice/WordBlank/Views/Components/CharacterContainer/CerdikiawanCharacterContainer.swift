@@ -11,30 +11,19 @@ struct CerdikiawanCharacterContainer: View {
     @Binding var value: String
     
     var state: CerdikiawanCharacterContainerState
-    var onDeleteAction: () -> Void
     
     var body: some View {
         VStack {
             HStack {
-                Text(value)
+                Text(value.isEmpty ? " " : value)
                     .font(state.font)
                     .fontWeight(state.fontWeight)
                     .foregroundStyle(state.textColor)
                 Spacer()
                 
-                if state == .normal {
-                    DeleteButton()
-                        .onTapGesture {
-                            if state == .normal {
-                                onDeleteAction()
-                            }
-                        }
-                }
-                else {
-                    if let icon = state.icon {
-                        icon.imageScale(.medium)
-                            .foregroundStyle(state.iconColor)
-                    }
+                if let icon = state.icon {
+                    icon.imageScale(.medium)
+                        .foregroundStyle(state.iconColor)
                 }
             }
             .padding(.horizontal, 24)
@@ -76,10 +65,7 @@ private struct DeleteButton: View {
         VStack {
             CerdikiawanCharacterContainer(
                 value: $content,
-                state: .correct,
-                onDeleteAction: {
-                    content.removeLast()
-                }
+                state: .correct
             )
         }
         .padding(.horizontal, 16)
