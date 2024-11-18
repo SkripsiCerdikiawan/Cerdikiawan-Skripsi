@@ -31,6 +31,9 @@ class SupabaseCharacterRepository: SupabaseRepository, CharacterRepository {
         
         switch result {
             case .success(let characters):
+                guard characters.isEmpty == false else {
+                    return ([], .notFound)
+                }
                 return (characters, .success)
             case .failure(_):
                 return ([], .jsonError)

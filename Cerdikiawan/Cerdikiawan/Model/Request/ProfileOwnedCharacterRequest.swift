@@ -7,18 +7,22 @@
 
 import Foundation
 
-struct ProfileOwnedCharacterFetchRequest {
+protocol ProfileOwnedCharacterRequest {
+    var profileId: UUID { get }
+}
+
+struct ProfileOwnedCharacterFetchRequest: ProfileOwnedCharacterRequest {
     var profileId: UUID
     var characterId: UUID?
 }
 
-struct ProfileOwnedCharacterInsertRequest {
+struct ProfileOwnedCharacterInsertRequest: ProfileOwnedCharacterRequest {
     var profileId: UUID
     var characterId: UUID
     let isChosen: Bool
 }
 
-struct ProfileOwnedCharacterUpdateRequest {
+struct ProfileOwnedCharacterUpdateRequest: ProfileOwnedCharacterRequest {
     var profileId: UUID
     var characterId: UUID
     let isChosen: Bool?

@@ -31,6 +31,9 @@ class SupabaseParagraphRepository: SupabaseRepository, ParagraphRepository {
         
         switch result {
             case .success(let paragraph):
+                guard paragraph.isEmpty == false else {
+                    return ([], .notFound)
+                }
                 return (paragraph, .success)
             case .failure(_):
                 return ([], .jsonError)
