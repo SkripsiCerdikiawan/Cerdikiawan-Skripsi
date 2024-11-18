@@ -27,10 +27,10 @@ struct CerdikiawanAttemptCard: View {
                     Text("Tanggal pengerjaan")
                         .font(.caption)
                         .foregroundStyle(Color(.secondaryLabel))
-                    Text(DateUtils.getDate(date))
+                    Text(DateUtils.getDate(from: date))
                         .font(.title2)
                         .fontWeight(.semibold)
-                    Text(DateUtils.getTime(date))
+                    Text(DateUtils.getTime(from: date))
                         .font(.headline)
                 }
             }
