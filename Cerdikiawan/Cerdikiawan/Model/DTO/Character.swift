@@ -9,7 +9,7 @@ import Foundation
 
 struct SupabaseCharacter: Codable {
     let characterId: UUID
+    let characterName: String
     let characterImagePath: String
-    let characterPrice: Int
     let characterDescription: String
 }

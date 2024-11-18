@@ -11,5 +11,6 @@ struct SupabaseProfile: Codable {
     let profileId: UUID
     let profileName: String
     let profileBalance: Int
-    let profileBirthDate: Date
+    /// Format: yyyy-mm-dd
+    let profileBirthDate: String
 }
