@@ -22,7 +22,7 @@ struct DateUtils {
         return dateFormatter.date(from: string)
     }
     
-    static func getTime(_ date: Date) -> String {
+    static func getTime(from date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "id_ID") // Optional, can use Indonesian locale
         dateFormatter.dateFormat = "HH:mm" // 24-hour format with hours and minutes
