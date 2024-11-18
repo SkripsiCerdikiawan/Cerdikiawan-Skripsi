@@ -8,11 +8,18 @@
 import Foundation
 
 struct DateUtils {
-    static func getDate(_ date: Date) -> String {
+    static func getDate(from date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "id_ID") // Set locale to Indonesian
         dateFormatter.dateFormat = "EEEE, d MMMM yyyy" // Full day, date, month, and year format
         return dateFormatter.string(from: date)
+    }
+    
+    static func getDate(from string: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "id_ID") // Set locale to Indonesian
+        dateFormatter.dateFormat = "EEEE, d MMMM yyyy" // Full day, date, month, and year format
+        return dateFormatter.date(from: string)
     }
     
     static func getTime(_ date: Date) -> String {
