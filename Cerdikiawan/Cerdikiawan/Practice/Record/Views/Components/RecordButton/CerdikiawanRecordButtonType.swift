@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum CerdikiawanRecordButtonStyle {
+enum CerdikiawanRecordButtonType {
     case normal
     case recording
     case pause
@@ -70,5 +70,9 @@ enum CerdikiawanRecordButtonStyle {
     
     var fontColor: Color {
         return Color(.secondaryLabel)
+    }
+    
+    var scaleEffect: CGFloat {
+        return 0.9
     }
 }
