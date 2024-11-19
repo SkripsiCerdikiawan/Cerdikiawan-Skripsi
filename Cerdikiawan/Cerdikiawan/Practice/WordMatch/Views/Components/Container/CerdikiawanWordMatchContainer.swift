@@ -74,12 +74,18 @@ struct CerdikiawanWordMatchContainer: View {
     }
     
     private func determineType(answerID: String) -> CerdikiawanWordMatchTextContainerType {
-        guard let selectedAnswer = selectedAnswer else {
-            return .answer
+        switch state {
+        case .answering:
+            guard let selectedAnswer = selectedAnswer else {
+                return .answer
+            }
+            if selectedAnswer.id == answerID {
+                return .filled
+            }
+        case .feedback:
+            return .disabled
         }
-        if selectedAnswer.id == answerID {
-            return .filled
-        }
+
         return .answer
     }
     
@@ -99,7 +105,16 @@ struct CerdikiawanWordMatchContainer: View {
             return .answer
             
         case .feedback:
-            return .correct
+            guard let answerID = pair[questionID]?.id,
+                  let answerKey = data.pair[questionID] else {
+                return .incorrect
+            }
+            
+            if answerID == answerKey {
+                return .correct
+            }
+
+            return .incorrect
         }
     }
     
@@ -183,30 +198,29 @@ struct CerdikiawanWordMatchContainer: View {
                 return
             }
             
-            // If selected answer is from the answer pool, unselect it
-            if let firstIndex = answerPool.firstIndex(of: selectedAnswer),
+            // If either selected answer or new answer is from the answer pool, set new selected answer
+            guard !answerPool.contains(selectedAnswer) || !answerPool.contains(answer) else {
+                self.selectedAnswer = answer
+                return
+            }
+            
+            // Validate that the selected answer is from pair
+            guard let question = pair.first(where: { $1.id == selectedAnswer.id })?.key,
+                let pairAnswer = pair[question] else {
+                return
+            }
+            
+            // Swap the answer position
+            answerPool.append(pairAnswer)
+           
+            if let firstIndex = answerPool.firstIndex(of: pairAnswer),
                let secondIndex = answerPool.firstIndex(of: answer) {
-                self.selectedAnswer = nil
+                answerPool.swapAt(firstIndex, secondIndex)
             }
-            // If selected answer is from pair, swap it
-            else {
-                // Validate that the selected answer is from pair
-                guard let question = pair.first(where: { $1.id == selectedAnswer.id })?.key,
-                    let pairAnswer = pair[question] else {
-                    return
-                }
-                
-                // Swap the answer position
-                answerPool.append(pairAnswer)
-               
-                if let firstIndex = answerPool.firstIndex(of: pairAnswer),
-                   let secondIndex = answerPool.firstIndex(of: answer) {
-                    answerPool.swapAt(firstIndex, secondIndex)
-                }
-                
-                pair[question] = answer
-                answerPool.removeAll(where: { $0.id == answer.id})
-            }
+            
+            pair[question] = answer
+            answerPool.removeAll(where: { $0.id == answer.id})
+            
             self.selectedAnswer = nil
 
         }
@@ -229,6 +243,16 @@ struct CerdikiawanWordMatchContainer: View {
                 pair: $pair,
                 answerPool: $answerPool,
                 state: $state
+            )
+            
+            Spacer()
+            
+            CerdikiawanButton(
+                type: pair.values.count < 3 ? .disabled : .primary,
+                label: "Change State",
+                action: {
+                    state = .feedback
+                }
             )
         }
         .padding(16)
