@@ -12,7 +12,7 @@ struct CerdikiawanWordMatchTextContainer: View {
     var type: CerdikiawanWordMatchTextContainerType
     var onTap: (() -> Void)?
     
-    var body: some View {        
+    var body: some View {
         Button(
             action: {
                 if type == .filled {
@@ -32,7 +32,7 @@ struct CerdikiawanWordMatchTextContainer: View {
         .buttonStyle(
             CerdikiawanWordMatchTextContainerStyle(type: type)
         )
-
+        
     }
 }
 
@@ -114,5 +114,5 @@ struct CerdikiawanWordMatchTextContainer: View {
         }
         .padding(16)
     }
-
+    
 }
