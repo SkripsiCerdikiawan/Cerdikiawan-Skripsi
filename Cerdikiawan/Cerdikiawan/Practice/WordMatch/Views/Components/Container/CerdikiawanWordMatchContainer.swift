@@ -18,6 +18,8 @@ struct CerdikiawanWordMatchContainer: View {
     @Binding var answerPool: [WordMatchTextEntity]
     @Binding var state: CerdikiawanWordMatchContainerState
     
+    @State private var selectedAnswer: WordMatchTextEntity?
+    
     var body: some View {
         VStack(spacing: 24) {
             Text("\(data.prompt)")
@@ -38,7 +40,15 @@ struct CerdikiawanWordMatchContainer: View {
                             label: pair[question.id]?.content ?? "",
                             type: determineType(questionID: question.id),
                             onTap: {
-                                debugPrint("Pair questionID \(question.id) is pressed")
+                                if let selectedAnswer = selectedAnswer {
+                                    pair[question.id] = selectedAnswer
+                                    self.selectedAnswer = nil
+                                    answerPool.removeAll(where: { $0.id == selectedAnswer.id})
+                                }
+                                else if let answer = pair[question.id] {
+                                    answerPool.append(answer)
+                                    pair[question.id] = nil
+                                }
                             }
                         )
                     }
@@ -55,9 +65,22 @@ struct CerdikiawanWordMatchContainer: View {
                     ForEach(self.answerPool, id: \.id, content: { answer in
                         CerdikiawanWordMatchTextContainer(
                             label: answer.content,
-                            type: .filled,
+                            type: determineType(answerID: answer.id),
                             onTap: {
-                                debugPrint("Answer: \(answer.content) pressed")
+                                if selectedAnswer == nil {
+                                    debugPrint("Selected Answer: \(answer.content)")
+                                    selectedAnswer = answer
+                                }
+                                else {
+                                    guard let selected = selectedAnswer,
+                                          selected.id != answer.id else {
+                                        debugPrint("Selected Answer: nil")
+                                        selectedAnswer = nil
+                                        return
+                                    }
+                                    
+                                    selectedAnswer = answer
+                                }
                             }
                         )
                     })
@@ -71,17 +94,30 @@ struct CerdikiawanWordMatchContainer: View {
         }
     }
     
+    private func determineType(answerID: String) -> CerdikiawanWordMatchTextContainerType {
+        guard let selectedAnswer = selectedAnswer else {
+            return .answer
+        }
+        if selectedAnswer.id == answerID {
+            return .filled
+        }
+        return .answer
+    }
+    
     private func determineType(questionID: String) -> CerdikiawanWordMatchTextContainerType {
         switch state {
         case .answering:
-            if pair[questionID] != nil {
-                return .filled
+            guard pair[questionID] != nil else {
+                if selectedAnswer != nil {
+                    return .blank
+                }
+                return .question
             }
+            return .answer
+            
         case .feedback:
             return .correct
         }
-        
-        return .blank
     }
 }
 

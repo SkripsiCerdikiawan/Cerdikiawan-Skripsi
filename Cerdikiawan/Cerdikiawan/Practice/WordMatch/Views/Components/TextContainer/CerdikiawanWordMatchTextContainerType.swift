@@ -9,6 +9,7 @@ import SwiftUI
 
 enum CerdikiawanWordMatchTextContainerType {
     case question
+    case answer
     case blank
     case filled
     case correct
@@ -20,13 +21,20 @@ enum CerdikiawanWordMatchTextContainerType {
     }
     
     var borderWidth: CGFloat {
-        return 0.5
+        switch self {
+        case .blank:
+            return 2
+        default:
+            return 0.5
+        }
     }
     
-    var backgroundColor: Color {
+    func backgroundColor(isPressed: Bool) -> Color {
         switch self {
         case .question:
             return Color(.cWhite)
+        case .answer:
+            return isPressed ? Color(.cDarkOrange) : Color(.cWhite)
         case .blank:
             return Color(.cWhite)
         case .filled:
@@ -44,6 +52,8 @@ enum CerdikiawanWordMatchTextContainerType {
         switch self {
         case .question:
             return Color.clear
+        case .answer:
+            return Color(.cDarkOrange)
         case .blank:
             return Color(.cDarkOrange)
         case .filled:
@@ -57,12 +67,14 @@ enum CerdikiawanWordMatchTextContainerType {
         }
     }
     
-    var textColor: Color {
+    func textColor(isPressed: Bool) -> Color {
         switch self {
         case .question:
             return Color(.cBlack)
+        case .answer:
+            return isPressed ? Color(.cWhite) : Color(.cDarkOrange)
         case .blank:
-            return Color(.cWhite)
+            return Color(.cDarkOrange)
         case .filled:
             return Color(.cBlack)
         case .correct:
@@ -91,11 +103,20 @@ enum CerdikiawanWordMatchTextContainerType {
     
     var scaleEffect: CGFloat {
         switch self {
+        case .answer:
+            return 0.9
         case .filled:
             return 0.9
         default:
             return 1
 
         }
+    }
+    
+    func textConfiguration(label: String) -> String{
+        if label.isEmpty {
+            return "?"
+        }
+        return label
     }
 }
