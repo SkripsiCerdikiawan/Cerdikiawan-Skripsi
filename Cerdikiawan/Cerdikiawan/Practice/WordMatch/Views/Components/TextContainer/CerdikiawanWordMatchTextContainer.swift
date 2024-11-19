@@ -12,18 +12,15 @@ struct CerdikiawanWordMatchTextContainer: View {
     var type: CerdikiawanWordMatchTextContainerType
     var onTap: (() -> Void)?
     
-    var body: some View {        
+    var body: some View {
         Button(
             action: {
-                if type == .filled {
-                    onTap?()
-                }
+                onTap?()
             },
             label: {
-                Text(label)
+                Text(type.textConfiguration(label: label))
                     .font(type.font)
                     .fontWeight(type.fontWeight)
-                    .foregroundStyle(type.textColor)
                     .padding(.vertical, 4)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .multilineTextAlignment(.center)
@@ -32,7 +29,6 @@ struct CerdikiawanWordMatchTextContainer: View {
         .buttonStyle(
             CerdikiawanWordMatchTextContainerStyle(type: type)
         )
-
     }
 }
 
@@ -51,6 +47,22 @@ struct CerdikiawanWordMatchTextContainer: View {
                 CerdikiawanWordMatchTextContainer(
                     label: "Text",
                     type: .blank,
+                    onTap: {
+                        debugPrint("Button Pressed")
+                    }
+                )
+            }
+            HStack(spacing: 16) {
+                CerdikiawanWordMatchTextContainer(
+                    label: "Text",
+                    type: .question,
+                    onTap: {
+                        debugPrint("Button Pressed")
+                    }
+                )
+                CerdikiawanWordMatchTextContainer(
+                    label: "Text",
+                    type: .answer,
                     onTap: {
                         debugPrint("Button Pressed")
                     }
@@ -114,5 +126,5 @@ struct CerdikiawanWordMatchTextContainer: View {
         }
         .padding(16)
     }
-
+    
 }
