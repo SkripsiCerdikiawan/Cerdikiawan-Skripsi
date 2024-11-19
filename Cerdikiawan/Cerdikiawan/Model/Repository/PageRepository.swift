@@ -31,6 +31,9 @@ class SupabasePageRepository: SupabaseRepository, PageRepository {
         
         switch result {
             case .success(let pages):
+                guard pages.isEmpty == false else {
+                    return ([], .notFound)
+                }
                 return (pages, .success)
             case .failure(_):
                 return ([], .jsonError)

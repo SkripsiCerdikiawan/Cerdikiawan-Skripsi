@@ -39,8 +39,11 @@ class SupabaseProfileOwnedCharacterRepository: SupabaseRepository, ProfileOwnedC
             let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseProfileOwnedCharacter].self)
             
             switch result {
-            case .success(let OwnedCharacters):
-                return (OwnedCharacters, .success)
+            case .success(let ownedCharacters):
+                guard ownedCharacters.isEmpty == false else {
+                    return ([], .notFound)
+                }
+                return (ownedCharacters, .success)
             case .failure(_):
                 return ([], .jsonError)
             }
@@ -74,7 +77,7 @@ class SupabaseProfileOwnedCharacterRepository: SupabaseRepository, ProfileOwnedC
     func updateProfileOwnedCharacter(request: ProfileOwnedCharacterUpdateRequest) async throws -> (SupabaseProfileOwnedCharacter?, ErrorStatus) {
         let (ownedCharacter, status) = try await fetchProfileOwnedCharacter(request:
                                                                                 ProfileOwnedCharacterFetchRequest(profileId: request.profileId,
-                                                                                                                       characterId: request.characterId
+                                                                                                                  characterId: request.characterId
                                                                                                                  )
         )
         

@@ -36,7 +36,7 @@ class SupabaseProfileRepository: SupabaseRepository, ProfileRepository {
             
             switch result {
                 case .success(let profile):
-                return (profile, .success)
+                    return (profile, .success)
                 case .failure(_):
                     return (nil, .jsonError)
             }

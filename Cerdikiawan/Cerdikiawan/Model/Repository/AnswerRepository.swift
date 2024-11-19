@@ -69,6 +69,9 @@ class SupabaseWordBlankAnswerRepository: SupabaseAnswerRepository {
         
         switch result {
             case .success(let answers):
+                guard answers.isEmpty == false else {
+                    return ([], .notFound)
+                }
                 return (answers, .success)
             case .failure(_):
                 return ([], .jsonError)
@@ -95,6 +98,9 @@ class SupabaseMultiChoiceAnswerRepository: SupabaseAnswerRepository {
         
         switch result {
             case .success(let answers):
+                guard answers.isEmpty == false else {
+                    return ([], .notFound)
+                }
                 return (answers, .success)
             case .failure(_):
                 return ([], .jsonError)
@@ -121,6 +127,9 @@ class SupabaseWordMatchAnswerRepository: SupabaseAnswerRepository {
         
         switch result {
             case .success(let answers):
+                guard answers.isEmpty == false else {
+                    return ([], .notFound)
+                }
                 return (answers, .success)
             case .failure(_):
                 return ([], .jsonError)
