@@ -9,9 +9,24 @@ import SwiftUI
 
 @main
 struct CerdikiawanApp: App {
+    @StateObject var appRouter: AppRouter = .init()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack(path: $appRouter.path, root: {
+                if let startScreen = appRouter.startScreen {
+                    appRouter.build(startScreen)
+                        .navigationDestination(for: Screen.self, destination: { screen in
+                            appRouter.build(screen)
+                        })
+                        .sheet(item: $appRouter.sheet, content: { sheet in
+                            appRouter.build(sheet)
+                        })
+                }
+            })
+            .onAppear() {
+                appRouter.startScreen = .home
+            }
         }
     }
 }
