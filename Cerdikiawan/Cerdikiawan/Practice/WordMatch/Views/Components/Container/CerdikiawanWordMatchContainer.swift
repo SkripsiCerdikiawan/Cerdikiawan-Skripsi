@@ -25,6 +25,7 @@ struct CerdikiawanWordMatchContainer: View {
             Text("\(data.prompt)")
                 .font(.title2)
                 .fontWeight(.medium)
+                .multilineTextAlignment(.leading)
             
             VStack(spacing: 12) {
                 ForEach(data.questions, id: \.id) { question in

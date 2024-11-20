@@ -24,6 +24,7 @@ struct CerdikiawanWordBlankContainer: View {
             Text("\(data.question)")
                 .font(.title2)
                 .fontWeight(.medium)
+                .multilineTextAlignment(.leading)
             
             CerdikiawanCharacterContainer(
                 value: $word,
