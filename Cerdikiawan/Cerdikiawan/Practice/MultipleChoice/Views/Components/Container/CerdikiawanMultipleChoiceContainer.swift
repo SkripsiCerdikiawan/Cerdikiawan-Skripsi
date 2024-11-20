@@ -21,7 +21,7 @@ struct CerdikiawanMultipleChoiceContainer: View {
                 ForEach(viewModel.data.answer, id: \.id) { answer in
                     CerdikiawanMultipleChoiceButton(
                         label: answer.content,
-                        type: determineType(answer: answer.id),
+                        type: viewModel.determineType(answer: answer.id),
                         action: {
                             viewModel.handleChoiceSelection(answer: answer)
                         }
@@ -31,26 +31,6 @@ struct CerdikiawanMultipleChoiceContainer: View {
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)
-    }
-    
-    private func determineType(answer: String) -> CerdikiawanMultipleChoiceButtonType {
-        switch viewModel.state {
-        case .answering:
-            // State to selected if answer is the same with selectedAnswerID
-            if answer == viewModel.selectedAnswerID {
-                return .selected
-            }
-        case .feedback:
-            // if at feedback and answer is the correct answer, return correct
-            if answer == viewModel.data.correctAnswerID {
-                return .correct
-            }
-            // if at feedback and the selected answer is not correct, return incorrect
-            else if viewModel.selectedAnswerID == answer {
-                return .incorrect
-            }
-        }
-        return .normal
     }
 }
 
