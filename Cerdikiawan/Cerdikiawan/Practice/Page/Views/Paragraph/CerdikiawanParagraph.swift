@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CerdikiawanPassageText: View {
+struct CerdikiawanParagraph: View {
     var content: String
     
     var state: CerdikiawanVoiceOverButtonType
@@ -34,7 +34,7 @@ struct CerdikiawanPassageText: View {
     
     ZStack {
         Color(.cGray).ignoresSafeArea()
-        CerdikiawanPassageText(
+        CerdikiawanParagraph(
             content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget erat justo.",
             state: isPlaying ? .disabled : .enabled,
             onVoiceButtonTapped: {
