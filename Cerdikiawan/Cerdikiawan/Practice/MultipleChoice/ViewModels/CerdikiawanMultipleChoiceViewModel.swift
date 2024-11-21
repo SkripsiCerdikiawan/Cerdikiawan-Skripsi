@@ -17,7 +17,7 @@ class CerdikiawanMultipleChoiceViewModel: ObservableObject {
     @Published var avatarDialogueState: CerdikiawanAvatarDialogueContainerState
     @Published var avatarDialogue: String
     
-    @Published var result: Bool
+    @Published var isCorrect: Bool
     
     init(
         page: PageEntity,
@@ -32,7 +32,7 @@ class CerdikiawanMultipleChoiceViewModel: ObservableObject {
         self.avatar = avatar
         self.avatarDialogueState = .normal
         self.avatarDialogue = "Pilihlah satu jawaban yang menurut kamu sesuai"
-        self.result = false
+        self.isCorrect = false
     }
     
     // Function that will be called when the multiple choice is selected
@@ -68,16 +68,17 @@ class CerdikiawanMultipleChoiceViewModel: ObservableObject {
         self.multipleChoiceState = .feedback
         
         // Validate answer
-        let isCorrect = selectedAnswerID == data.correctAnswerID
+        self.isCorrect = selectedAnswerID == data.correctAnswerID
+        
         if isCorrect {
             self.avatarDialogueState = .correct
             self.avatarDialogue = data.feedback.correctFeedback
-            self.result = true
+            self.isCorrect = true
         }
         else {
             self.avatarDialogueState = .incorrect
             self.avatarDialogue = data.feedback.incorrectFeedback
-            self.result = false
+            self.isCorrect = false
         }
     }
 }

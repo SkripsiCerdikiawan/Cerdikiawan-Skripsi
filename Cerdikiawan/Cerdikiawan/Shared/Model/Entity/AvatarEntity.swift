@@ -13,10 +13,24 @@ struct AvatarEntity {
 }
 
 extension AvatarEntity {
-    static func mock() -> AvatarEntity {
-        return .init(
-            id: "id-01",
-            name: "juan"
-        )
+    static func mock() -> [AvatarEntity] {
+        return [
+            .init(
+                id: "id-01",
+                name: "juan"
+            ),
+            .init(
+                id: "id-02",
+                name: "hans"
+            ),
+            .init(
+                id: "id-03",
+                name: "bryon"
+            ),
+            .init(
+                id: "id-04",
+                name: "budi"
+            ),
+        ]
     }
 }

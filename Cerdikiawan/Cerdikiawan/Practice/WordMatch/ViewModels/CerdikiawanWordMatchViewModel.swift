@@ -8,18 +8,37 @@
 import Foundation
 
 class CerdikiawanWordMatchViewModel: ObservableObject {
+    let page: PageEntity
     var data: WordMatchEntity
+    
     @Published var pair: [String : WordMatchTextEntity] // Question ID : Entity
     @Published var answerPool: [WordMatchTextEntity]
     @Published var state: CerdikiawanWordMatchContainerState
     
     @Published private var selectedAnswer: WordMatchTextEntity?
     
-    init(data: WordMatchEntity) {
+    let avatar: AvatarEntity
+    @Published var avatarDialogueState: CerdikiawanAvatarDialogueContainerState
+    @Published var avatarDialogue: String
+    
+    @Published var isCorrect: Bool
+    
+    init(
+        page: PageEntity,
+        data: WordMatchEntity,
+        avatar: AvatarEntity
+    ) {
+        self.page = page
         self.data = data
+        
         self.pair = [:]
         self.answerPool = data.answers
         self.state = .answering
+        
+        self.avatar = avatar
+        self.avatarDialogueState = .normal
+        self.avatarDialogue = "Sentuh dan letakkan kotak di kolom pilihan jawaban ke pasangannya!"
+        self.isCorrect = false
     }
     
     func determineType(answerID: String) -> CerdikiawanWordMatchTextContainerType {
@@ -172,6 +191,45 @@ class CerdikiawanWordMatchViewModel: ObservableObject {
             
             self.selectedAnswer = nil
 
+        }
+    }
+    
+    func updateDialogueState() {
+        if pair.values.count < 3 {
+            self.avatarDialogueState = .normal
+        }
+        else {
+            self.avatarDialogueState = .checkAnswer
+        }
+    }
+    
+    // Function to check answer
+    func validateAnswer() {
+        for key in pair.keys {
+            guard let answer = pair[key] else {
+                debugPrint("Error! Pair is empty for \(key)")
+                return
+            }
+            
+            if answer.id == data.pair[key] {
+                self.isCorrect = true
+            }
+            else {
+                self.isCorrect = false
+                break
+            }
+        }
+        
+        // Set state to feedback
+        self.state = .feedback
+        
+        if isCorrect {
+            self.avatarDialogueState = .correct
+            self.avatarDialogue = data.feedback.correctFeedback
+        }
+        else {
+            self.avatarDialogueState = .incorrect
+            self.avatarDialogue = data.feedback.incorrectFeedback
         }
     }
 }

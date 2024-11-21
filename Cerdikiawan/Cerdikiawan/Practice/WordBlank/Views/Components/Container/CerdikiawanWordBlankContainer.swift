@@ -48,7 +48,7 @@ struct CerdikiawanWordBlankContainer: View {
     @Previewable @StateObject var viewModel = CerdikiawanWordBlankViewModel(
         page: .mock()[0],
         data: .mock()[0],
-        avatar: .mock()
+        avatar: .mock()[0]
     )
     ZStack {
         Color(.cGray).ignoresSafeArea()

@@ -93,7 +93,7 @@ private struct CerdikiawanOpenPageButtonStyle: ButtonStyle {
         VStack {
             CerdikiawanAvatarDialogueContainer(
                 page: .mock()[0],
-                avatar: .mock(),
+                avatar: .mock()[0],
                 dialogue: "Hello World!",
                 state: state,
                 checkAnswerAction: {
