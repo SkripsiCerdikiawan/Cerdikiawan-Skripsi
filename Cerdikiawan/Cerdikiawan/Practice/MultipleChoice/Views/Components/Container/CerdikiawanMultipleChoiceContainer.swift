@@ -17,21 +17,18 @@ struct CerdikiawanMultipleChoiceContainer: View {
                 .fontWeight(.medium)
                 .multilineTextAlignment(.leading)
             
-            ScrollView {
-                VStack(spacing: 8) {
-                    ForEach(viewModel.data.answer, id: \.id) { answer in
-                        CerdikiawanMultipleChoiceButton(
-                            label: answer.content,
-                            type: viewModel.determineType(answer: answer.id),
-                            action: {
-                                viewModel.handleChoiceSelection(answer: answer)
-                            }
-                        )
-                        .disabled(viewModel.multipleChoiceState == .feedback)
-                    }
+            VStack(spacing: 8) {
+                ForEach(viewModel.data.answer, id: \.id) { answer in
+                    CerdikiawanMultipleChoiceButton(
+                        label: answer.content,
+                        type: viewModel.determineType(answer: answer.id),
+                        action: {
+                            viewModel.handleChoiceSelection(answer: answer)
+                        }
+                    )
+                    .disabled(viewModel.multipleChoiceState == .feedback)
                 }
             }
-            .scrollBounceBehavior(.basedOnSize, axes: .vertical)
         }
         .frame(maxHeight: .infinity, alignment: .top)
     }

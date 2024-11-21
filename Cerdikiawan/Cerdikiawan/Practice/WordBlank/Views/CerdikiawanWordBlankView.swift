@@ -1,5 +1,5 @@
 //
-//  CerdikiawanMultipleChoiceView.swift
+//  CerdikiawanWordBlankView.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 21/11/24.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct CerdikiawanMultipleChoiceView: View {
+struct CerdikiawanWordBlankView: View {
     @EnvironmentObject var appRouter: AppRouter
-    @StateObject var viewModel: CerdikiawanMultipleChoiceViewModel
+    @StateObject var viewModel: CerdikiawanWordBlankViewModel
     
     var onContinueButtonAction: (Bool) -> Void
     
     init(
         page: PageEntity,
-        data: MultipleChoiceEntity,
+        data: WordBlankEntity,
         avatar: AvatarEntity,
         onContinueButtonAction: @escaping (Bool) -> Void
     ) {
@@ -32,7 +32,7 @@ struct CerdikiawanMultipleChoiceView: View {
     var body: some View {
         VStack {
             ScrollView {
-                CerdikiawanMultipleChoiceContainer(viewModel: viewModel)
+                CerdikiawanWordBlankContainer(viewModel: viewModel)
             }
             .scrollBounceBehavior(.basedOnSize, axes: .vertical)
             
@@ -60,15 +60,14 @@ struct CerdikiawanMultipleChoiceView: View {
     ZStack {
         Color(.cGray).ignoresSafeArea()
         VStack {
-            CerdikiawanMultipleChoiceView(
+            CerdikiawanWordBlankView(
                 page: .mock()[0],
                 data: .mock()[0],
                 avatar: .mock(),
                 onContinueButtonAction: { result in
-                    debugPrint("Answer Correct Status: \(result)")
+                    debugPrint("Answer is correct: \(result)")
                 }
             )
-            .environmentObject(appRouter)
         }
         .safeAreaPadding(.horizontal, 16)
         .safeAreaPadding(.vertical, 16)
