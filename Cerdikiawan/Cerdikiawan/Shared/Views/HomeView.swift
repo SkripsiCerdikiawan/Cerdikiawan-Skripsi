@@ -19,7 +19,7 @@ struct HomeView: View {
             CerdikiawanButton(
                 label: "Test Navigate",
                 action: {
-                    appRouter.push(.buyConfirmation)
+                    appRouter.push(.searchLevel)
                 }
             )
         }

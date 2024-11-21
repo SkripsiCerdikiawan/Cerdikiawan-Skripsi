@@ -38,7 +38,7 @@ struct PracticeHomeView: View {
                         }
                 }
             }
-            .padding(.horizontal, 32)
+            .padding(.horizontal, 24)
             .padding(.bottom, 16)
             
             ScrollView {
@@ -51,12 +51,12 @@ struct PracticeHomeView: View {
                     else {
                         Text("No Level Data")
                             .foregroundStyle(Color(.secondaryLabel))
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     
                 }
                 .safeAreaPadding(.horizontal, 16)
                 .safeAreaPadding(.vertical, 32)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .background(Color(.cGray))
             .clipShape(

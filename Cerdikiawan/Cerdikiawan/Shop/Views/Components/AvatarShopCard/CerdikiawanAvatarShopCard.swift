@@ -35,7 +35,7 @@ struct CerdikiawanAvatarShopCard: View {
             VStack(alignment: .trailing) {
                 type.displayActionPrompt()
                     .foregroundStyle(type.fontColor)
-                    .frame(maxWidth: 81)
+                    .frame(maxWidth: 81, alignment: .trailing)
                     .multilineTextAlignment(.trailing)
                     .font(.callout)
             }

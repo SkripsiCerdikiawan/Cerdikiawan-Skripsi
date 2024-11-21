@@ -8,7 +8,6 @@
 import Foundation
 
 struct ShopAvatarEntity {
-    let id: UUID
     let avatar: AvatarEntity
     let price: Int
 }
@@ -17,9 +16,20 @@ extension ShopAvatarEntity {
     static func mock() -> [ShopAvatarEntity] {
         return [
             .init(
-                id: UUID(),
                 avatar: AvatarEntity.mock()[0],
                 price: 100
+            ),
+            .init(
+                avatar: AvatarEntity.mock()[1],
+                price: 200
+            ),
+            .init(
+                avatar: AvatarEntity.mock()[2],
+                price: 10
+            ),
+            .init(
+                avatar: AvatarEntity.mock()[3],
+                price: 400
             )
         ]
     }
