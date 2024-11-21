@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct CerdikiawanApp: App {
     @StateObject var appRouter: AppRouter = .init()
+    @StateObject var sessionData: SessionData = .init()
     
     var body: some Scene {
         WindowGroup {
@@ -28,6 +29,7 @@ struct CerdikiawanApp: App {
                 appRouter.startScreen = .home
             }
             .environmentObject(appRouter)
+            .environmentObject(sessionData)
         }
     }
 }
