@@ -47,5 +47,6 @@ struct HomeView: View {
     .onAppear() {
         appRouter.startScreen = .home
     }
+    .environmentObject(appRouter)
     
 }

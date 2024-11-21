@@ -39,6 +39,7 @@ struct CerdikiawanPageView: View {
                     })
                 })
             })
+            .scrollBounceBehavior(.basedOnSize, axes: .vertical)
             
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)

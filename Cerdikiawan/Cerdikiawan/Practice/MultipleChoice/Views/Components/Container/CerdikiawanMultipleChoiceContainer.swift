@@ -17,18 +17,21 @@ struct CerdikiawanMultipleChoiceContainer: View {
                 .fontWeight(.medium)
                 .multilineTextAlignment(.leading)
             
-            VStack(spacing: 8) {
-                ForEach(viewModel.data.answer, id: \.id) { answer in
-                    CerdikiawanMultipleChoiceButton(
-                        label: answer.content,
-                        type: viewModel.determineType(answer: answer.id),
-                        action: {
-                            viewModel.handleChoiceSelection(answer: answer)
-                        }
-                    )
-                    .disabled(viewModel.state == .feedback)
+            ScrollView {
+                VStack(spacing: 8) {
+                    ForEach(viewModel.data.answer, id: \.id) { answer in
+                        CerdikiawanMultipleChoiceButton(
+                            label: answer.content,
+                            type: viewModel.determineType(answer: answer.id),
+                            action: {
+                                viewModel.handleChoiceSelection(answer: answer)
+                            }
+                        )
+                        .disabled(viewModel.multipleChoiceState == .feedback)
+                    }
                 }
             }
+            .scrollBounceBehavior(.basedOnSize, axes: .vertical)
         }
         .frame(maxHeight: .infinity, alignment: .top)
     }
@@ -37,7 +40,9 @@ struct CerdikiawanMultipleChoiceContainer: View {
 #Preview {
     @Previewable
     @StateObject var viewModel = CerdikiawanMultipleChoiceViewModel(
-        data: .mock()[0]
+        page: .mock()[0],
+        data: .mock()[0],
+        avatar: .mock()
     )
     
     ZStack {
@@ -49,7 +54,7 @@ struct CerdikiawanMultipleChoiceContainer: View {
             CerdikiawanButton(
                 label: "Change State",
                 action: {
-                    viewModel.state = .feedback
+                    viewModel.multipleChoiceState = .feedback
                 }
             )
         }
