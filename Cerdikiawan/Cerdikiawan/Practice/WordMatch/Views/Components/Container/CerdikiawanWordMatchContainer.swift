@@ -71,7 +71,11 @@ struct CerdikiawanWordMatchContainer: View {
 
 #Preview {
     @Previewable
-    @StateObject var viewModel = CerdikiawanWordMatchViewModel(data: .mock()[0])
+    @StateObject var viewModel = CerdikiawanWordMatchViewModel(
+        page: .mock()[0],
+        data: .mock()[0],
+        avatar: .mock()[0]
+    )
     
     ZStack {
         Color(.cGray).ignoresSafeArea()

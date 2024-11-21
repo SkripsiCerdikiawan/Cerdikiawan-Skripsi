@@ -1,5 +1,5 @@
 //
-//  CerdikiawanMultipleChoiceView.swift
+//  CerdikiawanWordMatchView.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 21/11/24.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct CerdikiawanMultipleChoiceView: View {
+struct CerdikiawanWordMatchView: View {
     @EnvironmentObject var appRouter: AppRouter
-    @StateObject var viewModel: CerdikiawanMultipleChoiceViewModel
+    @StateObject var viewModel: CerdikiawanWordMatchViewModel
     
     var onContinueButtonAction: (Bool) -> Void
     
     init(
         page: PageEntity,
-        data: MultipleChoiceEntity,
+        data: WordMatchEntity,
         avatar: AvatarEntity,
         onContinueButtonAction: @escaping (Bool) -> Void
     ) {
@@ -32,7 +32,7 @@ struct CerdikiawanMultipleChoiceView: View {
     var body: some View {
         VStack {
             ScrollView {
-                CerdikiawanMultipleChoiceContainer(viewModel: viewModel)
+                CerdikiawanWordMatchContainer(viewModel: viewModel)
             }
             .scrollBounceBehavior(.basedOnSize, axes: .vertical)
             
@@ -48,6 +48,9 @@ struct CerdikiawanMultipleChoiceView: View {
                     onContinueButtonAction(viewModel.isCorrect)
                 }
             )
+            .onChange(of: viewModel.pair.values.count) { oldValue, newValue in
+                viewModel.updateDialogueState()
+            }
         }
         .frame(maxHeight: .infinity)
     }
@@ -60,15 +63,14 @@ struct CerdikiawanMultipleChoiceView: View {
     ZStack {
         Color(.cGray).ignoresSafeArea()
         VStack {
-            CerdikiawanMultipleChoiceView(
+            CerdikiawanWordMatchView(
                 page: .mock()[0],
                 data: .mock()[0],
-                avatar: .mock()[1],
+                avatar: .mock()[2],
                 onContinueButtonAction: { result in
-                    debugPrint("Answer Correct Status: \(result)")
+                    debugPrint("Result status: \(result)")
                 }
             )
-            .environmentObject(appRouter)
         }
         .safeAreaPadding(.horizontal, 16)
         .safeAreaPadding(.vertical, 16)

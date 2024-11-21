@@ -18,7 +18,7 @@ extension ShopAvatarEntity {
         return [
             .init(
                 id: UUID(),
-                avatar: AvatarEntity.mock(),
+                avatar: AvatarEntity.mock()[0],
                 price: 100
             )
         ]

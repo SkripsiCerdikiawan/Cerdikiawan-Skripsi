@@ -39,7 +39,7 @@ struct CerdikiawanAvatarDialogue: View {
     ZStack {
         Color(.cGray).ignoresSafeArea()
         CerdikiawanAvatarDialogue(
-            avatar: AvatarEntity.mock(),
+            avatar: AvatarEntity.mock()[0],
             state: .normal,
             message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         )

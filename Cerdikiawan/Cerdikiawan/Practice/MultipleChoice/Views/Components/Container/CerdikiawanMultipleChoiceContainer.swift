@@ -39,7 +39,7 @@ struct CerdikiawanMultipleChoiceContainer: View {
     @StateObject var viewModel = CerdikiawanMultipleChoiceViewModel(
         page: .mock()[0],
         data: .mock()[0],
-        avatar: .mock()
+        avatar: .mock()[0]
     )
     
     ZStack {

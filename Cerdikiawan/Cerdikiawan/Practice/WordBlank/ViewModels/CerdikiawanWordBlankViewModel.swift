@@ -19,7 +19,7 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
     @Published var avatarDialogueState: CerdikiawanAvatarDialogueContainerState
     @Published var avatarDialogue: String
     
-    @Published var result: Bool
+    @Published var isCorrect: Bool
     
     init(
         page: PageEntity,
@@ -35,8 +35,8 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
         
         self.avatar = avatar
         self.avatarDialogueState = .normal
-        self.avatarDialogue = "Pilihlah satu jawaban yang menurut kamu sesuai"
-        self.result = false
+        self.avatarDialogue = "Sentuh dan susun kata yang sesuai!"
+        self.isCorrect = false
     }
     
     // Function to handle user tap on a character
@@ -102,16 +102,15 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
         self.state = .feedback
         
         // Validate answer
-        let isCorrect = self.word == data.correctAnswerWord
+        self.isCorrect = self.word == data.correctAnswerWord
+        
         if isCorrect {
             self.avatarDialogueState = .correct
             self.avatarDialogue = data.feedback.correctFeedback
-            self.result = true
         }
         else {
             self.avatarDialogueState = .incorrect
             self.avatarDialogue = data.feedback.incorrectFeedback
-            self.result = false
         }
     }
 }

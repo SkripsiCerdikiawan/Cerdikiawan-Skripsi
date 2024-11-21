@@ -12,6 +12,7 @@ struct WordMatchEntity {
     var answers: [WordMatchTextEntity] // List of all possible answer
     
     var pair: [String : String] // Answer: Question Entity ID with Answer Entity ID
+    var feedback: FeedbackEntity
 }
 
 extension WordMatchEntity {
@@ -57,7 +58,8 @@ extension WordMatchEntity {
                     "wm-ques-01" : "wm-ans-01",
                     "wm-ques-02" : "wm-ans-03",
                     "wm-ques-03" : "wm-ans-02"
-                ]
+                ],
+                feedback: .mock()[0]
             )
         ]
     }

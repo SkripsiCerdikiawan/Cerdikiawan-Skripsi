@@ -14,14 +14,16 @@ struct CerdikiawanAvatar: View {
     var body: some View {
         VStack {
             state.displayImage(avatar: avatar)
-                .aspectRatio(contentMode: .fit)
+                .resizable()
+                .frame(width: 100, height: 125)
+                .scaledToFill()
         }
     }
 }
 
 #Preview {
     CerdikiawanAvatar(
-        avatar: AvatarEntity.mock(),
+        avatar: AvatarEntity.mock()[0],
         state: .sad
     )
 }

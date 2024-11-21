@@ -45,7 +45,7 @@ struct CerdikiawanWordBlankView: View {
                     viewModel.validateAnswer()
                 },
                 continueAction: {
-                    onContinueButtonAction(viewModel.result)
+                    onContinueButtonAction(viewModel.isCorrect)
                 }
             )
         }
@@ -63,7 +63,7 @@ struct CerdikiawanWordBlankView: View {
             CerdikiawanWordBlankView(
                 page: .mock()[0],
                 data: .mock()[0],
-                avatar: .mock(),
+                avatar: .mock()[0],
                 onContinueButtonAction: { result in
                     debugPrint("Answer is correct: \(result)")
                 }
