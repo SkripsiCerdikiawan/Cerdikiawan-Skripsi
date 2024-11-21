@@ -27,6 +27,7 @@ struct CerdikiawanApp: App {
             .onAppear() {
                 appRouter.startScreen = .home
             }
+            .environmentObject(appRouter)
         }
     }
 }

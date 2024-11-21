@@ -12,6 +12,8 @@ struct MultipleChoiceEntity {
     var question: String
     var answer: [MultipleChoiceAnswerEntity]
     var correctAnswerID: String
+    var correctFeedback: String
+    var incorrectFeedback: String
 }
 
 extension MultipleChoiceEntity {
@@ -21,7 +23,9 @@ extension MultipleChoiceEntity {
                 id: "mc-ques-01",
                 question: "This is an Example Question. Do you understand?",
                 answer: MultipleChoiceAnswerEntity.mock(),
-                correctAnswerID: "mc-answer-01"
+                correctAnswerID: "mc-answer-01",
+                correctFeedback: "Wow! Jawaban kamu benar!",
+                incorrectFeedback: "Hmm.. Jawabanmu kurang tepat..."
             )
         ]
     }

@@ -6,7 +6,7 @@
 //
 
 enum Sheet {
-    case page
+    case page(page: PageEntity)
 }
 
 extension Sheet: Identifiable {

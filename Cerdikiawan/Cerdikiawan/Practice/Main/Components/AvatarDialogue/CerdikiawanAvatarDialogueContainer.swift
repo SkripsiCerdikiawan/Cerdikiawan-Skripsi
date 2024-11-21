@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CerdikiawanAvatarDialogueContainer: View {
+    @EnvironmentObject var appRouter: AppRouter
+    
     var page: PageEntity
     var avatar: AvatarEntity
     var dialogue: String
@@ -28,7 +30,7 @@ struct CerdikiawanAvatarDialogueContainer: View {
                 Spacer()
                 Button(
                     action: {
-                        // TODO: Add Router Function to display sheet
+                        appRouter.presentSheet(.page(page: page))
                         debugPrint("Opening sheets...")
                     },
                     label: {
@@ -82,6 +84,10 @@ private struct CerdikiawanOpenPageButtonStyle: ButtonStyle {
 #Preview {
     @Previewable
     @State var state: CerdikiawanAvatarDialogueContainerState = .checkAnswer
+    
+    @Previewable
+    @StateObject var appRouter: AppRouter = .init()
+    
     ZStack {
         Color(.cGray).ignoresSafeArea()
         VStack {
@@ -118,4 +124,8 @@ private struct CerdikiawanOpenPageButtonStyle: ButtonStyle {
         }
         .safeAreaPadding(16)
     }
+    .environmentObject(appRouter)
+    .sheet(item: $appRouter.sheet, content: { sheet in
+        appRouter.build(sheet)
+    })
 }

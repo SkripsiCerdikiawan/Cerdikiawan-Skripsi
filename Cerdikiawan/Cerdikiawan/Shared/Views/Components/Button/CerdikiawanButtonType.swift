@@ -27,7 +27,7 @@ enum CerdikiawanButtonType {
         case .primary:
             return Color(.cDarkBlue)
         case .secondary:
-            return Color(.cOrange)
+            return Color(.cDarkOrange)
         case .destructive:
             return Color(.cDarkRed)
         case .disabled:

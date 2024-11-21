@@ -51,7 +51,6 @@ class AppRouter: ObservableObject {
                     )
                 }
                 .safeAreaPadding(.horizontal, 16)
-                .environmentObject(self)
                 .navigationBarBackButtonHidden()
             }
         case .register:
@@ -67,7 +66,6 @@ class AppRouter: ObservableObject {
                     )
                 }
                 .safeAreaPadding(.horizontal, 16)
-                .environmentObject(self)
                 .navigationBarBackButtonHidden()
             }
         case .home:
@@ -77,7 +75,6 @@ class AppRouter: ObservableObject {
                     HomeView()
                 }
                 .safeAreaPadding(.horizontal, 16)
-                .environmentObject(self)
                 .navigationBarBackButtonHidden()
             }
         case .searchLevel:
@@ -93,7 +90,6 @@ class AppRouter: ObservableObject {
                     )
                 }
                 .safeAreaPadding(.horizontal, 16)
-                .environmentObject(self)
                 .navigationBarBackButtonHidden()
             }
         case .practice:
@@ -109,7 +105,6 @@ class AppRouter: ObservableObject {
                     )
                 }
                 .safeAreaPadding(.horizontal, 16)
-                .environmentObject(self)
                 .navigationBarBackButtonHidden()
             }
         case .storyCompletion:
@@ -125,7 +120,6 @@ class AppRouter: ObservableObject {
                     )
                 }
                 .safeAreaPadding(.horizontal, 16)
-                .environmentObject(self)
                 .navigationBarBackButtonHidden()
             }
         case .profile:
@@ -141,7 +135,6 @@ class AppRouter: ObservableObject {
                     )
                 }
                 .safeAreaPadding(.horizontal, 16)
-                .environmentObject(self)
                 .navigationBarBackButtonHidden()
             }
         case .reportDetail:
@@ -157,7 +150,6 @@ class AppRouter: ObservableObject {
                     )
                 }
                 .safeAreaPadding(.horizontal, 16)
-                .environmentObject(self)
                 .navigationBarBackButtonHidden()
             }
         case .buyConfirmation:
@@ -173,7 +165,6 @@ class AppRouter: ObservableObject {
                     )
                 }
                 .safeAreaPadding(.horizontal, 16)
-                .environmentObject(self)
                 .navigationBarBackButtonHidden()
             }
         }
@@ -182,19 +173,21 @@ class AppRouter: ObservableObject {
     @ViewBuilder
     func build(_ sheet: Sheet) -> some View {
         switch sheet {
-        case .page:
+        case .page(let page):
             ZStack {
                 Color(.cGray).ignoresSafeArea()
                 VStack {
-                    Text("Not yet implemented")
+                    CerdikiawanPageView(page: page)
                     CerdikiawanButton(
-                        label: "Back",
+                        label: "Tutup",
                         action: {
-                            self.pop()
+                            self.dismissSheet()
                         }
                     )
                 }
                 .safeAreaPadding(.horizontal, 16)
+                .safeAreaPadding(.bottom, 16)
+                .safeAreaPadding(.top, 32)
             }
         }
     }
