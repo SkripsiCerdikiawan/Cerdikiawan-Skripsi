@@ -71,12 +71,12 @@ class CerdikiawanMultipleChoiceViewModel: ObservableObject {
         let isCorrect = selectedAnswerID == data.correctAnswerID
         if isCorrect {
             self.avatarDialogueState = .correct
-            self.avatarDialogue = data.correctFeedback
+            self.avatarDialogue = data.feedback.correctFeedback
             self.result = true
         }
         else {
             self.avatarDialogueState = .incorrect
-            self.avatarDialogue = data.incorrectFeedback
+            self.avatarDialogue = data.feedback.incorrectFeedback
             self.result = false
         }
     }
