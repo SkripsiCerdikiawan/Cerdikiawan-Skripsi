@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CerdikiawanLevelSelectionContainer: View {
+    @EnvironmentObject var appRouter: AppRouter
+    
     var level: LevelEntity
     
     var body: some View {
@@ -29,8 +31,7 @@ struct CerdikiawanLevelSelectionContainer: View {
                             description: story.storyDescription,
                             availableBalanceToGain: story.availableCoinToGain,
                             onTapGesture: {
-                                // TODO: Add App Router here to navigate to passage
-                                debugPrint("Story \(story.storyName) is pressed")
+                                appRouter.push(.practice(story: story))
                             }
                         )
                     })
@@ -42,14 +43,27 @@ struct CerdikiawanLevelSelectionContainer: View {
 }
 
 #Preview {
-    ZStack {
-        Color(.cGray).ignoresSafeArea()
-        if let first = LevelEntity.mock().first {
-            CerdikiawanLevelSelectionContainer(
-                level: first
-            )
-            .safeAreaPadding(.horizontal, 16)
+    @Previewable
+    @StateObject var appRouter: AppRouter = .init()
+    
+    NavigationStack(path: $appRouter.path) {
+        ZStack {
+            Color(.cGray).ignoresSafeArea()
+            VStack {
+                if let first = LevelEntity.mock().first {
+                    CerdikiawanLevelSelectionContainer(
+                        level: first
+                    )
+                    .safeAreaPadding(.horizontal, 16)
+                }
+            }
+            .navigationDestination(for: Screen.self, destination: { screen in
+                appRouter.build(screen)
+            })
         }
-        
     }
+    .environmentObject(appRouter)
+    .sheet(item: $appRouter.sheet, content: { sheet in
+        appRouter.build(sheet)
+    })
 }

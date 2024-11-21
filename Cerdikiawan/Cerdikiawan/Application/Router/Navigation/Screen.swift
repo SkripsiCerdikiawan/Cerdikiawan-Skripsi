@@ -12,7 +12,7 @@ enum Screen {
     case register
     case home
     case searchLevel
-    case practice
+    case practice(story: StoryEntity)
     case storyCompletion
     case profile
     case reportDetail

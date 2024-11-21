@@ -92,7 +92,7 @@ class AppRouter: ObservableObject {
                 .safeAreaPadding(.horizontal, 16)
                 .navigationBarBackButtonHidden()
             }
-        case .practice:
+        case .practice(let story):
             ZStack {
                 Color(.cGray).ignoresSafeArea()
                 VStack {
@@ -103,6 +103,9 @@ class AppRouter: ObservableObject {
                             self.pop()
                         }
                     )
+                    .onAppear(){
+                        debugPrint("Story \(story.storyName) is pressed")
+                    }
                 }
                 .safeAreaPadding(.horizontal, 16)
                 .navigationBarBackButtonHidden()
