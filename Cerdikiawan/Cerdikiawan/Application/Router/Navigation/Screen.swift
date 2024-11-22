@@ -15,7 +15,7 @@ enum Screen {
     case practice(story: StoryEntity)
     case storyCompletion
     case profile
-    case reportDetail
+    case reportDetail(report: ReportStoryEntity)
     case buyConfirmation(shopAvatar: ShopAvatarEntity)
 }
 

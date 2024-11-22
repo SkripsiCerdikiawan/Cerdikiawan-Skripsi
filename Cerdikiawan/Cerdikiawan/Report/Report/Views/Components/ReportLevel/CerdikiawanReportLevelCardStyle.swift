@@ -14,9 +14,9 @@ enum CerdikiawanReportLevelCardStyle {
     var foregroundColor: Color {
         switch self {
         case .havePlay:
-            return Color(.cDarkOrange)
-        case .neverPlay:
             return Color(.cDarkBlue)
+        case .neverPlay:
+            return Color(.cDarkOrange)
         }
     }
     
