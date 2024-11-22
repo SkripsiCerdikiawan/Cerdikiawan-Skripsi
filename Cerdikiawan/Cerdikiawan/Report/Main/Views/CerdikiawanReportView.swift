@@ -117,7 +117,7 @@ struct CerdikiawanReportView: View {
                     }
                 }
                 .safeAreaPadding(.horizontal, 16)
-                .safeAreaPadding(.vertical, 32)
+                .safeAreaPadding(.vertical, 16)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .background(Color(.cGray))

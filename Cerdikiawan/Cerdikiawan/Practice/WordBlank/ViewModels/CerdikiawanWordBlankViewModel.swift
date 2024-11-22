@@ -12,7 +12,7 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
     let data: WordBlankEntity
     
     @Published var word: String
-    @Published var wordArrangement: [WordBlankCharacterEntity]
+    @Published var wordArrangement: [WordBlankLetterEntity]
     @Published var state: CerdikiawanWordBlankContainerState
     
     let avatar: AvatarEntity
@@ -39,19 +39,19 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
         self.isCorrect = false
     }
     
-    // Function to handle user tap on a character
-    func handleTap(char: WordBlankCharacterEntity) {
+    // Function to handle user tap on a letter
+    func handleTap(char: WordBlankLetterEntity) {
         if let index = wordArrangement.firstIndex(where: { $0.id == char.id }) {
-            // If character is already selected, remove character
+            // If letter is already selected, remove letter
             wordArrangement.remove(at: index)
         }
         else {
-            // else if not selected, append character
+            // else if not selected, append letter
             wordArrangement.append(char)
         }
-        word = wordArrangement.map({ $0.character }).joined()
+        word = wordArrangement.map({ $0.letter }).joined()
         
-        // Set state whenever user has inputted character or not
+        // Set state whenever user has inputted letter or not
         if word.isEmpty {
             avatarDialogueState = .normal
         }
@@ -61,7 +61,7 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
     }
     
     // Function to determine Container Type
-    func determineType(state: CerdikiawanWordBlankContainerState) -> CerdikiawanCharacterContainerState {
+    func determineType(state: CerdikiawanWordBlankContainerState) -> CerdikiawanLetterContainerState {
         switch state {
         case .answering:
             return .normal
@@ -76,15 +76,15 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
     }
     
     // Function to determine button type
-    func determineType(char: WordBlankCharacterEntity) -> CerdikiawanCharacterChoiceButtonType {
+    func determineType(char: WordBlankLetterEntity) -> CerdikiawanLetterChoiceButtonType {
         switch state {
         case .answering:
             if wordArrangement.contains(where: { $0.id == char.id }) {
                 return .selected
             }
         case .feedback:
-            let character = Character(char.character)
-            if data.correctAnswerWord.contains(character) {
+            let letter = Character(char.letter)
+            if data.correctAnswerWord.contains(letter) {
                 return .correct
             } else if wordArrangement.contains(where: { $0.id == char.id }) {
                 return .incorrect

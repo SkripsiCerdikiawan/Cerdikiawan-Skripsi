@@ -15,10 +15,11 @@ class LevelListViewModel: ObservableObject {
     }
     
     func setup(){
-        levels = setupLevel()
+        levels = fetchLevel()
     }
     
-    func setupLevel() -> [LevelEntity] {
+    // TODO: Replace with repo
+    func fetchLevel() -> [LevelEntity] {
         return LevelEntity.mock()
     }
 }
