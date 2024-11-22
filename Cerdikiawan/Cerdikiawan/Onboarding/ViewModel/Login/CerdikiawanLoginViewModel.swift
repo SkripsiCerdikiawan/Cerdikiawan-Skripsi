@@ -10,6 +10,7 @@ import Foundation
 class CerdikiawanLoginViewModel: ObservableObject {
     @Published var emailText: String = ""
     @Published var passwordText: String = ""
+    @Published var errorMessage: String?
     
     private var authRepository: AuthRepository
     
@@ -17,31 +18,41 @@ class CerdikiawanLoginViewModel: ObservableObject {
         self.authRepository = authRepository
     }
     
+    @MainActor
     public func login() async throws {
-        // TODO: Add validation
         guard validateLoginInfo(email: emailText, password: passwordText) else {
             return
         }
         let request = AuthRequest(email: emailText, password: passwordText)
-        let (user, status) = try await authRepository.login(request: request)
         
+        do {
+            let (user, status) = try await authRepository.login(request: request)
+            
+            if user == nil && status != .success {
+                errorMessage = "Invalid credentials"
+            } else {
+                errorMessage = nil
+            }
+        } catch {
+            errorMessage = "An unexpected error occurred"
+        }
     }
     
+    
     private func validateLoginInfo(email: String, password: String) -> Bool {
-        guard email.isEmpty == false, password.isEmpty == false else {
-            return false
+        do {
+            guard email.isEmpty == false, password.isEmpty == false else {
+                errorMessage = "Field must not be empty"
+                return false
+            }
+            
+            guard isValidEmail(valid: email) else {
+                errorMessage = "Invalid email"
+                return false
+            }
+            
+            return true
         }
-        
-        guard isValidEmail(valid: email) else {
-            return false
-        }
-        
-        //TODO: Reevaluate password validation
-        guard password.count >= 8 else {
-            return false
-        }
-        
-        return true
     }
     
     private func isValidEmail(valid: String) -> Bool {

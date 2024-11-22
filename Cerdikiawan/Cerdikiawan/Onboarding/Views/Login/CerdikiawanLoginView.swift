@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CerdikiawanLoginView: View {
+    @EnvironmentObject var appRouter: AppRouter
+    
     @StateObject private var viewModel: CerdikiawanLoginViewModel
     
     init () {
@@ -38,14 +40,15 @@ struct CerdikiawanLoginView: View {
             VStack(spacing: 12) {
                 CerdikiawanTextField(placeholder: "Email", text: $viewModel.emailText)
                 VStack(alignment: .leading) {
-                    CerdikiawanTextField(placeholder: "Password", text: $viewModel.passwordText)
+                    CerdikiawanSecureField(placeholder: "Password", text: $viewModel.passwordText)
                     
-                    // TODO: Bind error message
-                    Text("Error Message")
-                        .font(.footnote)
-                        .fontWeight(.regular)
-                        .foregroundStyle(Color(.cDarkRed))
-                        .padding(.leading, 8)
+                    if let error = viewModel.errorMessage {
+                        Text(error)
+                            .font(.footnote)
+                            .fontWeight(.regular)
+                            .foregroundStyle(Color(.cDarkRed))
+                            .padding(.leading, 8)
+                    }
                 }
             }
             
@@ -53,14 +56,16 @@ struct CerdikiawanLoginView: View {
                 CerdikiawanButton(type: .primary, label: "Masuk", action: {
                     Task {
                         try await viewModel.login()
-                        // TODO: Go to home view
+                        if viewModel.errorMessage == nil {
+                            appRouter.push(.home)
+                        }
                     }
                 })
                 
                 HStack {
                     Text("Tidak Mempunyai akun?")
                     CerdikiawanBorderlessButton(text: "Daftar disini", onTapAction: {
-                        // TODO: Go to register
+                        appRouter.push(.register)
                     })
                 }
             }
