@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PracticeHomeView: View {
+struct CerdikiawanPracticeHomeView: View {
     @EnvironmentObject var appRouter: AppRouter
     
     @StateObject private var viewModel: LevelListViewModel = .init()
@@ -67,9 +67,11 @@ struct PracticeHomeView: View {
             )
             .scrollBounceBehavior(.basedOnSize, axes: .vertical)
             .scrollIndicators(.hidden)
-            .ignoresSafeArea()
         }
-        .background(Color(.cDarkBlue))
+        .background(
+            Color(.cDarkBlue)
+                .ignoresSafeArea(.container, edges: .top)
+        )
         .onAppear() {
             viewModel.setup()
         }
@@ -84,7 +86,7 @@ struct PracticeHomeView: View {
         ZStack {
             Color(.cGray).ignoresSafeArea()
             VStack {
-                PracticeHomeView()
+                CerdikiawanPracticeHomeView()
             }
             .navigationDestination(for: Screen.self, destination: { screen in
                 appRouter.build(screen)

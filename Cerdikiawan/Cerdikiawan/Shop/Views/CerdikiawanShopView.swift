@@ -104,9 +104,11 @@ struct CerdikiawanShopView: View {
             )
             .scrollBounceBehavior(.basedOnSize, axes: .vertical)
             .scrollIndicators(.hidden)
-            .ignoresSafeArea()
         }
-        .background(Color(.cDarkBlue))
+        .background(
+            Color(.cDarkBlue)
+                .ignoresSafeArea(.container, edges: .top)
+        )
         .onAppear(){
             if let user = sessionData.user {
                 viewModel.setup(user: user)
