@@ -58,10 +58,8 @@ struct CerdikiawanLoginView: View {
                 CerdikiawanButton(type: .primary, label: "Masuk", action: {
                     Task {
                         if let user = try await viewModel.login() {
-                            if viewModel.errorMessage == nil {
-                                sessionData.user = user
-                                appRouter.push(.home)
-                            }
+                            sessionData.user = user
+                            appRouter.push(.home)
                         }
                     }
                 })
