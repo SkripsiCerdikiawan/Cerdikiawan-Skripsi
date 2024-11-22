@@ -13,3 +13,34 @@ struct ResultDataEntity {
     var totalQuestions: Int
     var baseBalance: Int
 }
+
+extension ResultDataEntity {
+    static func mock() -> [ResultDataEntity] {
+        return [
+            .init(
+                correctCount: 3,
+                inCorrectCount: 7,
+                totalQuestions: 10,
+                baseBalance: 5
+            ),
+            .init(
+                correctCount: 5,
+                inCorrectCount: 5,
+                totalQuestions: 10,
+                baseBalance: 5
+            ),
+            .init(
+                correctCount: 7,
+                inCorrectCount: 3,
+                totalQuestions: 10,
+                baseBalance: 5
+            ),
+            .init(
+                correctCount: 10,
+                inCorrectCount: 10,
+                totalQuestions: 10,
+                baseBalance: 5
+            )
+        ]
+    }
+}
