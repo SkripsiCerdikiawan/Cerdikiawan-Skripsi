@@ -67,9 +67,11 @@ struct CerdikiawanPracticeHomeView: View {
             )
             .scrollBounceBehavior(.basedOnSize, axes: .vertical)
             .scrollIndicators(.hidden)
-            .ignoresSafeArea()
         }
-        .background(Color(.cDarkBlue))
+        .background(
+            Color(.cDarkBlue)
+                .ignoresSafeArea(.container, edges: .top)
+        )
         .onAppear() {
             viewModel.setup()
         }
