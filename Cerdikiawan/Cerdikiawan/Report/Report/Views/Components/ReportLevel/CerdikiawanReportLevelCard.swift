@@ -40,9 +40,11 @@ struct CerdikiawanReportLevelCard: View {
                             .foregroundStyle(style.foregroundColor)
                     }
                     Spacer()
-                    Image(systemName: "chevron.forward")
-                        .imageScale(.small)
-                        .foregroundStyle(style.foregroundColor)
+                    if style == .havePlay {
+                        Image(systemName: "chevron.forward")
+                            .imageScale(.small)
+                            .foregroundStyle(style.foregroundColor)
+                    }
                 }
                 .foregroundStyle(Color(.cDarkBlue))
                 .font(.subheadline)
@@ -78,7 +80,7 @@ struct CerdikiawanReportLevelCard: View {
             imageName: "DEBUG_IMAGE",
             title: "Perjalanan Budi ke Pasar",
             description: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
-            style: .havePlay,
+            style: .neverPlay,
             onTapGesture: {
                 print("Level Tapped!")
             }

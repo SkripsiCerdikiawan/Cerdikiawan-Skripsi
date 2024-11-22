@@ -38,9 +38,9 @@ enum CerdikiawanScoreStyle {
         switch value {
         case -1..<25:
             return .low
-        case 25..<80:
+        case 25..<70:
             return .normal
-        case 80..<101:
+        case 70..<101:
             return .great
         default:
             return .normal

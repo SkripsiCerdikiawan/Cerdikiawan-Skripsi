@@ -22,7 +22,7 @@ struct CerdikiawanPieBar: View {
                 .trim(from: 0, to: displayedValue / maxValue)
                 .stroke(style.foregroundPrimaryColor, lineWidth: 5)
                 .rotationEffect(Angle(degrees: -90)) // Start from top
-                .frame(width: 65)
+                .frame(width: 62)
             
             Circle()
                 .foregroundStyle(style.foregroundSecondaryColor)
