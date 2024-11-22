@@ -40,6 +40,7 @@ struct CerdikiawanShopView: View {
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
             
             ScrollView {
                 VStack(spacing: 32) {
