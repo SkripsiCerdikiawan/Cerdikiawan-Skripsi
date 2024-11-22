@@ -9,13 +9,15 @@ import SwiftUI
 
 struct CerdikiawanLoginView: View {
     @EnvironmentObject var appRouter: AppRouter
+    @EnvironmentObject var sessionData: SessionData
     
     @StateObject private var viewModel: CerdikiawanLoginViewModel
     
     init () {
         _viewModel = .init(
             wrappedValue: .init(
-                authRepository: SupabaseAuthRepository.shared
+                authRepository: SupabaseAuthRepository.shared,
+                profileRepository: SupabaseProfileRepository.shared
             )
         )
     }
@@ -55,9 +57,11 @@ struct CerdikiawanLoginView: View {
             VStack(spacing: 24) {
                 CerdikiawanButton(type: .primary, label: "Masuk", action: {
                     Task {
-                        try await viewModel.login()
-                        if viewModel.errorMessage == nil {
-                            appRouter.push(.home)
+                        if let user = try await viewModel.login() {
+                            if viewModel.errorMessage == nil {
+                                sessionData.user = user
+                                appRouter.push(.home)
+                            }
                         }
                     }
                 })
@@ -75,5 +79,31 @@ struct CerdikiawanLoginView: View {
 }
 
 #Preview {
-    CerdikiawanLoginView()
+    @Previewable
+    @StateObject var appRouter: AppRouter = .init()
+    @Previewable
+    @StateObject var sessionData: SessionData = .init()
+    
+    NavigationStack(path: $appRouter.path) {
+        ZStack {
+            Color(.cGray).ignoresSafeArea()
+            VStack {
+                CerdikiawanLoginView()
+            }
+            .navigationDestination(for: Screen.self, destination: { screen in
+                appRouter.build(screen)
+            })
+        }
+        .safeAreaPadding(.horizontal, 16)
+        .safeAreaPadding(.vertical, 16)
+    }
+    .environmentObject(appRouter)
+    .environmentObject(sessionData)
+    .sheet(item: $appRouter.sheet, content: { sheet in
+        appRouter.build(sheet)
+    })
+    .onAppear() {
+        sessionData.user = .mock()[0]
+    }
+    
 }

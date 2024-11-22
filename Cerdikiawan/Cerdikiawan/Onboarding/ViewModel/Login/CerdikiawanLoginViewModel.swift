@@ -13,28 +13,45 @@ class CerdikiawanLoginViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private var authRepository: AuthRepository
+    private var profileRepository: ProfileRepository
     
-    init(authRepository: AuthRepository) {
+    init(authRepository: AuthRepository, profileRepository: ProfileRepository) {
         self.authRepository = authRepository
+        self.profileRepository = profileRepository
     }
     
     @MainActor
-    public func login() async throws {
+    public func login() async throws -> UserEntity? {
         guard validateLoginInfo(email: emailText, password: passwordText) else {
-            return
+            return nil
         }
-        let request = AuthRequest(email: emailText, password: passwordText)
+        let authRequest = AuthRequest(email: emailText, password: passwordText)
         
         do {
-            let (user, status) = try await authRepository.login(request: request)
+            let (user, userStatus) = try await authRepository.login(request: authRequest)
             
-            if user == nil && status != .success {
+            guard let loggedInUser = user, userStatus == .success else {
                 errorMessage = "Invalid credentials"
-            } else {
-                errorMessage = nil
+                return nil
             }
+            
+            let profileRequest = ProfileFetchRequest(profileId: loggedInUser.uid)
+            let (profile, profileStatus) = try await profileRepository.fetchProfile(request: profileRequest)
+            
+            guard let loggedInProfile = profile, profileStatus == .success else {
+                errorMessage = "Invalid profile"
+                return nil
+            }
+            errorMessage = nil
+            return UserEntity.init(
+                id: loggedInUser.uid.uuidString,
+                name: loggedInProfile.profileName,
+                balance: loggedInProfile.profileBalance
+            )
+            
         } catch {
             errorMessage = "An unexpected error occurred"
+            return nil
         }
     }
     
