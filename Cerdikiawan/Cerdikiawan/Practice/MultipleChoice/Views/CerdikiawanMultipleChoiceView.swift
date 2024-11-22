@@ -16,14 +16,14 @@ struct CerdikiawanMultipleChoiceView: View {
     init(
         page: PageEntity,
         data: MultipleChoiceEntity,
-        avatar: AvatarEntity,
+        character: CharacterEntity,
         onContinueButtonAction: @escaping (Bool) -> Void
     ) {
         _viewModel = .init(
             wrappedValue: .init(
                 page: page,
                 data: data,
-                avatar: avatar
+                character: character
             )
         )
         self.onContinueButtonAction = onContinueButtonAction
@@ -36,11 +36,11 @@ struct CerdikiawanMultipleChoiceView: View {
             }
             .scrollBounceBehavior(.basedOnSize, axes: .vertical)
             
-            CerdikiawanAvatarDialogueContainer(
+            CerdikiawanCharacterDialogueContainer(
                 page: viewModel.page,
-                avatar: viewModel.avatar,
-                dialogue: viewModel.avatarDialogue,
-                state: viewModel.avatarDialogueState,
+                character: viewModel.character,
+                dialogue: viewModel.characterDialogue,
+                state: viewModel.characterDialogueState,
                 checkAnswerAction: {
                     viewModel.validateAnswer()
                 },
@@ -63,7 +63,7 @@ struct CerdikiawanMultipleChoiceView: View {
             CerdikiawanMultipleChoiceView(
                 page: .mock()[0],
                 data: .mock()[0],
-                avatar: .mock()[1],
+                character: .mock()[1],
                 onContinueButtonAction: { result in
                     debugPrint("Answer Correct Status: \(result)")
                 }

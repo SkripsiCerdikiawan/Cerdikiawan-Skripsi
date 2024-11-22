@@ -7,6 +7,6 @@
 
 enum HomeTabSelection {
     case practice
-    case avatar
+    case character
     case report
 }

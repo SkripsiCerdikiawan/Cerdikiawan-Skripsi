@@ -13,32 +13,32 @@ class CerdikiawanMultipleChoiceViewModel: ObservableObject {
     @Published var multipleChoiceState: CerdikiawanMultipleChoiceContainerState
     @Published var selectedAnswerID: String
     
-    var avatar: AvatarEntity
-    @Published var avatarDialogueState: CerdikiawanAvatarDialogueContainerState
-    @Published var avatarDialogue: String
+    var character: CharacterEntity
+    @Published var characterDialogueState: CerdikiawanCharacterDialogueContainerState
+    @Published var characterDialogue: String
     
     @Published var isCorrect: Bool
     
     init(
         page: PageEntity,
         data: MultipleChoiceEntity,
-        avatar: AvatarEntity
+        character: CharacterEntity
     ){
         self.page = page
         self.data = data
         self.multipleChoiceState = .answering
         self.selectedAnswerID = ""
         
-        self.avatar = avatar
-        self.avatarDialogueState = .normal
-        self.avatarDialogue = "Pilihlah satu jawaban yang menurut kamu sesuai"
+        self.character = character
+        self.characterDialogueState = .normal
+        self.characterDialogue = "Pilihlah satu jawaban yang menurut kamu sesuai"
         self.isCorrect = false
     }
     
     // Function that will be called when the multiple choice is selected
     func handleChoiceSelection(answer: MultipleChoiceAnswerEntity) {
         self.selectedAnswerID = answer.id
-        self.avatarDialogueState = .checkAnswer
+        self.characterDialogueState = .checkAnswer
     }
     
     // Function determine choices state
@@ -71,13 +71,13 @@ class CerdikiawanMultipleChoiceViewModel: ObservableObject {
         self.isCorrect = selectedAnswerID == data.correctAnswerID
         
         if isCorrect {
-            self.avatarDialogueState = .correct
-            self.avatarDialogue = data.feedback.correctFeedback
+            self.characterDialogueState = .correct
+            self.characterDialogue = data.feedback.correctFeedback
             self.isCorrect = true
         }
         else {
-            self.avatarDialogueState = .incorrect
-            self.avatarDialogue = data.feedback.incorrectFeedback
+            self.characterDialogueState = .incorrect
+            self.characterDialogue = data.feedback.incorrectFeedback
             self.isCorrect = false
         }
     }

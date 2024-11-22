@@ -74,7 +74,7 @@ struct CerdikiawanWordMatchContainer: View {
     @StateObject var viewModel = CerdikiawanWordMatchViewModel(
         page: .mock()[0],
         data: .mock()[0],
-        avatar: .mock()[0]
+        character: .mock()[0]
     )
     
     ZStack {

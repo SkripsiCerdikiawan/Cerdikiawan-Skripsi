@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum CerdikiawanAvatarShopCardType {
+enum CerdikiawanCharacterShopCardType {
     case canBuy
     case notEnoughBalance
     case owned
@@ -28,17 +28,17 @@ enum CerdikiawanAvatarShopCardType {
     }
     
     @ViewBuilder
-    func displayAvatarStatus(avatar: ShopAvatarEntity) -> some View {
+    func displayCharacterStatus(character: ShopCharacterEntity) -> some View {
         switch self {
         case .canBuy:
             HStack(spacing: 0) {
                 Image(systemName: "dollarsign.square.fill")
-                Text("\(avatar.price)")
+                Text("\(character.price)")
             }
         case .notEnoughBalance:
             HStack(spacing: 0) {
                 Image(systemName: "dollarsign.square.fill")
-                Text("\(avatar.price)")
+                Text("\(character.price)")
             }
         case .owned:
             Text("Dimiliki")
@@ -73,9 +73,9 @@ enum CerdikiawanAvatarShopCardType {
     }
 }
 
-extension CerdikiawanAvatarShopCardType: Equatable {
+extension CerdikiawanCharacterShopCardType: Equatable {
     // Conform to equatable
-    static func == (lhs: CerdikiawanAvatarShopCardType, rhs: CerdikiawanAvatarShopCardType) -> Bool {
+    static func == (lhs: CerdikiawanCharacterShopCardType, rhs: CerdikiawanCharacterShopCardType) -> Bool {
         switch (lhs, rhs){
         case (.canBuy, .canBuy),
             (.notEnoughBalance, .notEnoughBalance),

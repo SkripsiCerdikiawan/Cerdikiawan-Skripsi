@@ -15,16 +15,16 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
     @Published var wordArrangement: [WordBlankLetterEntity]
     @Published var state: CerdikiawanWordBlankContainerState
     
-    let avatar: AvatarEntity
-    @Published var avatarDialogueState: CerdikiawanAvatarDialogueContainerState
-    @Published var avatarDialogue: String
+    let character: CharacterEntity
+    @Published var characterDialogueState: CerdikiawanCharacterDialogueContainerState
+    @Published var characterDialogue: String
     
     @Published var isCorrect: Bool
     
     init(
         page: PageEntity,
         data: WordBlankEntity,
-        avatar: AvatarEntity
+        character: CharacterEntity
     ) {
         self.page = page
         self.data = data
@@ -33,9 +33,9 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
         self.wordArrangement = []
         self.state = .answering
         
-        self.avatar = avatar
-        self.avatarDialogueState = .normal
-        self.avatarDialogue = "Sentuh dan susun kata yang sesuai!"
+        self.character = character
+        self.characterDialogueState = .normal
+        self.characterDialogue = "Sentuh dan susun kata yang sesuai!"
         self.isCorrect = false
     }
     
@@ -53,10 +53,10 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
         
         // Set state whenever user has inputted letter or not
         if word.isEmpty {
-            avatarDialogueState = .normal
+            characterDialogueState = .normal
         }
         else {
-            avatarDialogueState = .checkAnswer
+            characterDialogueState = .checkAnswer
         }
     }
     
@@ -105,12 +105,12 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
         self.isCorrect = self.word == data.correctAnswerWord
         
         if isCorrect {
-            self.avatarDialogueState = .correct
-            self.avatarDialogue = data.feedback.correctFeedback
+            self.characterDialogueState = .correct
+            self.characterDialogue = data.feedback.correctFeedback
         }
         else {
-            self.avatarDialogueState = .incorrect
-            self.avatarDialogue = data.feedback.incorrectFeedback
+            self.characterDialogueState = .incorrect
+            self.characterDialogue = data.feedback.incorrectFeedback
         }
     }
 }

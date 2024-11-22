@@ -1,5 +1,5 @@
 //
-//  CerdikiawanAvatarDialogueContainer.swift
+//  CerdikiawanCharacterDialogueContainer.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 20/11/24.
@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct CerdikiawanAvatarDialogueContainer: View {
+struct CerdikiawanCharacterDialogueContainer: View {
     @EnvironmentObject var appRouter: AppRouter
     
     var page: PageEntity
-    var avatar: AvatarEntity
+    var character: CharacterEntity
     var dialogue: String
     
-    var state: CerdikiawanAvatarDialogueContainerState
+    var state: CerdikiawanCharacterDialogueContainerState
     
     var checkAnswerAction: () -> Void
     var continueAction: () -> Void
@@ -22,9 +22,9 @@ struct CerdikiawanAvatarDialogueContainer: View {
     var body: some View {
         VStack(spacing: 16) {
             HStack(alignment: .bottom, spacing: 8) {
-                CerdikiawanAvatarDialogue(
-                    avatar: avatar,
-                    state: state.avatarState,
+                CerdikiawanCharacterDialogue(
+                    character: character,
+                    state: state.characterState,
                     message: dialogue
                 )
                 Spacer()
@@ -83,7 +83,7 @@ private struct CerdikiawanOpenPageButtonStyle: ButtonStyle {
 
 #Preview {
     @Previewable
-    @State var state: CerdikiawanAvatarDialogueContainerState = .checkAnswer
+    @State var state: CerdikiawanCharacterDialogueContainerState = .checkAnswer
     
     @Previewable
     @StateObject var appRouter: AppRouter = .init()
@@ -91,9 +91,9 @@ private struct CerdikiawanOpenPageButtonStyle: ButtonStyle {
     ZStack {
         Color(.cGray).ignoresSafeArea()
         VStack {
-            CerdikiawanAvatarDialogueContainer(
+            CerdikiawanCharacterDialogueContainer(
                 page: .mock()[0],
-                avatar: .mock()[0],
+                character: .mock()[0],
                 dialogue: "Hello World!",
                 state: state,
                 checkAnswerAction: {
