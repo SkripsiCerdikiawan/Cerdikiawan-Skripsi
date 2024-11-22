@@ -1,5 +1,5 @@
 //
-//  CerdikiawanCharacterContainer.swift
+//  CerdikiawanLetterContainer.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 13/11/24.
@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct CerdikiawanCharacterContainer: View {
+struct CerdikiawanLetterContainer: View {
     @Binding var value: String
     
-    var state: CerdikiawanCharacterContainerState
+    var state: CerdikiawanLetterContainerState
     
     var body: some View {
         VStack {
@@ -63,7 +63,7 @@ private struct DeleteButton: View {
     ZStack {
         Color(.cGray).ignoresSafeArea()
         VStack {
-            CerdikiawanCharacterContainer(
+            CerdikiawanLetterContainer(
                 value: $content,
                 state: .correct
             )

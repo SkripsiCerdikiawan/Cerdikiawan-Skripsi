@@ -1,5 +1,5 @@
 //
-//  CerdekiawanCharacterChoiceButtonType.swift
+//  CerdekiawanLetterChoiceButtonType.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 15/11/24.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct CerdikiawanCharacterChoiceButtonStyle: ButtonStyle {
-    var type: CerdikiawanCharacterChoiceButtonType
+struct CerdikiawanLetterChoiceButtonStyle: ButtonStyle {
+    var type: CerdikiawanLetterChoiceButtonType
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

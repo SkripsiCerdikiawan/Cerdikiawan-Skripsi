@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct CerdikiawanAvatarDialogue: View {
-    var avatar: AvatarEntity
-    var state: CerdikiawanAvatarState
+struct CerdikiawanCharacterDialogue: View {
+    var character: CharacterEntity
+    var state: CerdikiawanCharacterState
     var message: String
     
     var body: some View {
         HStack {
-            CerdikiawanAvatar(
-                avatar: avatar,
+            CerdikiawanCharacter(
+                character: character,
                 state: state
             )
             
@@ -38,8 +38,8 @@ struct CerdikiawanAvatarDialogue: View {
 #Preview {
     ZStack {
         Color(.cGray).ignoresSafeArea()
-        CerdikiawanAvatarDialogue(
-            avatar: AvatarEntity.mock()[0],
+        CerdikiawanCharacterDialogue(
+            character: CharacterEntity.mock()[0],
             state: .normal,
             message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         )

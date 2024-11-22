@@ -1,5 +1,5 @@
 //
-//  Avatar.swift
+//  CharacterEntity.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 13/11/24.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct AvatarEntity {
+struct CharacterEntity {
     let id: String
     let name: String
 }
 
-extension AvatarEntity {
-    static func mock() -> [AvatarEntity] {
+extension CharacterEntity {
+    static func mock() -> [CharacterEntity] {
         return [
             .init(
                 id: "id-01",

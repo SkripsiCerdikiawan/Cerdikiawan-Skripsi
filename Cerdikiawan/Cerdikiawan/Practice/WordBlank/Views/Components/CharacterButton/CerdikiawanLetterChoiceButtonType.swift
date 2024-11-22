@@ -1,5 +1,5 @@
 //
-//  CerdikiawanCharacterContainerState.swift
+//  CerdikiawanLetterChoiceButtonType.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 13/11/24.
@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-enum CerdikiawanCharacterContainerState {
+enum CerdikiawanLetterChoiceButtonType {
     case normal
+    case selected
     case correct
     case incorrect
     
@@ -23,7 +24,9 @@ enum CerdikiawanCharacterContainerState {
     var backgroundColor: Color {
         switch self {
         case .normal:
-            return Color(.systemGray5)
+            return Color(.cWhite)
+        case .selected:
+            return Color(.cOrange)
         case .correct:
             return Color(.cLightBlue)
         case .incorrect:
@@ -35,6 +38,8 @@ enum CerdikiawanCharacterContainerState {
         switch self {
         case .normal:
             return Color(.gray)
+        case .selected:
+            return Color(.cDarkOrange)
         case .correct:
             return Color(.cDarkBlue)
         case .incorrect:
@@ -43,7 +48,16 @@ enum CerdikiawanCharacterContainerState {
     }
     
     var textColor: Color {
-        return Color(.cBlack)
+        switch self {
+        case .normal:
+            return Color(.cBlack)
+        case .selected:
+            return Color(.cBlack)
+        case .correct:
+            return Color(.cDarkBlue)
+        case .incorrect:
+            return Color(.cDarkRed)
+        }
     }
     
     var font: Font {
@@ -51,28 +65,26 @@ enum CerdikiawanCharacterContainerState {
     }
     
     var fontWeight: Font.Weight {
-        return .medium
-    }
-    
-    var iconColor: Color {
         switch self {
+        case .normal:
+            return .regular
+        case .selected:
+            return .medium
         case .correct:
-            return Color(.cDarkBlue)
+            return .medium
         case .incorrect:
-            return Color(.cDarkRed)
-        default:
-            return .clear
+            return .medium
         }
     }
     
-    var icon: Image? {
+    var scaleEffect: CGFloat {
         switch self {
         case .normal:
-            return nil
-        case .correct:
-            return Image(systemName: "checkmark")
-        case .incorrect:
-            return Image(systemName: "xmark")
+            return 0.9
+        case .selected:
+            return 0.9
+        default:
+            return 1
         }
     }
 }

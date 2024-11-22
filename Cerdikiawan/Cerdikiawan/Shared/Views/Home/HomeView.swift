@@ -26,7 +26,7 @@ struct HomeView: View {
                     })
                 
                 CerdikiawanShopView()
-                    .tag(HomeTabSelection.avatar)
+                    .tag(HomeTabSelection.character)
                     .tabItem({
                         Label(title: {
                             Text("Karakter")

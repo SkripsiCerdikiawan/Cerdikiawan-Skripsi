@@ -7,22 +7,22 @@
 
 import SwiftUI
 
-struct CerdikiawanAvatarShopCard: View {
-    var shopAvatar: ShopAvatarEntity
-    var type: CerdikiawanAvatarShopCardType
+struct CerdikiawanCharacterShopCard: View {
+    var shopCharacter: ShopCharacterEntity
+    var type: CerdikiawanCharacterShopCardType
     var onTapAction: () -> Void
     
     var body: some View {
         HStack {
             HStack(spacing: 8) {
-                CerdikiawanAvatar(avatar: shopAvatar.avatar)
+                CerdikiawanCharacter(character: shopCharacter.character)
                 VStack(alignment: .leading) {
-                    Text(shopAvatar.avatar.name.capitalized)
+                    Text(shopCharacter.character.name.capitalized)
                         .font(.title2)
                         .fontWeight(.semibold)
                     
                     HStack(spacing: 0) {
-                        type.displayAvatarStatus(avatar: shopAvatar)
+                        type.displayCharacterStatus(character: shopCharacter)
                     }
                     .font(.callout)
                     .foregroundStyle(type.fontColor)
@@ -60,29 +60,29 @@ struct CerdikiawanAvatarShopCard: View {
         Color(.cGray).ignoresSafeArea()
         ScrollView {
             VStack {
-                CerdikiawanAvatarShopCard(
-                    shopAvatar: ShopAvatarEntity.mock()[0],
+                CerdikiawanCharacterShopCard(
+                    shopCharacter: ShopCharacterEntity.mock()[0],
                     type: .notEnoughBalance,
                     onTapAction: {
                         debugPrint("Not Enough Balance Pressed")
                     }
                 )
-                CerdikiawanAvatarShopCard(
-                    shopAvatar: ShopAvatarEntity.mock()[0],
+                CerdikiawanCharacterShopCard(
+                    shopCharacter: ShopCharacterEntity.mock()[0],
                     type: .canBuy,
                     onTapAction: {
                         debugPrint("Can Buy Pressed")
                     }
                 )
-                CerdikiawanAvatarShopCard(
-                    shopAvatar: ShopAvatarEntity.mock()[0],
+                CerdikiawanCharacterShopCard(
+                    shopCharacter: ShopCharacterEntity.mock()[0],
                     type: .owned,
                     onTapAction: {
                         debugPrint("Owned Pressed")
                     }
                 )
-                CerdikiawanAvatarShopCard(
-                    shopAvatar: ShopAvatarEntity.mock()[0],
+                CerdikiawanCharacterShopCard(
+                    shopCharacter: ShopCharacterEntity.mock()[0],
                     type: .active,
                     onTapAction: {
                         debugPrint("Active Pressed")

@@ -16,7 +16,7 @@ enum Screen {
     case storyCompletion
     case profile
     case reportDetail(report: ReportStoryEntity)
-    case buyConfirmation(shopAvatar: ShopAvatarEntity)
+    case buyConfirmation(shopCharacter: ShopCharacterEntity)
 }
 
 extension Screen: Identifiable {

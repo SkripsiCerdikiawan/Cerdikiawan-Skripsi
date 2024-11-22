@@ -1,5 +1,5 @@
 //
-//  CerdikiawanCharacterChoiceButton.swift
+//  CerdikiawanLetterChoiceButton.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 13/11/24.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct CerdikiawanCharacterChoiceButton: View {
+struct CerdikiawanLetterChoiceButton: View {
     var label: String
-    var type: CerdikiawanCharacterChoiceButtonType
+    var type: CerdikiawanLetterChoiceButtonType
     var action: () -> Void
     
     var body: some View {        
@@ -28,7 +28,7 @@ struct CerdikiawanCharacterChoiceButton: View {
             }
         )
         .buttonStyle(
-            CerdikiawanCharacterChoiceButtonStyle(type: type)
+            CerdikiawanLetterChoiceButtonStyle(type: type)
         )
     }
 }
@@ -42,46 +42,46 @@ struct CerdikiawanCharacterChoiceButton: View {
     ZStack {
         Color(.cGray).ignoresSafeArea()
         LazyVGrid(columns: columns) {
-            CerdikiawanCharacterChoiceButton(
+            CerdikiawanLetterChoiceButton(
                 label: "T",
                 type: .normal,
                 action: {
-                    debugPrint("Character T is Pressed")
+                    debugPrint("Letter T is Pressed")
                 }
             )
-            CerdikiawanCharacterChoiceButton(
+            CerdikiawanLetterChoiceButton(
                 label: "T",
                 type: .selected,
                 action: {
-                    debugPrint("Character T is Pressed")
+                    debugPrint("Letter T is Pressed")
                 }
             )
-            CerdikiawanCharacterChoiceButton(
+            CerdikiawanLetterChoiceButton(
                 label: "T",
                 type: .normal,
                 action: {
-                    debugPrint("Character T is Pressed")
+                    debugPrint("Letter T is Pressed")
                 }
             )
-            CerdikiawanCharacterChoiceButton(
+            CerdikiawanLetterChoiceButton(
                 label: "T",
                 type: .correct,
                 action: {
-                    debugPrint("Character T is Pressed")
+                    debugPrint("Letter T is Pressed")
                 }
             )
-            CerdikiawanCharacterChoiceButton(
+            CerdikiawanLetterChoiceButton(
                 label: "T",
                 type: .incorrect,
                 action: {
-                    debugPrint("Character T is Pressed")
+                    debugPrint("Letter T is Pressed")
                 }
             )
-            CerdikiawanCharacterChoiceButton(
+            CerdikiawanLetterChoiceButton(
                 label: "T",
                 type: .normal,
                 action: {
-                    debugPrint("Character T is Pressed")
+                    debugPrint("Letter T is Pressed")
                 }
             )
         }

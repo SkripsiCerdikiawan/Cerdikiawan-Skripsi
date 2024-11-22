@@ -11,7 +11,7 @@ struct WordBlankEntity {
     var id: String
     var question: String
     var correctAnswerWord: String
-    var characters: [WordBlankCharacterEntity]
+    var letters: [WordBlankLetterEntity]
     var feedback: FeedbackEntity
 }
 
@@ -22,13 +22,13 @@ extension WordBlankEntity {
                 id: "wb-ques-01",
                 question: "This is a question example, Do you understand?",
                 correctAnswerWord: "WORD",
-                characters: [
-                    .init(id: "wb-char-1", character: "C"),
-                    .init(id: "wb-char-2", character: "W"),
-                    .init(id: "wb-char-3", character: "D"),
-                    .init(id: "wb-char-4", character: "A"),
-                    .init(id: "wb-char-5", character: "O"),
-                    .init(id: "wb-char-6", character: "R"),
+                letters: [
+                    .init(id: "wb-char-1", letter: "C"),
+                    .init(id: "wb-char-2", letter: "W"),
+                    .init(id: "wb-char-3", letter: "D"),
+                    .init(id: "wb-char-4", letter: "A"),
+                    .init(id: "wb-char-5", letter: "O"),
+                    .init(id: "wb-char-6", letter: "R"),
                 ],
                 feedback: .mock()[0]
             )

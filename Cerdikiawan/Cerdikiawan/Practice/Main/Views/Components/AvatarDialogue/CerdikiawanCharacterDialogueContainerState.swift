@@ -1,11 +1,11 @@
 //
-//  CerdikiawanAvatarDialogueContainerState.swift
+//  CerdikiawanCharacterDialogueContainerState.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 20/11/24.
 //
 
-enum CerdikiawanAvatarDialogueContainerState {
+enum CerdikiawanCharacterDialogueContainerState {
     case normal
     case checkAnswer
     case correct
@@ -37,7 +37,7 @@ enum CerdikiawanAvatarDialogueContainerState {
         }
     }
     
-    var avatarState: CerdikiawanAvatarState {
+    var characterState: CerdikiawanCharacterState {
         switch self {
         case .normal:
             return .normal

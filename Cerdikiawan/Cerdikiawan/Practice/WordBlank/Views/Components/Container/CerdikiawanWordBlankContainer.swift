@@ -22,15 +22,15 @@ struct CerdikiawanWordBlankContainer: View {
                 .fontWeight(.medium)
                 .multilineTextAlignment(.leading)
             
-            CerdikiawanCharacterContainer(
+            CerdikiawanLetterContainer(
                 value: $viewModel.word,
                 state: viewModel.determineType(state: viewModel.state)
             )
             
             LazyVGrid(columns: columns, spacing: 8) {
-                ForEach(viewModel.data.characters, id: \.id, content: { char in
-                    CerdikiawanCharacterChoiceButton(
-                        label: char.character,
+                ForEach(viewModel.data.letters, id: \.id, content: { char in
+                    CerdikiawanLetterChoiceButton(
+                        label: char.letter,
                         type: viewModel.determineType(char: char),
                         action: {
                             viewModel.handleTap(char: char)
@@ -48,7 +48,7 @@ struct CerdikiawanWordBlankContainer: View {
     @Previewable @StateObject var viewModel = CerdikiawanWordBlankViewModel(
         page: .mock()[0],
         data: .mock()[0],
-        avatar: .mock()[0]
+        character: .mock()[0]
     )
     ZStack {
         Color(.cGray).ignoresSafeArea()

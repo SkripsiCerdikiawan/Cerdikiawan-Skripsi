@@ -11,7 +11,7 @@ struct CerdikiawanShopView: View {
     @EnvironmentObject var appRouter: AppRouter
     @EnvironmentObject var sessionData: SessionData
     
-    @StateObject private var viewModel: ShopAvatarViewModel = .init()
+    @StateObject private var viewModel: ShopCharacterViewModel = .init()
     
     var body: some View {
         VStack {
@@ -44,22 +44,22 @@ struct CerdikiawanShopView: View {
             
             ScrollView {
                 VStack(spacing: 32) {
-                    if viewModel.avatarList.isEmpty == false {
+                    if viewModel.characterList.isEmpty == false {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Karakter yang dimiliki")
                                 .font(.body)
                                 .foregroundStyle(Color(.secondaryLabel))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            ForEach(viewModel.displayedOwnedAvatarList, id: \.avatar.id, content: { shopAvatar in
-                                CerdikiawanAvatarShopCard(
-                                    shopAvatar: shopAvatar,
-                                    type: viewModel.determineAvatarState(shopAvatar: shopAvatar),
+                            ForEach(viewModel.displayedOwnedCharacterList, id: \.character.id, content: { shopCharacter in
+                                CerdikiawanCharacterShopCard(
+                                    shopCharacter: shopCharacter,
+                                    type: viewModel.determineCharacterState(shopCharacter: shopCharacter),
                                     onTapAction: {
                                         if let user = sessionData.user {
-                                            viewModel.setActiveAvatar(
+                                            viewModel.setActiveCharacter(
                                                 userID: user.id,
-                                                avatar: shopAvatar.avatar
+                                                character: shopCharacter.character
                                             )
                                         }
                                     }
@@ -73,14 +73,14 @@ struct CerdikiawanShopView: View {
                                 .foregroundStyle(Color(.secondaryLabel))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            ForEach(viewModel.displayedUnownedAvatarList, id: \.avatar.id, content: { shopAvatar in
-                                CerdikiawanAvatarShopCard(
-                                    shopAvatar: shopAvatar,
-                                    type: viewModel.determineAvatarState(shopAvatar: shopAvatar),
+                            ForEach(viewModel.displayedUnownedCharacterList, id: \.character.id, content: { shopCharacter in
+                                CerdikiawanCharacterShopCard(
+                                    shopCharacter: shopCharacter,
+                                    type: viewModel.determineCharacterState(shopCharacter: shopCharacter),
                                     onTapAction: {
-                                        let canBuy = viewModel.validateUserBalance(shopAvatar: shopAvatar)
+                                        let canBuy = viewModel.validateUserBalance(shopCharacter: shopCharacter)
                                         if canBuy {
-                                            appRouter.push(.buyConfirmation(shopAvatar: shopAvatar))
+                                            appRouter.push(.buyConfirmation(shopCharacter: shopCharacter))
                                         }
                                     }
                                 )
@@ -88,7 +88,7 @@ struct CerdikiawanShopView: View {
                         }
                     }
                     else {
-                        Text("No Avatar Data")
+                        Text("No Characters Data")
                             .foregroundStyle(Color(.secondaryLabel))
                     }
                 }

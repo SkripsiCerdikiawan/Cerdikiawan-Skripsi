@@ -16,14 +16,14 @@ struct CerdikiawanWordMatchView: View {
     init(
         page: PageEntity,
         data: WordMatchEntity,
-        avatar: AvatarEntity,
+        character: CharacterEntity,
         onContinueButtonAction: @escaping (Bool) -> Void
     ) {
         _viewModel = .init(
             wrappedValue: .init(
                 page: page,
                 data: data,
-                avatar: avatar
+                character: character
             )
         )
         self.onContinueButtonAction = onContinueButtonAction
@@ -36,11 +36,11 @@ struct CerdikiawanWordMatchView: View {
             }
             .scrollBounceBehavior(.basedOnSize, axes: .vertical)
             
-            CerdikiawanAvatarDialogueContainer(
+            CerdikiawanCharacterDialogueContainer(
                 page: viewModel.page,
-                avatar: viewModel.avatar,
-                dialogue: viewModel.avatarDialogue,
-                state: viewModel.avatarDialogueState,
+                character: viewModel.character,
+                dialogue: viewModel.characterDialogue,
+                state: viewModel.characterDialogueState,
                 checkAnswerAction: {
                     viewModel.validateAnswer()
                 },
@@ -66,7 +66,7 @@ struct CerdikiawanWordMatchView: View {
             CerdikiawanWordMatchView(
                 page: .mock()[0],
                 data: .mock()[0],
-                avatar: .mock()[2],
+                character: .mock()[2],
                 onContinueButtonAction: { result in
                     debugPrint("Result status: \(result)")
                 }

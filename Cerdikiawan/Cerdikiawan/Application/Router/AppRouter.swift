@@ -158,7 +158,7 @@ class AppRouter: ObservableObject {
                 .safeAreaPadding(.horizontal, 16)
                 .navigationBarBackButtonHidden()
             }
-        case .buyConfirmation(let shopAvatar):
+        case .buyConfirmation(let shopCharacter):
             ZStack {
                 Color(.cGray).ignoresSafeArea()
                 VStack {
@@ -173,7 +173,7 @@ class AppRouter: ObservableObject {
                 .safeAreaPadding(.horizontal, 16)
                 .navigationBarBackButtonHidden()
                 .onAppear() {
-                    debugPrint("Buying \(shopAvatar.avatar.name)")
+                    debugPrint("Buying \(shopCharacter.character.name)")
                 }
             }
         }
