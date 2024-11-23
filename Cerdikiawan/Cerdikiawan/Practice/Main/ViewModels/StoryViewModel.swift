@@ -9,22 +9,20 @@ import Foundation
 import SwiftUI
 
 class StoryViewModel: ObservableObject {
-    var QUESTION_LIMIT = 0 // Constant to fetch how many question in a story
-    
     // User Data
-    var userID: String?
-    var userCharacter: CharacterEntity?
+    @Published var userID: String?
+    @Published var userCharacter: CharacterEntity?
     
     let story: StoryEntity
+    @Published var currentPageIdx: Int = 0
+    @Published var correctCount: Int = 0
     
-    @Published var practiceList: [PracticeEntity] = []
+    @Published var questionList: [PracticeEntity] = [] // Index and Content (For ensuring the view re-render on update)
+    @Published var activeQuestion: PracticeEntity?
     
-    @Published var kosakataCorrect: Int = 0
-    @Published var idePokokCorrect: Int = 0
-    @Published var implisitCorrect: Int = 0
-    
-    @Published var passageDisplayed: Bool = false
-    @Published var resultDisplayed: Bool = false
+    @Published var kosakata: KosakataDataEntity = .init()
+    @Published var idePokok: IdePokokDataEntity = .init()
+    @Published var implisit: ImplisitDataEntity = .init()
     
     init(
         story: StoryEntity
@@ -37,45 +35,104 @@ class StoryViewModel: ObservableObject {
     ) {
         self.userID = userID
         self.userCharacter = fetchUserCharacter(userID: userID)
-        
-        if let question = fetchQuestionForPractice(userID: userID) {
-            practiceList.append(question)
-        }
+        self.questionList = fetchQuestionForPractice(userID: userID, storyID: story.storyId)
+        self.activeQuestion = questionList.first
     }
     
     // TODO: Replace with Repo
-    func fetchQuestionForPractice(userID: String) -> PracticeEntity? {
-        return PracticeEntity.mock()[practiceList.count]
+    func fetchQuestionForPractice(userID: String, storyID: String) -> [PracticeEntity] {
+        return PracticeEntity.mock()
     }
     
     // TODO: Replace With Repo
     func fetchUserCharacter(userID: String) -> CharacterEntity {
-        return CharacterEntity.mock()[0]
+        return CharacterEntity.mock()[1]
     }
     
     // MARK: - Business Logic
-    // Handle next after read the passage
-    func handleNext() {
-        guard self.passageDisplayed == true else {
-            self.passageDisplayed = true
-            return
-        }
-    }
     
     // Handle next after answering question
-    func handleNext(result: Bool) {
-        debugPrint("User Answer is Correct: \(result)")
+    func handleNext(isCorrect: Bool, appRouter: AppRouter) {
+        if isCorrect == true {
+            correctCount += 1 // Add Correct Count
+        }
+        debugPrint("User Answer is Correct: \(isCorrect)")
         
-        guard practiceList.count < QUESTION_LIMIT else {
+        // Save Reading Comprehension Data
+        updateReadingComprehension(isCorrect: isCorrect)
+        
+        // Check if already end of page
+        guard currentPageIdx < questionList.count else {
             debugPrint("All Question answered")
+            handleDisplayResultData(appRouter: appRouter)
             return
         }
         
-        guard let userID = userID,
-            let question = fetchQuestionForPractice(userID: userID) else {
-            fatalError("UserID or Question is not found!")
+        // Display next page if not end of page
+        displayNextPage()
+    }
+    
+    func updateReadingComprehension(isCorrect: Bool) {
+        // Calculate Tipe Pemahaman Membaca Data
+        guard let activeQuestion = self.activeQuestion else {
+            debugPrint("Error! No Active Question Data Detected!")
+            return
+        }
+        
+        switch activeQuestion.question.type {
+        case .idePokok:
+            if isCorrect {
+                self.idePokok.idePokokCorrect += 1
+            }
+            self.idePokok.idePokokCount += 1
+        case .implisit:
+            if isCorrect {
+                self.implisit.implisitCorrect += 1
+            }
+            self.implisit.implisitCount += 1
+        case .kosakata:
+            if isCorrect {
+                self.kosakata.kosakataCorrect += 1
+            }
+            self.kosakata.kosakataCount += 1
         }
     }
     
+    // Function to display next page to the user
+    func displayNextPage() {
+        self.activeQuestion = questionList[currentPageIdx]
+       
+    }
+    
+    // Function that will be called after the user complete the story (Save Progress Data to user, etc)
+    func handleDisplayResultData(appRouter: AppRouter) {
+        let resultData = createResultData()
+      
+        debugPrint("Kosakata: \(self.kosakata.percentage)")
+        debugPrint("Implisit: \(self.implisit.percentage)")
+        debugPrint("Ide Pokok: \(self.idePokok.percentage)")
+        
+        appRouter.push(.storyCompletion(
+            result: resultData,
+            character: userCharacter ?? .mock()[0],
+            onCompletion: {
+                debugPrint("Complete!")
+            }
+        ))
+    }
+    
+    // Function to create result data entity
+    func createResultData() -> ResultDataEntity {
+        let correctCount = self.correctCount
+        let incorrectCount = self.questionList.count - correctCount
+        let totalQuestions = self.questionList.count
+        
+        return .init(
+            correctCount: correctCount,
+            inCorrectCount: incorrectCount,
+            totalQuestions: totalQuestions,
+            baseBalance: self.story.baseBalance
+        )
+    }
     
 }

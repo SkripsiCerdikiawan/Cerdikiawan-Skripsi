@@ -12,6 +12,7 @@ struct MultipleChoiceEntity: QuestionProtocol {
     var question: String
     var answer: [MultipleChoiceAnswerEntity]
     var correctAnswerID: String
+    var type: QuestionType
     var feedback: FeedbackEntity
 }
 
@@ -23,6 +24,7 @@ extension MultipleChoiceEntity {
                 question: "This is an Example Question. Do you understand?",
                 answer: MultipleChoiceAnswerEntity.mock(),
                 correctAnswerID: "mc-answer-01",
+                type: .idePokok,
                 feedback: .mock()[0]
             )
         ]

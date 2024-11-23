@@ -20,12 +20,58 @@ struct CerdikiawanStoryView: View {
     }
     
     var body: some View {
-        VStack {
-            VStack {
-                self.build(character: viewModel.userCharacter)
+        VStack(spacing: 8) {
+            if viewModel.questionList.isEmpty == false {
+                CerdikiawanProgressBar(
+                    minimum: 0,
+                    maximum: Double(viewModel.questionList.count),
+                    value: $viewModel.currentPageIdx
+                )
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                
+                if let question = viewModel.activeQuestion {
+                    CerdikiawanQuestionView(
+                        data: question,
+                        character: viewModel.userCharacter ?? .mock()[0],
+                        currentProgress: $viewModel.currentPageIdx,
+                        onQuestionAnswered: { isCorrect in
+                            viewModel.handleNext(
+                                isCorrect: isCorrect,
+                                appRouter: appRouter
+                            )
+                        }
+                    )
+                    .id(question.id)
+                }
+                else {
+                    Text("Error! No Active Question Data")
+                        .font(.body)
+                        .foregroundStyle(Color(.secondaryLabel))
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
-            .safeAreaPadding(.horizontal, 16)
+            else {
+                Text("Error! No Story Data")
+                    .font(.body)
+                    .foregroundStyle(Color(.secondaryLabel))
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
+        .frame(maxHeight: .infinity, alignment: .top)
+        .navigationTitle(viewModel.story.storyName)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading, content: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 17))
+                    .foregroundStyle(Color(.cDarkRed))
+            })
+        }
+        .toolbarBackground(.visible, for: .navigationBar)
+        .safeAreaPadding(.top, 8)
         .onAppear {
             if let user = sessionData.user {
                 viewModel.setup(userID: user.id)
@@ -33,81 +79,6 @@ struct CerdikiawanStoryView: View {
             else {
                 fatalError("User ID is not defined here!")
             }
-        }
-    }
-    
-    // MARK: - This function is used to display story and passage
-    @ViewBuilder
-    func build(character: CharacterEntity?) -> some View {
-        if let question = viewModel.practiceList.last {
-            // If passage has been displayed, show question
-            if viewModel.passageDisplayed {
-                switch question.question {
-                case let wordMatch as WordMatchEntity:
-                    VStack {
-                        CerdikiawanWordMatchView(
-                            page: question.page,
-                            data: wordMatch,
-                            character: character ?? .mock()[0],
-                            onContinueButtonAction: { result in
-                                viewModel.handleNext(result: result)
-                            }
-                        )
-                    }
-                    
-                case let wordBlank as WordBlankEntity:
-                    VStack {
-                        CerdikiawanWordBlankView(
-                            page: question.page,
-                            data: wordBlank,
-                            character: character ?? .mock()[0],
-                            onContinueButtonAction: { result in
-                                viewModel.handleNext(result: result)
-                            }
-                        )
-                    }
-                    
-                case let multipleChoice as MultipleChoiceEntity:
-                    VStack {
-                        CerdikiawanMultipleChoiceView(
-                            page: question.page,
-                            data: multipleChoice,
-                            character: character ?? .mock()[0],
-                            onContinueButtonAction: { result in
-                                viewModel.handleNext(result: result)
-                            }
-                        )
-                    }
-                    
-                default:
-                    Text("Error! Is not a Cerdikiawan Question")
-                        .font(.body)
-                        .foregroundStyle(Color(.secondaryLabel))
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
-            // else if passage has not been displayed, show the passage
-            else {
-                VStack {
-                    CerdikiawanPageView(page: question.page)
-                    Spacer()
-                    CerdikiawanButton(
-                        type: .primary,
-                        label: "Lanjutkan",
-                        action: {
-                            viewModel.handleNext()
-                        }
-                    )
-                }
-            }
-        }
-        else {
-            Text("Error! No Story Data")
-                .font(.body)
-                .foregroundStyle(Color(.secondaryLabel))
-                .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

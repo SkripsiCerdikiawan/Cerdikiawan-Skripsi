@@ -11,12 +11,14 @@ struct CerdikiawanMultipleChoiceView: View {
     @EnvironmentObject var appRouter: AppRouter
     @StateObject var viewModel: CerdikiawanMultipleChoiceViewModel
     
+    var onValidateAction: (() -> Void)?
     var onContinueButtonAction: (Bool) -> Void
     
     init(
         page: PageEntity,
         data: MultipleChoiceEntity,
         character: CharacterEntity,
+        onValidateAction: (() -> Void)? = nil,
         onContinueButtonAction: @escaping (Bool) -> Void
     ) {
         _viewModel = .init(
@@ -27,6 +29,7 @@ struct CerdikiawanMultipleChoiceView: View {
             )
         )
         self.onContinueButtonAction = onContinueButtonAction
+        self.onValidateAction = onValidateAction
     }
     
     var body: some View {
@@ -43,6 +46,7 @@ struct CerdikiawanMultipleChoiceView: View {
                 state: viewModel.characterDialogueState,
                 checkAnswerAction: {
                     viewModel.validateAnswer()
+                    onValidateAction?()
                 },
                 continueAction: {
                     onContinueButtonAction(viewModel.isCorrect)

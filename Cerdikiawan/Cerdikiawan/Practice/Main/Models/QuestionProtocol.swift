@@ -7,5 +7,7 @@
 
 protocol QuestionProtocol {
     var id: String { get set }
+    var type: QuestionType { get set }
     var feedback: FeedbackEntity { get set }
+    
 }

@@ -11,12 +11,14 @@ struct CerdikiawanWordMatchView: View {
     @EnvironmentObject var appRouter: AppRouter
     @StateObject var viewModel: CerdikiawanWordMatchViewModel
     
+    var onValidateAction: (() -> Void)?
     var onContinueButtonAction: (Bool) -> Void
     
     init(
         page: PageEntity,
         data: WordMatchEntity,
         character: CharacterEntity,
+        onValidateAction: (() -> Void)? = nil,
         onContinueButtonAction: @escaping (Bool) -> Void
     ) {
         _viewModel = .init(
@@ -27,6 +29,7 @@ struct CerdikiawanWordMatchView: View {
             )
         )
         self.onContinueButtonAction = onContinueButtonAction
+        self.onValidateAction = onValidateAction
     }
     
     var body: some View {
@@ -43,6 +46,7 @@ struct CerdikiawanWordMatchView: View {
                 state: viewModel.characterDialogueState,
                 checkAnswerAction: {
                     viewModel.validateAnswer()
+                    onValidateAction?()
                 },
                 continueAction: {
                     onContinueButtonAction(viewModel.isCorrect)
@@ -67,6 +71,9 @@ struct CerdikiawanWordMatchView: View {
                 page: .mock()[0],
                 data: .mock()[0],
                 character: .mock()[2],
+                onValidateAction: {
+                    debugPrint("On Validate Action")
+                },
                 onContinueButtonAction: { result in
                     debugPrint("Result status: \(result)")
                 }

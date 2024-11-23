@@ -104,19 +104,16 @@ class AppRouter: ObservableObject {
                 .safeAreaPadding(.horizontal, 16)
                 .navigationBarBackButtonHidden()
             }
-        case .storyCompletion:
+        case .storyCompletion(let result, let character, let onCompletion):
             ZStack {
                 Color(.cGray).ignoresSafeArea()
                 VStack {
-                    Text("Not yet implemented")
-                    CerdikiawanButton(
-                        label: "Back",
-                        action: {
-                            self.pop()
-                        }
+                    CerdikiawanResultView(
+                        character: character,
+                        resultData: result,
+                        onCompletionTap: onCompletion
                     )
                 }
-                .safeAreaPadding(.horizontal, 16)
                 .navigationBarBackButtonHidden()
             }
         case .profile:

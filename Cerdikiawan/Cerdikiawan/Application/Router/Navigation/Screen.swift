@@ -13,7 +13,7 @@ enum Screen {
     case home
     case searchLevel
     case practice(story: StoryEntity)
-    case storyCompletion
+    case storyCompletion(result: ResultDataEntity, character: CharacterEntity, onCompletion: () -> Void)
     case profile
     case reportDetail(report: ReportStoryEntity)
     case buyConfirmation(shopCharacter: ShopCharacterEntity)
