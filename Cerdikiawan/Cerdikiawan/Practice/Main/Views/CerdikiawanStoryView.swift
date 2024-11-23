@@ -65,9 +65,16 @@ struct CerdikiawanStoryView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading, content: {
-                Image(systemName: "xmark")
-                    .font(.system(size: 17))
-                    .foregroundStyle(Color(.cDarkRed))
+                Button(
+                    action: {
+                        appRouter.popToRoot()
+                    },
+                    label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 17))
+                            .foregroundStyle(Color(.cDarkRed))
+                    }
+                )
             })
         }
         .toolbarBackground(.visible, for: .navigationBar)
