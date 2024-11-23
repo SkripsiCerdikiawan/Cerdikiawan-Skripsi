@@ -5,7 +5,7 @@
 //  Created by Hans Arthur Cupiterson on 18/11/24.
 //
 
-struct WordMatchEntity {
+struct WordMatchEntity: QuestionProtocol {
     var id: String
     var prompt: String
     var questions: [WordMatchTextEntity] // List of question

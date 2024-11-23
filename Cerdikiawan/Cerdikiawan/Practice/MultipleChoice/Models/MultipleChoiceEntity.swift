@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MultipleChoiceEntity {
+struct MultipleChoiceEntity: QuestionProtocol {
     var id: String
     var question: String
     var answer: [MultipleChoiceAnswerEntity]

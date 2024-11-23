@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WordBlankEntity {
+struct WordBlankEntity: QuestionProtocol {
     var id: String
     var question: String
     var correctAnswerWord: String
