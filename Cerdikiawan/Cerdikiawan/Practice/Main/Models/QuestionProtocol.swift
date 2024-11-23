@@ -1,0 +1,13 @@
+//
+//  QuestionEntity.swift
+//  Cerdikiawan
+//
+//  Created by Hans Arthur Cupiterson on 22/11/24.
+//
+
+protocol QuestionProtocol {
+    var id: String { get set }
+    var type: QuestionType { get set }
+    var feedback: FeedbackEntity { get set }
+    
+}

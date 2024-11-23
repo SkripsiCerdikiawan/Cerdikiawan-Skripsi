@@ -21,6 +21,7 @@ struct CerdikiawanWordBlankContainer: View {
                 .font(.title2)
                 .fontWeight(.medium)
                 .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
             
             CerdikiawanLetterContainer(
                 value: $viewModel.word,

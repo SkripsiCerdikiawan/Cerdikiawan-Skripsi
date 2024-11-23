@@ -16,6 +16,7 @@ struct CerdikiawanMultipleChoiceContainer: View {
                 .font(.title2)
                 .fontWeight(.medium)
                 .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
             
             VStack(spacing: 8) {
                 ForEach(viewModel.data.answer, id: \.id) { answer in

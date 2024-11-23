@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct CerdikiawanResultView: View {
-    @EnvironmentObject var appRouter: AppRouter
-    @EnvironmentObject var sessionData: SessionData
-    
     @StateObject private var viewModel: ResultDataViewModels
+    var onCompletionTap: () -> Void
     
     init(
         character: CharacterEntity,
-        resultData: ResultDataEntity
+        resultData: ResultDataEntity,
+        onCompletionTap: @escaping () -> Void
     ){
         _viewModel = .init(wrappedValue: .init(
             character: character,
             resultEntity: resultData
         ))
+        self.onCompletionTap = onCompletionTap
     }
     
     var body: some View {
@@ -66,12 +66,7 @@ struct CerdikiawanResultView: View {
                     CerdikiawanButton(
                         label: "Kembali ke halaman awal",
                         action: {
-                            if let user = sessionData.user {
-                                let dataSaved = viewModel.saveAttemptData(userID: user.id)
-                                if dataSaved {
-                                    appRouter.popToRoot()
-                                }
-                            }
+                            onCompletionTap()
                         }
                     )
                 }
@@ -104,7 +99,10 @@ struct CerdikiawanResultView: View {
             VStack {
                 CerdikiawanResultView(
                     character: .mock()[0],
-                    resultData: ResultDataEntity.mock()[1]
+                    resultData: ResultDataEntity.mock()[1],
+                    onCompletionTap: {
+                        debugPrint("Complete...")
+                    }
                 )
             }
             .navigationDestination(for: Screen.self, destination: { screen in

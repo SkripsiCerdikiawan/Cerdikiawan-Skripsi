@@ -16,6 +16,10 @@ extension CharacterEntity {
     static func mock() -> [CharacterEntity] {
         return [
             .init(
+                id: "id-04",
+                name: "budi"
+            ),
+            .init(
                 id: "id-01",
                 name: "juan"
             ),
@@ -26,11 +30,7 @@ extension CharacterEntity {
             .init(
                 id: "id-03",
                 name: "bryon"
-            ),
-            .init(
-                id: "id-04",
-                name: "budi"
-            ),
+            )
         ]
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct CerdikiawanProgressBar: View {
     let minimum: Double
     let maximum: Double
-    @Binding var value: Double
+    @Binding var value: Int
     
     @State private var style: CerdikiawanProgressBarStyle = .empty
     
@@ -45,15 +45,15 @@ struct CerdikiawanProgressBar: View {
     }
     
     func calculateBarWidth(totalWidth: CGFloat) -> CGFloat {
-        let percentage = (value - minimum) / (maximum - minimum)
+        let percentage = (Double(value) - minimum) / (maximum - minimum)
         let clampedPercentage = min(max(percentage, 0), 1)
         return totalWidth * CGFloat(clampedPercentage)
     }
     
     func changeStyle() {
-        if value <= minimum {
+        if Double(value) <= minimum {
             self.style = .empty
-        } else if value >= maximum {
+        } else if Double(value) >= maximum {
             self.style = .complete
         } else {
             self.style = .filled
@@ -64,7 +64,7 @@ struct CerdikiawanProgressBar: View {
 
 #Preview {
     @Previewable
-    @State var value: Double = 0
+    @State var value: Int = 0
     
     ZStack {
         Color(.cGray).ignoresSafeArea()

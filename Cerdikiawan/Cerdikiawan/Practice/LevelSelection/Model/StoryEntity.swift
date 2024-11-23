@@ -8,36 +8,40 @@
 import Foundation
 
 struct StoryEntity {
-    let storyId: UUID
+    let storyId: String
     let storyName: String
     let storyDescription: String
     let storyImageName: String
-    let availableCoinToGain: Int
+    let baseBalance: Int
+    
+    var availableCoinToGain: Int {
+        return baseBalance * 10
+    }
 }
 
 extension StoryEntity {
     static func mock() -> [Self] {
         return [
             .init(
-                storyId: UUID(),
+                storyId: "story-mock-01",
                 storyName: "Perjalanan Budi ke Pasar",
                 storyDescription: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
                 storyImageName: "DEBUG_IMAGE",
-                availableCoinToGain: 30
+                baseBalance: 1
             ),
             .init(
-                storyId: UUID(),
+                storyId: "story-mock-02",
                 storyName: "Perjalanan Budi ke Pasar",
                 storyDescription: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
                 storyImageName: "DEBUG_IMAGE",
-                availableCoinToGain: 30
+                baseBalance: 5
             ),
             .init(
-                storyId: UUID(),
+                storyId: "story-mock-03",
                 storyName: "Perjalanan Budi ke Pasar",
                 storyDescription: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
                 storyImageName: "DEBUG_IMAGE",
-                availableCoinToGain: 30
+                baseBalance: 10
             )
         ]
     }
