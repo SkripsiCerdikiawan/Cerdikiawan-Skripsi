@@ -26,7 +26,7 @@ struct CerdikiawanApp: App {
                 }
             })
             .onAppear() {
-                appRouter.startScreen = .home
+                appRouter.startScreen = .login
             }
             .environmentObject(appRouter)
             .environmentObject(sessionData)
