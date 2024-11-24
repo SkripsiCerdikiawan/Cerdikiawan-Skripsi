@@ -131,19 +131,22 @@ class AppRouter: ObservableObject {
             ZStack {
                 Color(.cGray).ignoresSafeArea()
                 VStack {
-                    Text("Not yet implemented")
-                    CerdikiawanButton(
-                        label: "Back",
-                        action: {
-                            self.pop()
-                        }
-                    )
+                    CerdikiawanBuyingConfirmationView(character: shopCharacter)
                 }
                 .safeAreaPadding(.horizontal, 16)
                 .navigationBarBackButtonHidden()
                 .onAppear() {
                     debugPrint("Buying \(shopCharacter.character.name)")
                 }
+            }
+        case .shop:
+            ZStack {
+                Color(.cGray).ignoresSafeArea()
+                VStack {
+                    CerdikiawanShopView()
+                }
+                .safeAreaPadding(.horizontal, 16)
+                .navigationBarBackButtonHidden()
             }
         }
     }
