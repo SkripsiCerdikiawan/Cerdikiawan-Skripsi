@@ -60,9 +60,8 @@ class AppRouter: ObservableObject {
             ZStack {
                 Color(.cGray).ignoresSafeArea()
                 VStack {
-                    CerdikiawanPracticeHomeView()
+                    CerdikiawanHomeView()
                 }
-                .safeAreaPadding(.horizontal, 16)
                 .navigationBarBackButtonHidden()
             }
         case .searchLevel:

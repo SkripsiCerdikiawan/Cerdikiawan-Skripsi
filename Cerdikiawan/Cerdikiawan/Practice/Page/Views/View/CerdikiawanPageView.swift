@@ -31,7 +31,7 @@ struct CerdikiawanPageView: View {
                     ForEach(viewmodel.data.paragraph, id: \.id, content: { paragraph in
                         CerdikiawanParagraph(
                             content: paragraph.paragraphText,
-                            state: determineState(paragraph: paragraph),
+                            state: viewmodel.determineState(paragraph: paragraph),
                             onVoiceButtonTapped: {
                                 viewmodel.handleVoiceOverTap(paragraph: paragraph)
                             }
@@ -43,11 +43,12 @@ struct CerdikiawanPageView: View {
             
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .onDisappear() {
+            VoiceOverHelper.shared.stopVoiceOver()
+        }
     }
     
-    private func determineState(paragraph: ParagraphEntity) -> CerdikiawanVoiceOverButtonType {
-        return viewmodel.activeVoiceOverID == paragraph.id ? .disabled : .enabled
-    }
+
 }
 
 #Preview {
