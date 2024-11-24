@@ -46,7 +46,9 @@ class CerdikiawanLoginViewModel: ObservableObject {
             return UserEntity.init(
                 id: loggedInUser.uid.uuidString,
                 name: loggedInProfile.profileName,
-                balance: loggedInProfile.profileBalance
+                email: loggedInUser.email ?? "",
+                balance: loggedInProfile.profileBalance,
+                dateOfBirth: DateUtils.getDatabaseDate(from: loggedInProfile.profileBirthDate) ?? Date()
             )
             
         } catch {

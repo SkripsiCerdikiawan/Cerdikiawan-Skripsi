@@ -54,7 +54,9 @@ class CerdikiawanRegisterViewModel: ObservableObject {
             return UserEntity.init(
                 id: registeredUser.uid.uuidString,
                 name: registeredProfile.profileName,
-                balance: registeredProfile.profileBalance
+                email: registeredUser.email ?? "",
+                balance: registeredProfile.profileBalance,
+                dateOfBirth: DateUtils.getDatabaseDate(from: registeredProfile.profileBirthDate) ?? Date()
             )
             
         } catch {
