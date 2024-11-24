@@ -48,7 +48,7 @@ class CerdikiawanLoginViewModel: ObservableObject {
                 name: loggedInProfile.profileName,
                 email: loggedInUser.email ?? "",
                 balance: loggedInProfile.profileBalance,
-                dateOfBirth: DateUtils.getDate(from: loggedInProfile.profileBirthDate) ?? Date()
+                dateOfBirth: DateUtils.getDatabaseDate(from: loggedInProfile.profileBirthDate) ?? Date()
             )
             
         } catch {

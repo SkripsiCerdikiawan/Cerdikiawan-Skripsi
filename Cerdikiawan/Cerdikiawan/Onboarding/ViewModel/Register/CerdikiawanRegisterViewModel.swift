@@ -56,7 +56,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
                 name: registeredProfile.profileName,
                 email: registeredUser.email ?? "",
                 balance: registeredProfile.profileBalance,
-                dateOfBirth: DateUtils.getDate(from: registeredProfile.profileBirthDate) ?? Date()
+                dateOfBirth: DateUtils.getDatabaseDate(from: registeredProfile.profileBirthDate) ?? Date()
             )
             
         } catch {

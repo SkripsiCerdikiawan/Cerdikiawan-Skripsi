@@ -34,9 +34,18 @@ struct CerdikiawanProfileView: View {
                             .padding(.leading, 4)
                         CerdikiawanTextField(placeholder: "Nama lengkap anak", text: $viewModel.nameText)
                     }
-                    CerdikiawanDatePickerField(placeholder: "Tanggal lahir anak", date: $viewModel.dateOfBirthPicker)
+                    VStack (alignment: .leading) {
+                        CerdikiawanDatePickerField(placeholder: "Tanggal lahir anak", date: $viewModel.dateOfBirthPicker)
+                        if let error = viewModel.errorMessage {
+                            Text(error)
+                                .font(.footnote)
+                                .fontWeight(.regular)
+                                .foregroundStyle(Color(.cDarkRed))
+                                .padding(.leading, 8)
+                        }
+                    }
                 }
-                VStack {
+                VStack(alignment: .leading) {
                     Text("Akun")
                         .font(.caption)
                         .fontWeight(.regular)
@@ -48,25 +57,22 @@ struct CerdikiawanProfileView: View {
             
             Spacer()
             
-            if viewModel.isDataChanged {
-                CerdikiawanButton(type: .primary, label: "Simpan perubahan data", action: {
-                    Task {
-                        try await viewModel.updateProfile()
-                    }
+            VStack(spacing: 16) {
+                if viewModel.isDataChanged {
+                    CerdikiawanButton(type: .primary, label: "Simpan perubahan data", action: {
+                        Task {
+                            try await viewModel.updateProfile()
+                        }
+                    })
+                }
+                
+                CerdikiawanButton(type: .destructive, label: "Keluar", action: {
+                    viewModel.showLogoutConfirmation = true
                 })
             }
-            
-            CerdikiawanButton(type: .destructive, label: "Keluar", action: {
-                Task {
-                    let logoutStatus = try await viewModel.logout()
-                    
-                    if logoutStatus {
-                        sessionData.user = nil
-                        appRouter.popToRoot()
-                    }
-                }
-            })
         }
+        .padding(.top, 16)
+        .padding(.bottom, 40)
         .alert("Konfirmasi Keluar", isPresented: $viewModel.showLogoutConfirmation) {
                     Button("Batalkan", role: .cancel) { }
                     Button("Keluar", role: .destructive) {
