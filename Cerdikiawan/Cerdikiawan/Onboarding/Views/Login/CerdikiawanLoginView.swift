@@ -59,7 +59,7 @@ struct CerdikiawanLoginView: View {
                     Task {
                         if let user = try await viewModel.login() {
                             sessionData.user = user
-                            appRouter.push(.home)
+                            appRouter.push(.shop)
                         }
                     }
                 })

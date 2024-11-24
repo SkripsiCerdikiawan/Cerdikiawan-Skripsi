@@ -17,6 +17,7 @@ enum Screen {
     case profile
     case reportDetail(report: ReportStoryEntity)
     case buyConfirmation(shopCharacter: ShopCharacterEntity)
+    case shop
 }
 
 extension Screen: Identifiable {
@@ -40,7 +41,8 @@ extension Screen: Equatable {
             (.storyCompletion, .storyCompletion),
             (.profile, .profile),
             (.reportDetail, .reportDetail),
-            (.buyConfirmation, .buyConfirmation):
+            (.buyConfirmation, .buyConfirmation),
+            (.shop, .shop):
             return true
         default:
             return false
