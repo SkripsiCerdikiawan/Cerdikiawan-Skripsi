@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct CerdikiawanHomeView: View {
     @EnvironmentObject var appRouter: AppRouter
     
     @State private var tabSelection: HomeTabSelection = .practice
@@ -15,7 +15,7 @@ struct HomeView: View {
     var body: some View {
         VStack {
             TabView(selection: $tabSelection) {
-                CerdikiawanPracticeHomeView()
+                CerdikiawanPracticeView()
                     .tag(HomeTabSelection.practice)
                     .tabItem({
                         Label(title: {
@@ -59,7 +59,7 @@ struct HomeView: View {
         ZStack {
             Color(.cGray).ignoresSafeArea()
             VStack {
-                HomeView()
+                CerdikiawanHomeView()
             }
             .navigationDestination(for: Screen.self, destination: { screen in
                 appRouter.build(screen)

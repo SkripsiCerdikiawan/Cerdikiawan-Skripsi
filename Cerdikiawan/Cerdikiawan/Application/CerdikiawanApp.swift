@@ -26,7 +26,10 @@ struct CerdikiawanApp: App {
                 }
             })
             .onAppear() {
-                appRouter.startScreen = .login
+                appRouter.startScreen = .home
+                #if DEBUG
+                sessionData.user = .mock()[0]
+                #endif
             }
             .environmentObject(appRouter)
             .environmentObject(sessionData)

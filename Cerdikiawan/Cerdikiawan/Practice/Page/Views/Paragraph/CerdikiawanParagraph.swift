@@ -25,6 +25,7 @@ struct CerdikiawanParagraph: View {
             Text(content)
                 .multilineTextAlignment(.leading)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

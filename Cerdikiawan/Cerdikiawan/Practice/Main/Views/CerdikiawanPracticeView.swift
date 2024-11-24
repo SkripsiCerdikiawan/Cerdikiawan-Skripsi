@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CerdikiawanPracticeHomeView: View {
+struct CerdikiawanPracticeView: View {
     @EnvironmentObject var appRouter: AppRouter
     
     @StateObject private var viewModel: LevelListViewModel = .init()
@@ -86,7 +86,7 @@ struct CerdikiawanPracticeHomeView: View {
         ZStack {
             Color(.cGray).ignoresSafeArea()
             VStack {
-                CerdikiawanPracticeHomeView()
+                CerdikiawanPracticeView()
             }
             .navigationDestination(for: Screen.self, destination: { screen in
                 appRouter.build(screen)
