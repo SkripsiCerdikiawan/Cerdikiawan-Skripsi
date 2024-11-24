@@ -45,8 +45,7 @@ struct CerdikiawanRegisterView: View {
                             .padding(.leading, 4)
                         CerdikiawanTextField(placeholder: "Nama Lengkap Anak", text: $viewModel.nameText)
                     }
-                    // TODO: Change this maybe to handle birth date
-                    CerdikiawanTextField(placeholder: "Tanggal lahir", text: $viewModel.dateOfBirthText)
+                    CerdikiawanDatePickerField(placeholder: "Tanggal lahir", date: $viewModel.dateOfBirthPicker)
                 }
                 
                 VStack(spacing: 12) {
@@ -59,11 +58,17 @@ struct CerdikiawanRegisterView: View {
                         CerdikiawanTextField(placeholder: "Email", text: $viewModel.emailText)
                     }
                     
-                    CerdikiawanTextField(placeholder: "Password", text: $viewModel.passwordText)
+                    CerdikiawanSecureField(placeholder: "Password", text: $viewModel.passwordText)
                     
-                    VStack {
-                        CerdikiawanTextField(placeholder: "Konfirmasi Password", text: $viewModel.passwordText)
-                        
+                    VStack(alignment: .leading) {
+                        CerdikiawanSecureField(placeholder: "Konfirmasi Password", text: $viewModel.confirmPasswordText)
+                        if let error = viewModel.errorMessage {
+                            Text(error)
+                                .font(.footnote)
+                                .fontWeight(.regular)
+                                .foregroundStyle(Color(.cDarkRed))
+                                .padding(.leading, 8)
+                        }
                     }
                 }
             }
@@ -74,7 +79,6 @@ struct CerdikiawanRegisterView: View {
                         if let user = try await viewModel.register() {
                             sessionData.user = user
                             
-                            //TODO: Check if this is best practice
                             appRouter.pop()
                             appRouter.push(.home)
                         }
@@ -93,5 +97,31 @@ struct CerdikiawanRegisterView: View {
 }
 
 #Preview {
-    CerdikiawanRegisterView()
+    @Previewable
+    @StateObject var appRouter: AppRouter = .init()
+    @Previewable
+    @StateObject var sessionData: SessionData = .init()
+    
+    NavigationStack(path: $appRouter.path) {
+        ZStack {
+            Color(.cGray).ignoresSafeArea()
+            VStack {
+                CerdikiawanRegisterView()
+            }
+            .navigationDestination(for: Screen.self, destination: { screen in
+                appRouter.build(screen)
+            })
+        }
+        .safeAreaPadding(.horizontal, 16)
+        .safeAreaPadding(.vertical, 16)
+    }
+    .environmentObject(appRouter)
+    .environmentObject(sessionData)
+    .sheet(item: $appRouter.sheet, content: { sheet in
+        appRouter.build(sheet)
+    })
+    .onAppear() {
+        sessionData.user = .mock()[0]
+    }
+    
 }
