@@ -104,13 +104,7 @@ class AppRouter: ObservableObject {
             ZStack {
                 Color(.cGray).ignoresSafeArea()
                 VStack {
-                    Text("Not yet implemented")
-                    CerdikiawanButton(
-                        label: "Back",
-                        action: {
-                            self.pop()
-                        }
-                    )
+                    CerdikiawanProfileView()
                 }
                 .safeAreaPadding(.horizontal, 16)
                 .navigationBarBackButtonHidden()

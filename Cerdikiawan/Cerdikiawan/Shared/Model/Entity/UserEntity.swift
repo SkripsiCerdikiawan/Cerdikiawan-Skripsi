@@ -5,10 +5,14 @@
 //  Created by Hans Arthur Cupiterson on 21/11/24.
 //
 
+import Foundation
+
 struct UserEntity {
     let id: String
     var name: String
+    var email: String
     var balance: Int
+    var dateOfBirth: Date
 }
 
 extension UserEntity {
@@ -17,7 +21,9 @@ extension UserEntity {
             .init(
                 id: "user-id-mock-01",
                 name: "NABIL RAFI SUKRI MAPPEABANG",
-                balance: 100
+                email: "nabil@cerdikiawan.com",
+                balance: 100,
+                dateOfBirth: Date()
             )
         ]
     }
