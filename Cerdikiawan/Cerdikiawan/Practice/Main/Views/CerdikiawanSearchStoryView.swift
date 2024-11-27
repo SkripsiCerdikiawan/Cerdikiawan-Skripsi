@@ -10,13 +10,26 @@ import SwiftUI
 struct CerdikiawanSearchStoryView: View {
     @EnvironmentObject var appRouter: AppRouter
     
-    @StateObject var viewModel: SearchStoryViewModel = .init()
+    @StateObject var viewModel: SearchStoryViewModel
+    
+    init() {
+        _viewModel = .init(
+            wrappedValue: .init(
+                storyRepository: SupabaseStoryRepository.shared
+            )
+        )
+    }
     
     var body: some View {
         VStack {
             CerdikiawanSearchField(placeholder: "Cari", text: $viewModel.searchText)
                 .padding()
-            if viewModel.searchResult.isEmpty {
+            if viewModel.isLoading {
+                Spacer()
+                ProgressView()
+                Spacer()
+            }
+            else if viewModel.searchResult.isEmpty {
                 Spacer()
                 Text("Bacaan tidak ditemukan")
                     .font(.body)
@@ -49,7 +62,9 @@ struct CerdikiawanSearchStoryView: View {
             }
         }
         .onChange(of: viewModel.searchText) { _, value in
-            viewModel.searchStory()
+            Task {
+                try await viewModel.searchStory()
+            }
         }
         .navigationTitle("Cari bacaan")
         .navigationBarTitleDisplayMode(.inline)
