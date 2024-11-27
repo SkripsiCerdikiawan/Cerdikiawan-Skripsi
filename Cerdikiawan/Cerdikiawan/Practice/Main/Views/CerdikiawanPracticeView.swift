@@ -10,7 +10,15 @@ import SwiftUI
 struct CerdikiawanPracticeView: View {
     @EnvironmentObject var appRouter: AppRouter
     
-    @StateObject private var viewModel: LevelListViewModel = .init()
+    @StateObject private var viewModel: LevelListViewModel
+    
+    init() {
+        _viewModel = .init(
+            wrappedValue: .init(
+                storyRepository: SupabaseStoryRepository.shared
+            )
+        )
+    }
     
     var body: some View {
         VStack {
@@ -43,7 +51,10 @@ struct CerdikiawanPracticeView: View {
             
             ScrollView {
                 VStack(spacing: 32) {
-                    if viewModel.levels.isEmpty == false {
+                    if viewModel.isLoading {
+                        ProgressView()
+                    }
+                    else if viewModel.levels.isEmpty == false {
                         ForEach(viewModel.levels, id: \.id) { level in
                             CerdikiawanLevelSelectionContainer(level: level)
                         }
@@ -73,7 +84,11 @@ struct CerdikiawanPracticeView: View {
                 .ignoresSafeArea(.container, edges: .top)
         )
         .onAppear() {
-            viewModel.setup()
+            Task {
+                viewModel.isLoading = true
+                try await viewModel.setup()
+                viewModel.isLoading = false
+            }
         }
     }
 }
