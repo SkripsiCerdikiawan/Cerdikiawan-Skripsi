@@ -68,13 +68,13 @@ struct CerdikiawanRecordView: View {
                         }
                     )
                 }
-                .padding(.horizontal, 16)
             }
             else {
                 ProgressView()
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .safeAreaPadding(.horizontal, 16)
         .onAppear() {
             self.viewModel.setup()
         }

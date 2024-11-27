@@ -111,7 +111,9 @@ class StoryViewModel: ObservableObject {
                 handleDisplayRecordPage()
             }
             else {
-                handleDisplayResultData(appRouter: appRouter)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+                    self?.handleDisplayResultData(appRouter: appRouter)
+                })
             }
             return
         }
@@ -123,7 +125,6 @@ class StoryViewModel: ObservableObject {
     // Function to dislay record view
     func handleDisplayRecordPage() {
         questionAnsweredFlag = true
-        currentPageIdx += 1 // TODO: Temp Remove Later
     }
     
     // Function that will be called after the user complete the story (Save Progress Data to user, etc)

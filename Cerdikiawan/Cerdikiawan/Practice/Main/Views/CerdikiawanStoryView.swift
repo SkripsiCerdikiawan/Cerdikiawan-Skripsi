@@ -34,10 +34,8 @@ struct CerdikiawanStoryView: View {
                     CerdikiawanRecordView(
                         story: viewModel.story,
                         character: viewModel.userCharacter ?? .mock()[0],
-                        onFinishRecordingAction: {
-                            viewModel.currentPageIdx += 1
-                        },
                         onContinueButtonAction: {
+                            viewModel.currentPageIdx += 1
                             viewModel.handleNext()
                         }
                     )

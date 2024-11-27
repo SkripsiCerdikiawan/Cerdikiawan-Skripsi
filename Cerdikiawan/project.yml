@@ -33,6 +33,7 @@ targets:
             UIInterfaceOrientationLandscapeLeft,
             UIInterfaceOrientationLandscapeRight,
           ]
+        NSMicrophoneUsageDescription: "This app requires microphone access to record audio for voice input features."
     dependencies:
       - package: supabase-swift
         products:

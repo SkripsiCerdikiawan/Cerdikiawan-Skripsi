@@ -38,6 +38,7 @@ struct CerdikiawanRecordContainer: View {
                             }
                         }
                     })
+                    .scrollIndicators(.hidden)
                     Text("Cuplikan cerita")
                         .font(.caption)
                         .foregroundStyle(Color(.secondaryLabel))

@@ -14,9 +14,13 @@ class VoiceRecordingHelper: NSObject, AVAudioPlayerDelegate {
     private var session: AVAudioSession
     private var recordingURL: URL?
     
+    private var completionHandler: (() -> Void)?
+    
     override init() {
         self.session = AVAudioSession.sharedInstance()
         super.init()
+        
+        self.deleteAllRecordingsOnStartup()
     }
     
     func getRecordingURL() -> URL? {
@@ -79,12 +83,15 @@ class VoiceRecordingHelper: NSObject, AVAudioPlayerDelegate {
             if let player = audioPlayer, player.isPlaying {
                 player.stop()
             }
-            
+
             audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.delegate = self
+            audioPlayer?.delegate = self // Ensure the delegate is set
             audioPlayer?.prepareToPlay()
             audioPlayer?.play()
             debugPrint("Playing sound from \(url.lastPathComponent)")
+            
+            // Store the completion handler for later use
+            self.completionHandler = completion
         } catch {
             debugPrint("Failed to play sound: \(error.localizedDescription)")
         }
@@ -102,7 +109,11 @@ class VoiceRecordingHelper: NSObject, AVAudioPlayerDelegate {
     // AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         debugPrint("Sound finished playing.")
+
         player.stop()
+        // Call the completion handler if it exists
+        completionHandler?()
+        completionHandler = nil // Reset the handler
     }
     
     func deleteLastRecording() {
@@ -117,6 +128,32 @@ class VoiceRecordingHelper: NSObject, AVAudioPlayerDelegate {
             self.recordingURL = nil
         } catch {
             debugPrint("Failed to delete recording: \(error.localizedDescription)")
+        }
+    }
+    
+    func deleteAllRecordingsOnStartup() {
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        do {
+            let fileURLs = try FileManager.default.contentsOfDirectory(at: path, includingPropertiesForKeys: nil)
+            for fileURL in fileURLs {
+                if fileURL.pathExtension == "wav" {
+                    try FileManager.default.removeItem(at: fileURL)
+                    debugPrint("Deleted recording: \(fileURL.lastPathComponent)")
+                }
+            }
+        } catch {
+            debugPrint("Failed to delete recordings: \(error.localizedDescription)")
+        }
+    }
+}
+
+
+extension VoiceRecordingHelper {
+    func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
+        AVAudioApplication.requestRecordPermission { granted in
+            DispatchQueue.main.async {
+                completion(granted)
+            }
         }
     }
 }

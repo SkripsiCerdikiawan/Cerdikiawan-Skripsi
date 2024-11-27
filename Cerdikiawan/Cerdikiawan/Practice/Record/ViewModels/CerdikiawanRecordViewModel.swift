@@ -42,10 +42,14 @@ class CerdikiawanRecordViewModel: ObservableObject {
     // MARK: - Business Logic
     func handleRecord() {
         debugPrint("Recording...")
-        self.characterState = .recording
-        self.recordState = .recording
         
-        self.voiceRecordHelper.startRecording()
+        self.voiceRecordHelper.requestMicrophonePermission { granted in
+            if granted {
+                self.voiceRecordHelper.startRecording()
+                self.characterState = .recording
+                self.recordState = .recording
+            }
+        }
     }
     
     func handleStopRecord() {
