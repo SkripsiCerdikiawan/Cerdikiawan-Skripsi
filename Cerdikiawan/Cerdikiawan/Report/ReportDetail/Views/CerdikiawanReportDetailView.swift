@@ -81,9 +81,9 @@ struct CerdikiawanReportDetailView: View {
                         appRouter.popToRoot()
                     },
                     label: {
-                        Image(systemName: "xmark")
+                        Image(systemName: "chevron.left")
                             .font(.system(size: 17))
-                            .foregroundStyle(Color(.cDarkRed))
+                            .foregroundStyle(Color(.cDarkBlue))
                     }
                 )
             })
