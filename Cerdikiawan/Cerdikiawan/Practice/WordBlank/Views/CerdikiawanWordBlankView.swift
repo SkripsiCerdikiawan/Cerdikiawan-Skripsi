@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CerdikiawanWordBlankView: View {
-    @EnvironmentObject var appRouter: AppRouter
     @StateObject var viewModel: CerdikiawanWordBlankViewModel
     
     var onValidateAction: (() -> Void)?

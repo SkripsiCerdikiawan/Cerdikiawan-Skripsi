@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CerdikiawanMultipleChoiceView: View {
-    @EnvironmentObject var appRouter: AppRouter
     @StateObject var viewModel: CerdikiawanMultipleChoiceViewModel
     
     var onValidateAction: (() -> Void)?

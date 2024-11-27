@@ -12,7 +12,7 @@ class QuestionViewModel: ObservableObject {
     let character: CharacterEntity
     
     @Published var passageDisplayed: Bool = false
-    @Published var readingTimeSecond: Int = 4
+    @Published var readingTimeSecond: Int = 0
     @Published var continueButtonDisabled: Bool = true
     
     init(

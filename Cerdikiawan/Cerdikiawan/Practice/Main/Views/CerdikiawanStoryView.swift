@@ -24,21 +24,30 @@ struct CerdikiawanStoryView: View {
             if viewModel.questionList.isEmpty == false {
                 CerdikiawanProgressBar(
                     minimum: 0,
-                    maximum: Double(viewModel.questionList.count),
+                    maximum: Double(viewModel.questionList.count + 1),
                     value: $viewModel.currentPageIdx
                 )
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 
-                if let question = viewModel.activeQuestion {
+                if viewModel.questionAnsweredFlag {
+                    CerdikiawanRecordView(
+                        story: viewModel.story,
+                        character: viewModel.userCharacter ?? .mock()[0],
+                        onContinueButtonAction: {
+                            viewModel.currentPageIdx += 1
+                            viewModel.handleNext()
+                        }
+                    )
+                }
+                else if let question = viewModel.activeQuestion {
                     CerdikiawanQuestionView(
                         data: question,
                         character: viewModel.userCharacter ?? .mock()[0],
                         currentProgress: $viewModel.currentPageIdx,
                         onQuestionAnswered: { isCorrect in
                             viewModel.handleNext(
-                                isCorrect: isCorrect,
-                                appRouter: appRouter
+                                isCorrect: isCorrect
                             )
                         }
                     )
@@ -81,7 +90,10 @@ struct CerdikiawanStoryView: View {
         .safeAreaPadding(.top, 8)
         .onAppear {
             if let user = sessionData.user {
-                viewModel.setup(userID: user.id)
+                viewModel.setup(
+                    userID: user.id,
+                    appRouter: appRouter
+                )
             }
             else {
                 fatalError("User ID is not defined here!")
