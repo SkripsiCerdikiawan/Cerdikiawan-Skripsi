@@ -31,7 +31,7 @@ extension StoryEntity {
             ),
             .init(
                 storyId: "story-mock-02",
-                storyName: "Perjalanan Budi ke Pasar",
+                storyName: "Perjalanan Amir ke Pasar",
                 storyDescription: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
                 storyImageName: "DEBUG_IMAGE",
                 baseBalance: 5
