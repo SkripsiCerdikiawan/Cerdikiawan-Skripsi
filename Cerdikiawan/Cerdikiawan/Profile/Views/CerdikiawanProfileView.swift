@@ -71,7 +71,6 @@ struct CerdikiawanProfileView: View {
                 })
             }
         }
-        .padding(.top, 16)
         .padding(.bottom, 40)
         .alert("Konfirmasi Keluar", isPresented: $viewModel.showLogoutConfirmation) {
                     Button("Batalkan", role: .cancel) { }
@@ -93,6 +92,24 @@ struct CerdikiawanProfileView: View {
                 viewModel.setUserData(user: user)
             }
         }
+        .safeAreaPadding(.top, 32)
+        .navigationTitle("Profil")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading, content: {
+                Button(
+                    action: {
+                        appRouter.popToRoot()
+                    },
+                    label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 17))
+                            .foregroundStyle(Color(.cDarkRed))
+                    }
+                )
+            })
+        }
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 }
 
@@ -113,7 +130,6 @@ struct CerdikiawanProfileView: View {
             })
         }
         .safeAreaPadding(.horizontal, 16)
-        .safeAreaPadding(.vertical, 16)
     }
     .environmentObject(appRouter)
     .environmentObject(sessionData)
