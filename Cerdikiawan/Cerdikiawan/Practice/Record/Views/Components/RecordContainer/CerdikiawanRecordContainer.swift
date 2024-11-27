@@ -16,6 +16,7 @@ struct CerdikiawanRecordContainer: View {
     var onStopButtonPressed: () -> Void
     var onReplayButtonPressed: () -> Void
     var onPauseButtonPressed: () -> Void
+    var onReRecordButtonPressed: () -> Void
     
     var body: some View {
         VStack(spacing: 40) {
@@ -88,7 +89,7 @@ struct CerdikiawanRecordContainer: View {
                 CerdikiawanRecordButton(
                     type: .rerecord,
                     onTapAction: {
-                        onRecordButtonPressed()
+                        onReRecordButtonPressed()
                     }
                 )
             }
@@ -125,6 +126,10 @@ struct CerdikiawanRecordContainer: View {
                 onPauseButtonPressed: {
                     isPlaying = false
                     debugPrint("Pause Button Pressed")
+                },
+                onReRecordButtonPressed: {
+                    isPlaying = false
+                    debugPrint("Rerecord Button Pressed")
                 }
             )
             

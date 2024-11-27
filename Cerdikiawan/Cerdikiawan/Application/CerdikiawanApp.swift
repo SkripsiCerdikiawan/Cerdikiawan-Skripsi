@@ -33,6 +33,7 @@ struct CerdikiawanApp: App {
             }
             .environmentObject(appRouter)
             .environmentObject(sessionData)
+            .preferredColorScheme(.light)
         }
     }
 }
