@@ -19,19 +19,19 @@ extension ReportLevelEntity {
                 id: "level-1-id",
                 level: 1,
                 levelDescription: "Awal untuk meningkatkan pemahaman membaca",
-                stories: ReportStoryEntity.mock()
+                stories: []
             ),
             .init(
                 id: "level-2-id",
                 level: 2,
                 levelDescription: "Sedikit tantangan untuk menguji kemampuan membacamu!",
-                stories: ReportStoryEntity.mock()
+                stories: []
             ),
             .init(
                 id: "level-3-id",
                 level: 3,
                 levelDescription: "Buktikan disini kalau kamu mempunyai pemahaman membaca yang baik!",
-                stories: ReportStoryEntity.mock()
+                stories: []
             )
         ].sorted(by: { $0.level < $1.level })
     }
