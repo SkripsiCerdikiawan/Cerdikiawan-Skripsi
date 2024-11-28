@@ -11,7 +11,17 @@ struct CerdikiawanShopView: View {
     @EnvironmentObject var appRouter: AppRouter
     @EnvironmentObject var sessionData: SessionData
     
-    @StateObject private var viewModel: ShopCharacterViewModel = .init()
+    @StateObject private var viewModel: ShopCharacterViewModel
+    
+    init() {
+        _viewModel = .init(
+            wrappedValue: .init(
+                shopRepository: SupabaseShopRepository.shared,
+                characterRepository: SupabaseCharacterRepository.shared,
+                ownedCharacterRepository: SupabaseProfileOwnedCharacterRepository.shared
+            )
+        )
+    }
     
     var body: some View {
         VStack {
@@ -56,11 +66,13 @@ struct CerdikiawanShopView: View {
                                     shopCharacter: shopCharacter,
                                     type: viewModel.determineCharacterState(shopCharacter: shopCharacter),
                                     onTapAction: {
-                                        if let user = sessionData.user {
-                                            viewModel.setActiveCharacter(
-                                                userID: user.id,
-                                                character: shopCharacter.character
-                                            )
+                                        Task {
+                                            if let user = sessionData.user {
+                                                try await viewModel.setActiveCharacter(
+                                                    userID: user.id,
+                                                    character: shopCharacter.character
+                                                )
+                                            }
                                         }
                                     }
                                 )
@@ -111,8 +123,10 @@ struct CerdikiawanShopView: View {
                 .ignoresSafeArea(.container, edges: .top)
         )
         .onAppear(){
-            if let user = sessionData.user {
-                viewModel.setup(user: user)
+            Task {
+                if let user = sessionData.user {
+                    try await viewModel.setup(user: user)
+                }
             }
         }
     }
