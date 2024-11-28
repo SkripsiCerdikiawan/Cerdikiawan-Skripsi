@@ -11,9 +11,18 @@ class ReportDataViewModel: ObservableObject {
     @Published var reportData: ReportDataEntity?
     @Published var levelList: [ReportLevelEntity] = []
     
-    func setup() {
+    private var storyRepository: StoryRepository
+    private var attemptRepository: AttemptRepository
+    
+    init(storyRepository: StoryRepository, attemptRepository: AttemptRepository) {
+        self.storyRepository = storyRepository
+        self.attemptRepository = attemptRepository
+    }
+    
+    @MainActor
+    func setup() async throws {
         reportData = fetchReportData()
-        levelList = fetchLevelListData()
+        levelList = try await fetchLevelListData()
     }
     
     // TODO: Replace with repo
@@ -21,9 +30,32 @@ class ReportDataViewModel: ObservableObject {
         return ReportDataEntity.mock()[3]
     }
     
-    // TODO: Replace with repo
-    func fetchLevelListData() -> [ReportLevelEntity] {
-        return ReportLevelEntity.mock()
+    @MainActor
+    func fetchLevelListData() async throws -> [ReportLevelEntity] {
+        var levelList = ReportLevelEntity.mock()
+        let (stories, status) = try await storyRepository.fetchStories()
+        
+        guard status == .success else {
+            debugPrint("Fetch unsuccessful")
+            return []
+        }
+        
+        for story in stories {
+            let entity = ReportStoryEntity(storyId: story.storyId,
+                                     storyName: story.storyName,
+                                     storyDescription: story.storyDescription,
+                                     storyImageName: story.storyCoverImagePath,
+                                     attemptStatus: false // MARK: Discuss with Hans
+            )
+            if var level = levelList.first(where: {$0.level == story.storyLevel}) {
+                level.stories.append(entity)
+                // Update the levelList with the modified level
+                if let index = levelList.firstIndex(where: { $0.level == story.storyLevel }) {
+                    levelList[index] = level
+                }
+            }
+        }
+        return levelList
     }
     
     // MARK: - Business Logic

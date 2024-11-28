@@ -11,7 +11,16 @@ struct CerdikiawanReportView: View {
     @EnvironmentObject var appRouter: AppRouter
     @EnvironmentObject var sessionData: SessionData
     
-    @StateObject private var viewModel: ReportDataViewModel = .init()
+    @StateObject private var viewModel: ReportDataViewModel
+    
+    init () {
+        _viewModel = .init(
+            wrappedValue: .init(
+                storyRepository: SupabaseStoryRepository.shared,
+                attemptRepository: SupabaseAttemptRepository.shared
+            )
+        )
+    }
     
     var body: some View {
         VStack {
@@ -135,7 +144,9 @@ struct CerdikiawanReportView: View {
                 .ignoresSafeArea(.container, edges: .top)
         )
         .onAppear() {
-            viewModel.setup()
+            Task {
+                try await viewModel.setup()
+            }
         }
     }
 }
