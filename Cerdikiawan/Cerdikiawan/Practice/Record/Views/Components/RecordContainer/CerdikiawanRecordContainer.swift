@@ -32,7 +32,7 @@ struct CerdikiawanRecordContainer: View {
                     ScrollView(.horizontal, content: {
                         HStack(spacing: 12) {
                             ForEach(storySnapshot, id: \.self) { imageName in
-                                Image(imageName)
+                                Image(uiImage: UIImage(named: imageName) ?? UIImage(imageLiteralResourceName: "NOTFOUND_IMAGE"))
                                     .resizable()
                                     .frame(width: 300, height: 150)
                             }

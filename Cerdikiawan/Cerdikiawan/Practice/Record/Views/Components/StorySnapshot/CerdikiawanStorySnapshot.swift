@@ -12,7 +12,7 @@ struct CerdikiawanStorySnapshot: View {
     
     var body: some View {
         VStack {
-            Image(imageName)
+            Image(uiImage: UIImage(named: imageName) ?? UIImage(imageLiteralResourceName: "NOTFOUND_IMAGE"))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: 320)

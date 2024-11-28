@@ -17,8 +17,9 @@ struct CerdikiawanLevelSelectionCard: View {
     var body: some View {
         VStack {
             // Image
-            Image(imageName)
-                .resizable().frame(height: 112)
+            Image(uiImage: UIImage(named: imageName) ?? UIImage(imageLiteralResourceName: "NOTFOUND_IMAGE"))
+                .resizable()
+                .frame(height: 112)
             
             VStack() {
                 VStack(alignment: .leading, spacing: 8) {
