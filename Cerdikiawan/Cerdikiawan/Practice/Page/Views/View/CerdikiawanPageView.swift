@@ -21,7 +21,7 @@ struct CerdikiawanPageView: View {
                 .fontWeight(.medium)
                 .multilineTextAlignment(.leading)
             
-            Image(viewmodel.data.storyImage)
+            Image(uiImage: UIImage(named: viewmodel.data.storyImage) ?? UIImage(imageLiteralResourceName: "NOTFOUND_IMAGE"))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: .infinity)

@@ -10,6 +10,6 @@ import Supabase
 
 class StorageLogger: SupabaseLogger, @unchecked Sendable {
     func log(message: SupabaseLogMessage) {
-        print(message.description)
+        debugPrint(message.description)
     }
 }

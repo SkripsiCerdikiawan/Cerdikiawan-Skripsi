@@ -19,7 +19,7 @@ struct CerdikiawanReportLevelCard: View {
     var body: some View {
         VStack {
             // Image
-            Image(imageName)
+            Image(uiImage: UIImage(named: imageName) ?? UIImage(imageLiteralResourceName: "NOTFOUND_IMAGE"))
                 .resizable().frame(height: 112)
             
             VStack() {
