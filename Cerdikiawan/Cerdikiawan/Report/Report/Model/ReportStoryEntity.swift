@@ -8,7 +8,7 @@
 import Foundation
 
 struct ReportStoryEntity {
-    let storyId: UUID
+    let storyId: String
     let storyName: String
     let storyDescription: String
     let storyImageName: String
@@ -19,21 +19,21 @@ extension ReportStoryEntity {
     static func mock() -> [ReportStoryEntity] {
         return [
             .init(
-                storyId: UUID(),
+                storyId: "report-story-1",
                 storyName: "Perjalanan Budi ke Pasar",
                 storyDescription: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
                 storyImageName: "DEBUG_IMAGE",
                 attemptStatus: true
             ),
             .init(
-                storyId: UUID(),
+                storyId: "report-story-2",
                 storyName: "Perjalanan Budi ke Pasar",
                 storyDescription: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
                 storyImageName: "DEBUG_IMAGE",
                 attemptStatus: false
             ),
             .init(
-                storyId: UUID(),
+                storyId: "report-story-3",
                 storyName: "Perjalanan Budi ke Pasar",
                 storyDescription: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
                 storyImageName: "DEBUG_IMAGE",

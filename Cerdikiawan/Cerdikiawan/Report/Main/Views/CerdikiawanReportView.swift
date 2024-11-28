@@ -145,6 +145,7 @@ struct CerdikiawanReportView: View {
         )
         .onAppear() {
             Task {
+                viewModel.userData = sessionData.user
                 try await viewModel.setup()
             }
         }
