@@ -8,6 +8,7 @@
 import Foundation
 
 class ReportDataViewModel: ObservableObject {
+    @Published var userId: String?
     @Published var reportData: ReportDataEntity?
     @Published var levelList: [ReportLevelEntity] = []
     
@@ -27,6 +28,8 @@ class ReportDataViewModel: ObservableObject {
     
     // TODO: Replace with repo
     func fetchReportData() -> ReportDataEntity {
+//        let request = AttemptFetchRequest(profileId: <#T##UUID#>)
+//        let (attempts, status) = try await attemptRepository.fetchAttempts(request: <#T##AttemptFetchRequest#>)
         return ReportDataEntity.mock()[3]
     }
     
