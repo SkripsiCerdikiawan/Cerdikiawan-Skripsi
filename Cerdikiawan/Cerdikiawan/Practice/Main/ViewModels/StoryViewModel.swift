@@ -16,6 +16,7 @@ class StoryViewModel: ObservableObject {
     let story: StoryEntity
     @Published var currentPageIdx: Int = 0
     @Published var correctCount: Int = 0
+    @Published var questionAnsweredFlag: Bool = false
     
     @Published var questionList: [PracticeEntity] = [] // Index and Content (For ensuring the view re-render on update)
     @Published var activeQuestion: PracticeEntity?
@@ -24,6 +25,8 @@ class StoryViewModel: ObservableObject {
     @Published var idePokok: IdePokokDataEntity = .init()
     @Published var implisit: ImplisitDataEntity = .init()
     
+    @Published var appRouter: AppRouter?
+    
     init(
         story: StoryEntity
     ) {
@@ -31,12 +34,14 @@ class StoryViewModel: ObservableObject {
     }
     
     func setup(
-        userID: String
+        userID: String,
+        appRouter: AppRouter
     ) {
         self.userID = userID
         self.userCharacter = fetchUserCharacter(userID: userID)
         self.questionList = fetchQuestionForPractice(userID: userID, storyID: story.storyId)
         self.activeQuestion = questionList.first
+        self.appRouter = appRouter
     }
     
     // TODO: Replace with Repo
@@ -52,22 +57,17 @@ class StoryViewModel: ObservableObject {
     // MARK: - Business Logic
     
     // Handle next after answering question
-    func handleNext(isCorrect: Bool, appRouter: AppRouter) {
-        if isCorrect == true {
-            correctCount += 1 // Add Correct Count
+    func handleNext(isCorrect: Bool? = nil) {
+        if let isCorrect = isCorrect {
+            if isCorrect == true {
+                correctCount += 1 // Add Correct Count
+            }
+            debugPrint("User Answer is Correct: \(isCorrect)")
+            
+            // Save Reading Comprehension Data
+            updateReadingComprehension(isCorrect: isCorrect)
         }
-        debugPrint("User Answer is Correct: \(isCorrect)")
-        
-        // Save Reading Comprehension Data
-        updateReadingComprehension(isCorrect: isCorrect)
-        
-        // Check if already end of page
-        guard currentPageIdx < questionList.count else {
-            debugPrint("All Question answered")
-            handleDisplayResultData(appRouter: appRouter)
-            return
-        }
-        
+
         // Display next page if not end of page
         displayNextPage()
     }
@@ -100,8 +100,31 @@ class StoryViewModel: ObservableObject {
     
     // Function to display next page to the user
     func displayNextPage() {
+        guard let appRouter = appRouter else {
+            fatalError("Error! App Router hasn't been setup")
+        }
+        
+        // Check if user already answered all question
+        guard currentPageIdx < questionList.count else {
+            debugPrint("All Question answered")
+            if currentPageIdx == questionList.count {
+                handleDisplayRecordPage()
+            }
+            else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+                    self?.handleDisplayResultData(appRouter: appRouter)
+                })
+            }
+            return
+        }
+        
         self.activeQuestion = questionList[currentPageIdx]
        
+    }
+    
+    // Function to dislay record view
+    func handleDisplayRecordPage() {
+        questionAnsweredFlag = true
     }
     
     // Function that will be called after the user complete the story (Save Progress Data to user, etc)

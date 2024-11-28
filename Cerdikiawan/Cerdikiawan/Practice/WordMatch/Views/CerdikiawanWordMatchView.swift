@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CerdikiawanWordMatchView: View {
-    @EnvironmentObject var appRouter: AppRouter
     @StateObject var viewModel: CerdikiawanWordMatchViewModel
     
     var onValidateAction: (() -> Void)?
