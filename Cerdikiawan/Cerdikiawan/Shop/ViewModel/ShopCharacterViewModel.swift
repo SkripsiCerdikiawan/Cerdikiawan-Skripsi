@@ -22,42 +22,143 @@ class ShopCharacterViewModel: ObservableObject {
     @Published var displayedOwnedCharacterList: [ShopCharacterEntity] = []
     @Published var displayedUnownedCharacterList: [ShopCharacterEntity] = []
     
+    private var shopRepository: ShopRepository
+    private var characterRepository: CharacterRepository
+    private var ownedCharacterRepository: ProfileOwnedCharacterRepository
+    
+    init(shopRepository: ShopRepository, characterRepository: CharacterRepository, ownedCharacterRepository: ProfileOwnedCharacterRepository) {
+        self.shopRepository = shopRepository
+        self.characterRepository = characterRepository
+        self.ownedCharacterRepository = ownedCharacterRepository
+    }
+    
+    @MainActor
     func setup(
         user: UserEntity
-    ){
+    ) async throws {
         // Fetch Data from Repo
         userBalance = user.balance
-        activeCharacterID = fetchActiveCharacterID(userID: user.id)
-        ownedCharacterID = fetchOwnedCharacterID(userID: user.id)
-        characterList = fetchAllAvailableCharacter()
+        activeCharacterID = try await fetchActiveCharacterID(userID: user.id)
+        ownedCharacterID = try await fetchOwnedCharacterID(userID: user.id)
+        characterList = try await fetchAllAvailableCharacter()
         
     }
     
     // TODO: Replace with repo
-    func fetchAllAvailableCharacter() -> [ShopCharacterEntity] {
-        return ShopCharacterEntity.mock()
+    @MainActor
+    func fetchAllAvailableCharacter() async throws -> [ShopCharacterEntity] {
+        var shopEntities: [ShopCharacterEntity] = []
+        let (shops, shopStatus) = try await shopRepository.fetchShopItems()
+        let (characters, characterStatus) = try await characterRepository.fetchCharacters()
+        
+        guard shopStatus == .success, characterStatus == .success else {
+            debugPrint("Database not fetched")
+            return []
+        }
+        
+        for shop in shops {
+            if let character = characters.first(where: { $0.characterId == shop.characterShopId}) {
+                let characterEntity = CharacterEntity(id: character.characterId.uuidString,
+                                                      name: character.characterName,
+                                                      imagePath: character.characterImagePath,
+                                                      description: character.characterDescription
+                )
+                let shopEntity = ShopCharacterEntity(character: characterEntity, price: shop.shopPrice)
+                shopEntities.append(shopEntity)
+            }
+        }
+        return shopEntities
     }
     
-    // TODO: Replace with repo
-    func fetchOwnedCharacterID(userID: String) -> [String] {
-        let mock = ShopCharacterEntity.mock().map({ $0.character.id })
-        return [
-            mock[0],
-            mock[1]
-        ]
+    
+    @MainActor
+    func fetchOwnedCharacterID(userID: String) async throws -> [String] {
+        var charactersId: [String] = []
+        guard let loggedInUserId = UUID(uuidString: "\(userID)") else {
+            debugPrint("User Id cannot be resolved")
+            return []
+        }
+        let request = ProfileOwnedCharacterFetchRequest(profileId: loggedInUserId)
+        let (ownedCharacters, status) = try await ownedCharacterRepository.fetchProfileOwnedCharacter(request: request)
+        
+        guard status == .success else {
+            debugPrint("Error fetching owned characters")
+            return []
+        }
+        
+        for character in ownedCharacters {
+            charactersId.append(character.characterId.uuidString)
+        }
+        
+        return charactersId
     }
     
-    // TODO: Replace with repo
-    func fetchActiveCharacterID(userID: String) -> String {
-        return ShopCharacterEntity.mock()[0].character.id
+    @MainActor
+    func fetchActiveCharacterID(userID: String) async throws -> String {
+        guard let loggedInUserId = UUID(uuidString: "\(userID)") else {
+            debugPrint("User Id cannot be resolved")
+            return ""
+        }
+        let request = ProfileOwnedCharacterFetchRequest(profileId: loggedInUserId)
+        let (ownedCharacters, status) = try await ownedCharacterRepository.fetchProfileOwnedCharacter(request: request)
+        
+        guard status == .success else {
+            debugPrint("Error fetching owned characters")
+            return ""
+        }
+        
+        if let activeCharacter = ownedCharacters.first(where: {$0.isChosen == true}) {
+            return activeCharacter.characterId.uuidString
+        } else {
+            return ""
+        }
     }
     
     // TODO: Replace with Repo
-    func setActiveCharacter(userID: String, character: CharacterEntity) {
+    @MainActor
+    func setActiveCharacter(userID: String, character: CharacterEntity) async throws {
+        guard let loggedInUserId = UUID(uuidString: "\(userID)") else {
+            debugPrint("User Id cannot be resolved")
+            return
+        }
+        
+        guard let newCharacter = UUID(uuidString: "\(character.id)") else {
+            debugPrint("new character Id cannot be resolved")
+            return
+        }
+        
+        guard let equippedCharacter = UUID(uuidString: "\(activeCharacterID)") else {
+            debugPrint("Active character Id cannot be resolved")
+            return
+        }
+        
         guard self.activeCharacterID != character.id else {
             debugPrint("Error! Active Character ID is the same with to select character")
             return
         }
+        
+        let oldRequest = ProfileOwnedCharacterUpdateRequest(profileId: loggedInUserId,
+                                                         characterId: equippedCharacter,
+                                                         isChosen: false
+        )
+        let (oldCharacter, deactivateStatus) = try await ownedCharacterRepository.updateProfileOwnedCharacter(request: oldRequest)
+        
+        guard oldCharacter != nil && deactivateStatus == .success else {
+            debugPrint("Failed to deactivate equipped character")
+            return
+        }
+        
+        let newRequest = ProfileOwnedCharacterUpdateRequest(profileId: loggedInUserId,
+                                                         characterId: newCharacter,
+                                                         isChosen: true
+        )
+        let (updatedNewCharacter, activateStatus) = try await ownedCharacterRepository.updateProfileOwnedCharacter(request: newRequest)
+        
+        guard updatedNewCharacter != nil && activateStatus == .success else {
+            debugPrint("Failed to activate new character")
+            return
+        }
+        
         self.activeCharacterID = character.id
         debugPrint("Set new active character")
     }
