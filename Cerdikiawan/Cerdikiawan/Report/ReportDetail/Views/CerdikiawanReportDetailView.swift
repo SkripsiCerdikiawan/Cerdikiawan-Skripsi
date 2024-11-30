@@ -64,9 +64,13 @@ struct CerdikiawanReportDetailView: View {
                                                        implisitPercentage: value.implisitPercentage,
                                                        buttonStyle: value.attemptId == viewModel.currentlyPlayedAttemptId ? .secondary : .primary,
                                                        onTapButtonAction: {
-                                    viewModel.currentlyPlayedAttemptId = value.attemptId
-                                    Task {
-                                        try await viewModel.playRecordSound(attemptId: value.attemptId)
+                                    if viewModel.currentlyPlayedAttemptId == value.attemptId {
+                                        viewModel.stopRecordSound()
+                                    } else {
+                                        viewModel.currentlyPlayedAttemptId = value.attemptId
+                                        Task {
+                                            try await viewModel.playRecordSound()
+                                        }
                                     }
                                 })
                             }
