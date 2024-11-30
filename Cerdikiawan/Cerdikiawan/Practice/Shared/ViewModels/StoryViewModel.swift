@@ -27,18 +27,26 @@ class StoryViewModel: ObservableObject {
     
     @Published var appRouter: AppRouter?
     
+    private var ownedCharacterRepository: ProfileOwnedCharacterRepository
+    private var characterRepository: CharacterRepository
+    
     init(
-        story: StoryEntity
+        story: StoryEntity,
+        ownedCharacterRepository: ProfileOwnedCharacterRepository,
+        characterRepository: CharacterRepository
     ) {
         self.story = story
+        self.ownedCharacterRepository = ownedCharacterRepository
+        self.characterRepository = characterRepository
     }
     
+    @MainActor
     func setup(
         userID: String,
         appRouter: AppRouter
-    ) {
+    ) async throws {
         self.userID = userID
-        self.userCharacter = fetchUserCharacter(userID: userID)
+        self.userCharacter = try await fetchUserCharacter(userID: userID)
         self.questionList = fetchQuestionForPractice(userID: userID, storyID: story.storyId)
         self.activeQuestion = questionList.first
         self.appRouter = appRouter
@@ -50,8 +58,61 @@ class StoryViewModel: ObservableObject {
     }
     
     // TODO: Replace With Repo
-    func fetchUserCharacter(userID: String) -> CharacterEntity {
-        return CharacterEntity.mock()[1]
+    @MainActor
+    func fetchUserCharacter(userID: String) async throws -> CharacterEntity {
+        guard let userId = UUID(uuidString: userID) else {
+            debugPrint("User ID is not valid")
+            return CharacterEntity.mock()[1]
+        }
+        let ownedCharacterRequest = ProfileOwnedCharacterFetchRequest(profileId: userId)
+        let (ownedCharacters, ownedCharacterStatus) = try await ownedCharacterRepository.fetchProfileOwnedCharacter(request: ownedCharacterRequest)
+        
+        guard ownedCharacterStatus == .success, ownedCharacters.isEmpty == false else {
+            debugPrint("Failed to fetch user owned character")
+            return CharacterEntity.mock()[1]
+        }
+        
+        var supabaseCharacter: SupabaseProfileOwnedCharacter? = nil
+        
+        if let equippedCharacter = ownedCharacters.first(where: { $0.isChosen == true }) {
+            supabaseCharacter = equippedCharacter
+        } else {
+            guard let firstCharacter = ownedCharacters.first else {
+                debugPrint("Cannot find character to equip")
+                return CharacterEntity.mock()[1]
+            }
+            
+            let changeStatusRequest = ProfileOwnedCharacterUpdateRequest(profileId: userId,
+                                                                         characterId: firstCharacter.characterId,
+                                                                         isChosen: true)
+            let (_, changeStatus) =  try await ownedCharacterRepository.updateProfileOwnedCharacter(request: changeStatusRequest)
+            
+            guard changeStatus == .success else {
+                debugPrint("Failed to change status of character")
+                return CharacterEntity.mock()[1]
+            }
+            supabaseCharacter = firstCharacter
+        }
+        
+        guard let activeCharacter = supabaseCharacter else {
+            debugPrint("active character did not exist")
+            return CharacterEntity.mock()[1]
+        }
+        
+        let characterRequest = CharacterRequest(characterId: activeCharacter.characterId)
+        let (character, characterStatus) = try await characterRepository.fetchCharacterById(request: characterRequest)
+        
+        guard characterStatus == .success, let userChosenCharacter = character else {
+            debugPrint("Failed to fetch user chosen character")
+            return CharacterEntity.mock()[1]
+        }
+        
+        let characterEntity = CharacterEntity(id: activeCharacter.characterId.uuidString,
+                                              name: userChosenCharacter.characterName,
+                                              imagePath: userChosenCharacter.characterImagePath,
+                                              description: userChosenCharacter.characterDescription
+        )
+        return characterEntity
     }
     
     // MARK: - Business Logic

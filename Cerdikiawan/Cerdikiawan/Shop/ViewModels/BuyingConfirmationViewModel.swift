@@ -47,6 +47,7 @@ class BuyingConfirmationViewModel: ObservableObject {
             let (character, errorStatus) = try await userCharacterRepository.insertProfileOwnedCharacter(request: request)
             
             if character != nil && errorStatus == .success {
+                // TODO: Decrease coin amount
                 errorMessage = nil
                 return true
             }else {

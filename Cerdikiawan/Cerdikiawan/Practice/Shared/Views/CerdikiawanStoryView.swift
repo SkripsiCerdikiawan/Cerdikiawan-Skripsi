@@ -16,7 +16,12 @@ struct CerdikiawanStoryView: View {
     init (
         story: StoryEntity
     ) {
-        _viewModel = .init(wrappedValue: .init(story: story))
+        _viewModel = .init(wrappedValue:
+                .init(story: story,
+                      ownedCharacterRepository: SupabaseProfileOwnedCharacterRepository.shared,
+                      characterRepository: SupabaseCharacterRepository.shared
+                     )
+        )
     }
     
     var body: some View {
@@ -90,10 +95,12 @@ struct CerdikiawanStoryView: View {
         .safeAreaPadding(.top, 8)
         .onAppear {
             if let user = sessionData.user {
-                viewModel.setup(
-                    userID: user.id,
-                    appRouter: appRouter
-                )
+                Task {
+                    try await viewModel.setup(
+                        userID: user.id,
+                        appRouter: appRouter
+                    )
+                }
             }
             else {
                 fatalError("User ID is not defined here!")
