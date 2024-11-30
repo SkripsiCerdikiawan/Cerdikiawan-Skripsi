@@ -18,25 +18,45 @@ class CerdikiawanRecordViewModel: ObservableObject {
     @Published var characterState: CerdikiawanRecordDialogueState = .start
     
     let voiceRecordHelper: VoiceRecordingHelper
+    private let pageRepository: PageRepository
     
     init(
         story: StoryEntity,
-        character: CharacterEntity
+        character: CharacterEntity,
+        pageRepository: PageRepository
     ) {
         self.story = story
         self.character = character
         self.voiceRecordHelper = VoiceRecordingHelper.shared
+        self.pageRepository = pageRepository
     }
     
-    func setup(){
-        self.storySnapshotList = getAllSnapshot()
+    @MainActor
+    func setup() async throws {
+        self.storySnapshotList = try await getAllSnapshot()
     }
     
-    // TODO: Replace with Repo
-    func getAllSnapshot() -> [String] {
-        return [
-            "DEBUG_IMAGE", "DEBUG_IMAGE", "DEBUG_IMAGE"
-        ]
+    @MainActor
+    func getAllSnapshot() async throws -> [String] {
+        var storySnapshot: [String] = []
+        guard let storyId = UUID(uuidString: story.storyId) else {
+            debugPrint("Invalid story Id")
+            return []
+        }
+        
+        let pageRequest = PageRequest(storyId: storyId)
+        let (pages, pageStatus) = try await pageRepository.fetchPagesById(request: pageRequest)
+        
+        guard pageStatus == .success, pages.isEmpty == false else {
+            debugPrint("Page did not get fetched")
+            return []
+        }
+        
+        for page in pages {
+            storySnapshot.append(page.pagePicturePath)
+        }
+        
+        return storySnapshot
     }
     
     // MARK: - Business Logic

@@ -21,7 +21,8 @@ struct CerdikiawanRecordView: View {
     ){
         _viewModel = .init(wrappedValue: .init(
             story: story,
-            character: character
+            character: character,
+            pageRepository: SupabasePageRepository.shared
         ))
         self.onContinueButtonAction = onContinueButtonAction
         self.onFinishRecordingAction = onFinishRecordingAction
@@ -76,7 +77,9 @@ struct CerdikiawanRecordView: View {
         .frame(maxHeight: .infinity, alignment: .top)
         .safeAreaPadding(.horizontal, 16)
         .onAppear() {
-            self.viewModel.setup()
+            Task {
+                try await self.viewModel.setup()
+            }
         }
     }
 }
