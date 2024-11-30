@@ -19,7 +19,13 @@ struct CerdikiawanStoryView: View {
         _viewModel = .init(wrappedValue:
                 .init(story: story,
                       ownedCharacterRepository: SupabaseProfileOwnedCharacterRepository.shared,
-                      characterRepository: SupabaseCharacterRepository.shared
+                      characterRepository: SupabaseCharacterRepository.shared,
+                      pageRepository: SupabasePageRepository.shared,
+                      paragraphRepository: SupabaseParagraphRepository.shared,
+                      questionRepository: SupabaseQuestionRepository.shared,
+                      wordBlankAnswerRepository: SupabaseWordBlankAnswerRepository.shared,
+                      wordMatchAnswerRepository: SupabaseWordMatchAnswerRepository.shared,
+                      multipleChoiceAnswerRepository: SupabaseMultiChoiceAnswerRepository.shared
                      )
         )
     }
