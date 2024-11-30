@@ -9,6 +9,8 @@ import Foundation
 import AVFoundation
 
 class VoiceRecordingHelper: NSObject, AVAudioPlayerDelegate {
+    public static let shared = VoiceRecordingHelper()
+    
     private var audioRecorder: AVAudioRecorder?
     private var audioPlayer: AVAudioPlayer?
     private var session: AVAudioSession

@@ -111,13 +111,14 @@ class ReportDataViewModel: ObservableObject {
         }
         
         for story in stories {
-            let entity = ReportStoryEntity(storyId: story.storyId.uuidString,
-                                     storyName: story.storyName,
-                                     storyDescription: story.storyDescription,
-                                     storyImageName: story.storyCoverImagePath,
-                                     attemptStatus: userAttempts.contains(where: { $0.storyId == story.storyId.uuidString })
-            )
             if var level = levelList.first(where: {$0.level == story.storyLevel}) {
+                var entity = ReportStoryEntity(storyId: story.storyId.uuidString,
+                                               storyName: story.storyName,
+                                               storyDescription: story.storyDescription,
+                                               storyImageName: story.storyCoverImagePath,
+                                               attemptStatus: userAttempts.contains(where: { $0.storyId == story.storyId.uuidString }),
+                                               storyLevel: level.level
+                )
                 level.stories.append(entity)
                 
                 if let index = levelList.firstIndex(where: { $0.level == story.storyLevel }) {

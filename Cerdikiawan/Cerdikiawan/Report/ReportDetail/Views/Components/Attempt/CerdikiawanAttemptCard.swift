@@ -48,17 +48,17 @@ struct CerdikiawanAttemptCard: View {
                         HStack {
                             Text("Kosakata")
                             Spacer()
-                            Text("\(kosakataPercentage)%")
+                            Text(kosakataPercentage == -1 ? "-" : "\(kosakataPercentage)%")
                         }
                         HStack {
                             Text("Ide Pokok")
                             Spacer()
-                            Text("\(idePokokPercentage)%")
+                            Text(idePokokPercentage == -1 ? "-" : "\(idePokokPercentage)%")
                         }
                         HStack {
                             Text("Implisit")
                             Spacer()
-                            Text("\(implisitPercentage)%")
+                            Text(implisitPercentage == -1 ? "-" : "\(implisitPercentage)%")
                         }
                     }
                     .padding(.trailing, 8)

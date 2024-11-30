@@ -25,7 +25,7 @@ class CerdikiawanRecordViewModel: ObservableObject {
     ) {
         self.story = story
         self.character = character
-        self.voiceRecordHelper = .init()
+        self.voiceRecordHelper = VoiceRecordingHelper.shared
     }
     
     func setup(){

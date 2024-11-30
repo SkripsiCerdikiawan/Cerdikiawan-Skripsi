@@ -31,7 +31,7 @@ class SupabaseAuthRepository: SupabaseRepository, AuthRepository {
         do {
             let response = try await client.auth.signUp(email: request.email, password: request.password)
             guard let session = response.session else {
-                print("no session when registering user")
+                debugPrint("no session when registering user")
                 return (nil, .serverError)
             }
             return (SupabaseUser(uid: session.user.id, email: session.user.email), .success)
