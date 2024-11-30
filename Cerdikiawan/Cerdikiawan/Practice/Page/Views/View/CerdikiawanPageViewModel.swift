@@ -16,7 +16,7 @@ class CerdikiawanPageViewModel: ObservableObject {
     }
     
     func handleVoiceOverTap(paragraph: ParagraphEntity) {
-        // TODO: Play Voice Over here
+        // MARK: Change property sound effect here if applicable
         if self.activeVoiceOverID == paragraph.id {
             self.activeVoiceOverID = ""
             VoiceOverHelper.shared.stopVoiceOver()

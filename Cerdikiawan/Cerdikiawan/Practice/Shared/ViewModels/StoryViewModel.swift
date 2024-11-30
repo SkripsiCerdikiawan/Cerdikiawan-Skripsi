@@ -78,7 +78,7 @@ class StoryViewModel: ObservableObject {
         let pageRequest = PageRequest(storyId: UUID(uuidString: storyID))
         let (pages, pageStatus) = try await pageRepository.fetchPagesById(request: pageRequest)
         
-        guard pageStatus == .success else {
+        guard pageStatus == .success, pages.isEmpty == false else {
             debugPrint("Page did not get fetched")
             return []
         }
