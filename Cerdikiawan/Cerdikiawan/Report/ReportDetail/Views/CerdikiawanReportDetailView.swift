@@ -17,7 +17,8 @@ struct CerdikiawanReportDetailView: View {
         _viewModel = .init(
             wrappedValue: .init(
                 story: story,
-                attemptRepository: SupabaseAttemptRepository.shared
+                attemptRepository: SupabaseAttemptRepository.shared,
+                recordSoundRepository: SupabaseRecordSoundStorageRepository.shared
             )
         )
     }
@@ -64,7 +65,9 @@ struct CerdikiawanReportDetailView: View {
                                                        buttonStyle: value.attemptId == viewModel.currentlyPlayedAttemptId ? .secondary : .primary,
                                                        onTapButtonAction: {
                                     viewModel.currentlyPlayedAttemptId = value.attemptId
-                                    viewModel.playRecordSound()
+                                    Task {
+                                        try await viewModel.playRecordSound(attemptId: value.attemptId)
+                                    }
                                 })
                             }
                         }

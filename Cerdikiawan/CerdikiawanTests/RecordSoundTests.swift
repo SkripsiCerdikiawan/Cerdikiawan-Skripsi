@@ -51,12 +51,12 @@ struct RecordSoundTests {
     }
     
     @Test func testDownloadRecordedSound() async throws {
-        guard let profileId = UUID(uuidString: "2414c7e0-414c-4353-807f-200d009aace8") else {
+        guard let profileId = UUID(uuidString: "9EBD74DB-A0F0-4338-841A-36DB80FA6AA7") else {
             #expect(Bool(false), "Invalid profileId")
             return
         }
         
-        guard let attemptId = UUID(uuidString: "d6d1d27a-4d1c-45aa-978c-fd361d69aef2") else {
+        guard let attemptId = UUID(uuidString: "EE53615A-A74F-4139-8A32-290A613566DC") else {
             #expect(Bool(false), "Invalid attemptId")
             return
         }
