@@ -16,7 +16,8 @@ struct CerdikiawanReportDetailView: View {
     init(story: ReportStoryEntity) {
         _viewModel = .init(
             wrappedValue: .init(
-                story: story
+                story: story,
+                attemptRepository: SupabaseAttemptRepository.shared
             )
         )
     }
@@ -32,17 +33,17 @@ struct CerdikiawanReportDetailView: View {
                     VStack(spacing: 4) {
                         CerdikiawanReportDetailInformationRow(
                             label: "Level",
-                            content: "1",
+                            content: "\(viewModel.story.storyLevel)",
                             style: .top
                         )
                         CerdikiawanReportDetailInformationRow(
                             label: "Topik",
-                            content: "Perjalanan Budi ke Pasar",
+                            content: viewModel.story.storyName,
                             style: .middle
                         )
                         CerdikiawanReportDetailInformationRow(
                             label: "Deskripsi",
-                            content: "Cerita ini menceritakan mengenai bagaimana pengalaman budi berjalan ke pasar",
+                            content: viewModel.story.storyDescription,
                             style: .bottom
                         )
                     }
@@ -55,7 +56,7 @@ struct CerdikiawanReportDetailView: View {
                     
                     ScrollView {
                         VStack {
-                            ForEach(viewModel.fetchAttempts(), id: \.attemptId) { value in
+                            ForEach(viewModel.attempts, id: \.attemptId) { value in
                                 CerdikiawanAttemptCard(date: value.date,
                                                        kosakataPercentage: value.kosakataPercentage,
                                                        idePokokPercentage: value.idePokokPercentage,
@@ -63,7 +64,7 @@ struct CerdikiawanReportDetailView: View {
                                                        buttonStyle: value.attemptId == viewModel.currentlyPlayedAttemptId ? .secondary : .primary,
                                                        onTapButtonAction: {
                                     viewModel.currentlyPlayedAttemptId = value.attemptId
-                                    viewModel.playRecordSound() // TODO: Play record sound
+                                    viewModel.playRecordSound()
                                 })
                             }
                         }
@@ -89,6 +90,11 @@ struct CerdikiawanReportDetailView: View {
             })
         }
         .toolbarBackground(.visible, for: .navigationBar)
+        .onAppear {
+            Task {
+                try await viewModel.setup(userData: sessionData.user)
+            }
+        }
     }
 }
 

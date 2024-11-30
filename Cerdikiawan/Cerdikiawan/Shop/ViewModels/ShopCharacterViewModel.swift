@@ -44,7 +44,6 @@ class ShopCharacterViewModel: ObservableObject {
         
     }
     
-    // TODO: Replace with repo
     @MainActor
     func fetchAllAvailableCharacter() async throws -> [ShopCharacterEntity] {
         var shopEntities: [ShopCharacterEntity] = []
@@ -114,7 +113,6 @@ class ShopCharacterViewModel: ObservableObject {
         }
     }
     
-    // TODO: Replace with Repo
     @MainActor
     func setActiveCharacter(userID: String, character: CharacterEntity) async throws {
         guard let loggedInUserId = UUID(uuidString: "\(userID)") else {
