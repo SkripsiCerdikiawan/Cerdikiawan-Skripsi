@@ -19,7 +19,7 @@ extension UserEntity {
     static func mock() -> [UserEntity] {
         return [
             .init(
-                id: "9ebd74db-a0f0-4338-841a-36db80fa6aa7",
+                id: "5f3f8600-6a48-4a8e-893c-a3e9efd1e403",
                 name: "NABIL RAFI SUKRI MAPPEABANG",
                 email: "nabil@cerdikiawan.com",
                 balance: 100,

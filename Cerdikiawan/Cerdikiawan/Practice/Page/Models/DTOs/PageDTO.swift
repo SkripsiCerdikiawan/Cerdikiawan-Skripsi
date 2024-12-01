@@ -11,4 +11,5 @@ struct SupabasePage: Codable {
     let pageId: UUID
     let storyId: UUID
     let pagePicturePath: String
+    let pageOrder: Int
 }
