@@ -9,7 +9,6 @@ import Foundation
 
 class ResultDataViewModels: ObservableObject {
     let character: CharacterEntity
-    var user: UserEntity?
     @Published var resultEntity: ResultDataEntity
     
     private var attemptRepository: AttemptRepository
@@ -31,32 +30,64 @@ class ResultDataViewModels: ObservableObject {
     }
     
     // TODO: Replace with repo
-    func saveAttemptData(userID: String) -> Bool {
+    @MainActor
+    func saveAttemptData(userID: String) async throws -> Bool {
+        let attemptId = UUID()
+        guard let userUuid = UUID(uuidString: userID) else {
+            debugPrint("UserId not found")
+            return false
+        }
+        
+        guard let storyId = UUID(uuidString: resultEntity.storyId) else {
+            debugPrint("StoryId not found")
+            return false
+        }
+        
         // Save recording data
-//        let recordRequest = RecordSoundRequest(userId: <#T##UUID#>,
-//                                               attemptId: <#T##UUID#>,
-//                                               soundData: <#T##Data#>
-//        )
+        // MARK: Mungkin bisa jadi optional to Data(), not thrown
+        guard let recordSoundData = VoiceRecordingHelper.shared.getRecordingData() else {
+            debugPrint("Recording data not found")
+            return false
+        }
         
+        let recordRequest = RecordSoundRequest(userId: userUuid,
+                                               attemptId: attemptId,
+                                               soundData: recordSoundData
+        )
+        let (records, recordStatus) = try await recordRepository.uploadSoundFile(request: recordRequest)
         
+        guard recordStatus == .success, let recordResult = records else {
+            debugPrint("Failed to upload recording data")
+            return false
+        }
         
         // Add attempt
-//        let attemptRequest = AttemptInsertRequest(attemptId: UUID(),
-//                                                  profileId: <#T##UUID#>,
-//                                                  storyId: <#T##UUID#>,
-//                                                  attemptDateTime: DateUtils.getDatabaseTimestamp(from: Date.now),
-//                                                  kosakataPercentage: <#T##Float#>,
-//                                                  idePokokPercentage: <#T##Float#>,
-//                                                  implisitPercentage: <#T##Float#>,
-//                                                  recordSoundPath: <#T##String#>
-//        )
+        let attemptRequest = AttemptInsertRequest(attemptId: attemptId,
+                                                  profileId: userUuid,
+                                                  storyId: storyId,
+                                                  attemptDateTime: DateUtils.getDatabaseTimestamp(from: Date.now),
+                                                  kosakataPercentage: Float(resultEntity.kosakataPercentage),
+                                                  idePokokPercentage: Float(resultEntity.idePokokPercentage),
+                                                  implisitPercentage: Float(resultEntity.implisitPercentage),
+                                                  recordSoundPath: recordResult.soundPath
+        )
+        let (attempts, attemptResult) = try await attemptRepository.createNewAttempt(request: attemptRequest)
         
+        guard attemptResult == .success, attempts != nil else {
+            debugPrint("Failed to add attempt data")
+            return false
+        }
         
         // Add balance to user
-//        let profileRequest = ProfileUpdateRequest(profileId: <#T##UUID#>,
-//                                                  profileBalance: <#T##Int?#>
-//        )
+        let profileRequest = ProfileUpdateRequest(profileId: userUuid,
+                                                  profileBalance: resultEntity.baseBalance * resultEntity.correctCount
+        )
+        let (profile, profileStatus) = try await profileRepository.updateProfile(request: profileRequest)
         
+        guard profileStatus == .success, profile != nil else {
+            debugPrint("Failed to update user profile balance")
+            return false
+        }
         
         debugPrint("Saving user data...")
         return true
