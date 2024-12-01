@@ -419,11 +419,32 @@ class StoryViewModel: ObservableObject {
         let incorrectCount = self.questionList.count - correctCount
         let totalQuestions = self.questionList.count
         
+        guard let recordData = VoiceRecordingHelper.shared.getRecordingData() else {
+            debugPrint("Recording data not found")
+            return .init(
+                correctCount: correctCount,
+                inCorrectCount: incorrectCount,
+                totalQuestions: totalQuestions,
+                baseBalance: self.story.baseBalance,
+                storyId: story.storyId,
+                kosakataPercentage: self.kosakata.percentage,
+                idePokokPercentage: self.idePokok.percentage,
+                implisitPercentage: self.implisit.percentage,
+                recordSoundData: Data()
+            )
+        }
+        
+        debugPrint("Result found")
         return .init(
             correctCount: correctCount,
             inCorrectCount: incorrectCount,
             totalQuestions: totalQuestions,
-            baseBalance: self.story.baseBalance
+            baseBalance: self.story.baseBalance,
+            storyId: story.storyId,
+            kosakataPercentage: self.kosakata.percentage,
+            idePokokPercentage: self.idePokok.percentage,
+            implisitPercentage: self.implisit.percentage,
+            recordSoundData: recordData
         )
     }
     

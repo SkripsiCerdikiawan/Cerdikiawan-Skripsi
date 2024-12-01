@@ -141,7 +141,12 @@ private struct ResultGainedBalanceBox: View {
                 correctCount: 5,
                 inCorrectCount: 3,
                 totalQuestions: 10,
-                baseBalance: 5
+                baseBalance: 5,
+                storyId: "story-1",
+                kosakataPercentage: 1,
+                idePokokPercentage: 1,
+                implisitPercentage: 1,
+                recordSoundData: Data()
             )
         )
         .padding(.horizontal, 16)

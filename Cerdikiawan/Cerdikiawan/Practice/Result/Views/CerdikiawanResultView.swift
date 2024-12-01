@@ -18,7 +18,10 @@ struct CerdikiawanResultView: View {
     ){
         _viewModel = .init(wrappedValue: .init(
             character: character,
-            resultEntity: resultData
+            resultEntity: resultData,
+            attemptRepository: SupabaseAttemptRepository.shared,
+            profileRepository: SupabaseProfileRepository.shared,
+            recordRepository: SupabaseRecordSoundStorageRepository.shared
         ))
         self.onCompletionTap = onCompletionTap
     }
