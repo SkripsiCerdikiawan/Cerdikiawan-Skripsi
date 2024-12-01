@@ -82,6 +82,7 @@ struct CerdikiawanBuyingConfirmationView: View {
                             let result = try await viewModel.buyCharacter()
                             
                             if result {
+                                sessionData.user?.balance -= viewModel.shopCharacter.price
                                 viewModel.confirmationAlertShowed = true
                             }
                         }

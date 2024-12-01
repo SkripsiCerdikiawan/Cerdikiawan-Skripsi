@@ -83,7 +83,9 @@ class StoryViewModel: ObservableObject {
             return []
         }
         
-        for page in pages {
+        let sortedPages = pages.sorted { $0.pageOrder < $1.pageOrder }
+        
+        for page in sortedPages {
             //fetch paragraph
             let paragraphRequest = ParagraphRequest(pageId: page.pageId)
             let (paragraphs, paragraphStatus) = try await paragraphRepository.fetchParagraphsById(request: paragraphRequest)
@@ -94,7 +96,9 @@ class StoryViewModel: ObservableObject {
             }
             
             var paragraphEntities: [ParagraphEntity] = []
-            for paragraph in paragraphs {
+            let sortedParagraph = paragraphs.sorted { $0.paragraphOrder < $1.paragraphOrder }
+            
+            for paragraph in sortedParagraph {
                 let paragraphEntity = ParagraphEntity(id: paragraph.paragraphId.uuidString,
                                                       paragraphText: paragraph.paragraphText,
                                                       paragraphSoundPath: paragraph.paragraphSoundPath

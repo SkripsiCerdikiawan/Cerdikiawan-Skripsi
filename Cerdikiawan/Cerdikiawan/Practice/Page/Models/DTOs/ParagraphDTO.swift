@@ -12,4 +12,5 @@ struct SupabaseParagraph: Codable {
     let pageId: UUID
     let paragraphText: String
     let paragraphSoundPath: String
+    let paragraphOrder: Int
 }

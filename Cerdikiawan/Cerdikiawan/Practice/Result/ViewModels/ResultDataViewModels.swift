@@ -31,7 +31,7 @@ class ResultDataViewModels: ObservableObject {
     
     // TODO: Replace with repo
     @MainActor
-    func saveAttemptData(userID: String) async throws -> Bool {
+    func saveAttemptData(userID: String, userBalance: Int) async throws -> Bool {
         let attemptId = UUID()
         guard let userUuid = UUID(uuidString: userID) else {
             debugPrint("UserId not found")
@@ -80,7 +80,7 @@ class ResultDataViewModels: ObservableObject {
         
         // Add balance to user
         let profileRequest = ProfileUpdateRequest(profileId: userUuid,
-                                                  profileBalance: resultEntity.baseBalance * resultEntity.correctCount
+                                                  profileBalance: userBalance + resultEntity.baseBalance * resultEntity.correctCount
         )
         let (profile, profileStatus) = try await profileRepository.updateProfile(request: profileRequest)
         

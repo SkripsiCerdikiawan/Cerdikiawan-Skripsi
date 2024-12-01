@@ -26,7 +26,7 @@ struct CerdikiawanApp: App {
                 }
             })
             .onAppear() {
-                appRouter.startScreen = .home
+                appRouter.startScreen = .login
                 #if DEBUG
                 sessionData.user = .mock()[0]
                 #endif
