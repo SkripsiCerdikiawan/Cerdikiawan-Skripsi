@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CerdikiawanResultView: View {
+    @EnvironmentObject var sessionData: SessionData
     @StateObject private var viewModel: ResultDataViewModels
     var onCompletionTap: () -> Void
     
@@ -18,7 +19,10 @@ struct CerdikiawanResultView: View {
     ){
         _viewModel = .init(wrappedValue: .init(
             character: character,
-            resultEntity: resultData
+            resultEntity: resultData,
+            attemptRepository: SupabaseAttemptRepository.shared,
+            profileRepository: SupabaseProfileRepository.shared,
+            recordRepository: SupabaseRecordSoundStorageRepository.shared
         ))
         self.onCompletionTap = onCompletionTap
     }
@@ -66,7 +70,13 @@ struct CerdikiawanResultView: View {
                     CerdikiawanButton(
                         label: "Kembali ke halaman awal",
                         action: {
-                            onCompletionTap()
+                            Task {
+                                if let userId = sessionData.user?.id {
+                                    if try await viewModel.saveAttemptData(userID: userId) {
+                                        onCompletionTap()
+                                    }
+                                }
+                            }
                         }
                     )
                 }

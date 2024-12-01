@@ -65,6 +65,7 @@ class CerdikiawanRecordViewModel: ObservableObject {
         
         self.voiceRecordHelper.requestMicrophonePermission { granted in
             if granted {
+                self.voiceRecordHelper.deleteLastRecording()
                 self.voiceRecordHelper.startRecording()
                 self.characterState = .recording
                 self.recordState = .recording
