@@ -13,7 +13,7 @@ struct CerdikiawanCharacterDialogue: View {
     var message: String
     
     var body: some View {
-        HStack {
+        HStack(alignment: .bottom) {
             CerdikiawanCharacter(
                 character: character,
                 state: state

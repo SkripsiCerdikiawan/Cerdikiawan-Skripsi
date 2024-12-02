@@ -94,7 +94,7 @@ private struct CerdikiawanOpenPageButtonStyle: ButtonStyle {
             CerdikiawanCharacterDialogueContainer(
                 page: .mock()[0],
                 character: .mock()[0],
-                dialogue: "Hello World!",
+                dialogue: "Jawaban ini sesuai dengan pesan Ibu Kelinci yang meminta untuk menjaga jarak, kebersihan, dan tidak bersentuhan untuk mencegah penularan penyakit. \n\n Hal ini menunjukkan bahwa larangan tersebut adalah bentuk perlindungan, bukan semata-mata untuk melarang atau membatasi.",
                 state: state,
                 checkAnswerAction: {
                     switch state {

@@ -65,7 +65,7 @@ struct CerdikiawanMultipleChoiceView: View {
         VStack {
             CerdikiawanMultipleChoiceView(
                 page: .mock()[0],
-                data: .mock()[0],
+                data: .mock()[1],
                 character: .mock()[1],
                 onContinueButtonAction: { result in
                     debugPrint("Answer Correct Status: \(result)")

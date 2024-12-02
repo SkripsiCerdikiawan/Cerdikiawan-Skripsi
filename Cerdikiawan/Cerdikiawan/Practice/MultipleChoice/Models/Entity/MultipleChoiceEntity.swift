@@ -26,7 +26,15 @@ extension MultipleChoiceEntity {
                 correctAnswerID: "mc-answer-01",
                 type: .idePokok,
                 feedback: .mock()[0]
-            )
+            ),
+            .init(
+                id: "mc-ques-02",
+                question: "This is an Example Question. Do you understand?",
+                answer: MultipleChoiceAnswerEntity.mock(),
+                correctAnswerID: "mc-answer-01",
+                type: .idePokok,
+                feedback: .mock()[1]
+            ),
         ]
     }
 }
