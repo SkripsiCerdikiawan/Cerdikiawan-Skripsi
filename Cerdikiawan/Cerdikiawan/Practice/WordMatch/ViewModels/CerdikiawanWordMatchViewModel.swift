@@ -195,7 +195,7 @@ class CerdikiawanWordMatchViewModel: ObservableObject {
     }
     
     func updateDialogueState() {
-        if pair.values.count < 3 {
+        if pair.values.count < data.questions.count {
             self.characterDialogueState = .normal
         }
         else {
