@@ -60,6 +60,7 @@ class VoiceRecordingHelper: NSObject, AVAudioPlayerDelegate {
             audioRecorder = try AVAudioRecorder(url: fileName, settings: settings)
             audioRecorder?.prepareToRecord()
             audioRecorder?.record()
+            
             debugPrint("Recording started at \(fileName)")
         } catch {
             debugPrint("Failed to setup recording: \(error.localizedDescription)")
@@ -145,6 +146,22 @@ class VoiceRecordingHelper: NSObject, AVAudioPlayerDelegate {
             }
         } catch {
             debugPrint("Failed to delete recordings: \(error.localizedDescription)")
+        }
+    }
+    
+    func getRecordingData() -> Data? {
+        guard let recordingURL = self.recordingURL else {
+            debugPrint("No recording available to fetch data from.")
+            return nil
+        }
+        
+        do {
+            let data = try Data(contentsOf: recordingURL)
+            debugPrint("Recording data fetched successfully. Size: \(data.count) bytes.")
+            return data
+        } catch {
+            debugPrint("Failed to fetch recording data: \(error.localizedDescription)")
+            return nil
         }
     }
 }

@@ -83,7 +83,9 @@ class StoryViewModel: ObservableObject {
             return []
         }
         
-        for page in pages {
+        let sortedPages = pages.sorted { $0.pageOrder < $1.pageOrder }
+        
+        for page in sortedPages {
             //fetch paragraph
             let paragraphRequest = ParagraphRequest(pageId: page.pageId)
             let (paragraphs, paragraphStatus) = try await paragraphRepository.fetchParagraphsById(request: paragraphRequest)
@@ -94,7 +96,9 @@ class StoryViewModel: ObservableObject {
             }
             
             var paragraphEntities: [ParagraphEntity] = []
-            for paragraph in paragraphs {
+            let sortedParagraph = paragraphs.sorted { $0.paragraphOrder < $1.paragraphOrder }
+            
+            for paragraph in sortedParagraph {
                 let paragraphEntity = ParagraphEntity(id: paragraph.paragraphId.uuidString,
                                                       paragraphText: paragraph.paragraphText,
                                                       paragraphSoundPath: paragraph.paragraphSoundPath
@@ -419,11 +423,32 @@ class StoryViewModel: ObservableObject {
         let incorrectCount = self.questionList.count - correctCount
         let totalQuestions = self.questionList.count
         
+        guard let recordData = VoiceRecordingHelper.shared.getRecordingData() else {
+            debugPrint("Recording data not found")
+            return .init(
+                correctCount: correctCount,
+                inCorrectCount: incorrectCount,
+                totalQuestions: totalQuestions,
+                baseBalance: self.story.baseBalance,
+                storyId: story.storyId,
+                kosakataPercentage: self.kosakata.percentage,
+                idePokokPercentage: self.idePokok.percentage,
+                implisitPercentage: self.implisit.percentage,
+                recordSoundData: Data()
+            )
+        }
+        
+        debugPrint("Result found")
         return .init(
             correctCount: correctCount,
             inCorrectCount: incorrectCount,
             totalQuestions: totalQuestions,
-            baseBalance: self.story.baseBalance
+            baseBalance: self.story.baseBalance,
+            storyId: story.storyId,
+            kosakataPercentage: self.kosakata.percentage,
+            idePokokPercentage: self.idePokok.percentage,
+            implisitPercentage: self.implisit.percentage,
+            recordSoundData: recordData
         )
     }
     

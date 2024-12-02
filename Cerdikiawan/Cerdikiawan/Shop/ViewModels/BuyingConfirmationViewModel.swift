@@ -46,8 +46,17 @@ class BuyingConfirmationViewModel: ObservableObject {
             )
             let (character, errorStatus) = try await userCharacterRepository.insertProfileOwnedCharacter(request: request)
             
-            if character != nil && errorStatus == .success {
-                // TODO: Decrease coin amount
+            if character != nil && errorStatus == .success, let userId = UUID(uuidString: user.id) {
+                let profileRequest = ProfileUpdateRequest(profileId: userId,
+                                                          profileBalance: user.balance - shopCharacter.price
+                )
+                let (profile, profileStatus) = try await profileRepository.updateProfile(request: profileRequest)
+                
+                guard profileStatus == .success, profile != nil else {
+                    debugPrint("Failed to update user profile balance")
+                    return false
+                }
+                
                 errorMessage = nil
                 return true
             }else {

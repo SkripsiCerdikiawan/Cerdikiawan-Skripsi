@@ -44,7 +44,12 @@ class CerdikiawanReportDetailViewModel: NSObject, ObservableObject, AVAudioPlaye
             return []
         }
         
-        let request = AttemptFetchRequest(profileId: userId)
+        guard let storyId = UUID(uuidString: story.storyId) else {
+            debugPrint("Invalid StoryId")
+            return []
+        }
+        
+        let request = AttemptFetchRequest(profileId: userId, storyId: storyId)
         let (attempts, status) = try await attemptRepository.fetchAttempts(request: request)
         
         guard status == .success else {
