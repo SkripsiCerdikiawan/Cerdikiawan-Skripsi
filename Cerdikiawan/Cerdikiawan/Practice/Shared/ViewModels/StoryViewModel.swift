@@ -251,13 +251,17 @@ class StoryViewModel: ObservableObject {
         var results: [WordBlankLetterEntity] = []
         let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         
+        let answerUppercasedSet = Set(answer.uppercased())
+        
         for letter in answer {
             let entity = WordBlankLetterEntity(id: UUID().uuidString, letter: letter.uppercased())
             results.append(entity)
         }
         
+        let filteredAlphabet = alphabet.filter { !answerUppercasedSet.contains($0) }
+        
         for _ in 0..<3 {
-            let randomLetterEntity = WordBlankLetterEntity(id: UUID().uuidString, letter: String(alphabet.randomElement() ?? "A"))
+            let randomLetterEntity = WordBlankLetterEntity(id: UUID().uuidString, letter: String(filteredAlphabet.randomElement() ?? "A"))
             results.append(randomLetterEntity)
         }
         return results.shuffled()
