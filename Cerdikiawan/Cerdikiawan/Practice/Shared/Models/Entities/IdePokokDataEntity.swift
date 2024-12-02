@@ -10,7 +10,7 @@ struct IdePokokDataEntity {
     var idePokokCorrect: Int = 0
     
     var percentage: Int {
-        guard idePokokCount > 0 else { return 100 }
+        guard idePokokCount > 0 else { return -1 }
         return Int(Double(idePokokCorrect) / Double(idePokokCount) * 100.0)
     }
 }
