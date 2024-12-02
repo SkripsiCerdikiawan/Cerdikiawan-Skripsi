@@ -150,10 +150,11 @@ class StoryViewModel: ObservableObject {
                 
             } else if randomizedQuestion.questionType == "WordMatch" {
                 let wordMatchAnswerRequest = AnswerRequest(questionId: randomizedQuestion.questionId)
-                let (answer, wordMatchStatus): ([SupabaseWordMatchAnswer], ErrorStatus) = try await wordBlankAnswerRepository.fetchAnswersById(request: wordMatchAnswerRequest)
+                let (answer, wordMatchStatus): ([SupabaseWordMatchAnswer], ErrorStatus) = try await wordMatchAnswerRepository.fetchAnswersById(request: wordMatchAnswerRequest)
                 
                 guard wordMatchStatus == .success, answer.isEmpty == false else {
                     debugPrint("Word match answer cannot be fetched")
+                    debugPrint(answer)
                     isLoading = false
                     return []
                 }
@@ -233,14 +234,16 @@ class StoryViewModel: ObservableObject {
         var key: [String : String] = [:]
         
         for answer in answers {
-            let questionEntity = WordMatchTextEntity(id: UUID().uuidString, content: answer.questionPrompt ?? "")
-            let answerEntity = WordMatchTextEntity(id: UUID().uuidString, content: answer.answerPrompt)
+            if let question = answer.questionPrompt {
+                let questionEntity = WordMatchTextEntity(id: answer.answerId.uuidString, content: question)
+                questionEntities.append(questionEntity)
+            }
+            let answerEntity = WordMatchTextEntity(id: answer.answerId.uuidString, content: answer.answerPrompt)
             
-            questionEntities.append(questionEntity)
             answerEntities.append(answerEntity)
             
             if let questionPrompt = answer.questionPrompt {
-                key[questionPrompt] = answer.answerPrompt
+                key[answer.answerId.uuidString] = answer.answerId.uuidString
             }
         }
         
@@ -251,13 +254,17 @@ class StoryViewModel: ObservableObject {
         var results: [WordBlankLetterEntity] = []
         let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         
+        let answerUppercasedSet = Set(answer.uppercased())
+        
         for letter in answer {
             let entity = WordBlankLetterEntity(id: UUID().uuidString, letter: letter.uppercased())
             results.append(entity)
         }
         
+        let filteredAlphabet = alphabet.filter { !answerUppercasedSet.contains($0) }
+        
         for _ in 0..<3 {
-            let randomLetterEntity = WordBlankLetterEntity(id: UUID().uuidString, letter: String(alphabet.randomElement() ?? "A"))
+            let randomLetterEntity = WordBlankLetterEntity(id: UUID().uuidString, letter: String(filteredAlphabet.randomElement() ?? "A"))
             results.append(randomLetterEntity)
         }
         return results.shuffled()

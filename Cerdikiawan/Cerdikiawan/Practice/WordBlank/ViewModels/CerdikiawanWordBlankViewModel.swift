@@ -66,7 +66,7 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
         case .answering:
             return .normal
         case .feedback:
-            if word == data.correctAnswerWord {
+            if isCorrect {
                 return .correct
             }
             else {
@@ -84,7 +84,7 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
             }
         case .feedback:
             let letter = Character(char.letter)
-            if data.correctAnswerWord.contains(letter) {
+            if data.correctAnswerWord.uppercased().contains(letter.uppercased()) {
                 return .correct
             } else if wordArrangement.contains(where: { $0.id == char.id }) {
                 return .incorrect
@@ -100,9 +100,11 @@ class CerdikiawanWordBlankViewModel: ObservableObject {
     func validateAnswer() {
         // Set state to feedback
         self.state = .feedback
-        
+        debugPrint("\(self.word.uppercased()) == \(data.correctAnswerWord.uppercased())")
         // Validate answer
-        self.isCorrect = self.word == data.correctAnswerWord
+        self.isCorrect = self.word.uppercased() == data.correctAnswerWord.uppercased()
+        
+        debugPrint(isCorrect)
         
         if isCorrect {
             self.characterDialogueState = .correct
