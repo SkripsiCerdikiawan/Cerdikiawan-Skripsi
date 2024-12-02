@@ -10,7 +10,7 @@ struct KosakataDataEntity {
     var kosakataCorrect: Int = 0
     
     var percentage: Int {
-        guard kosakataCount > 0 else { return 100 }
+        guard kosakataCount > 0 else { return -1 }
         return Int(Double(kosakataCorrect) / Double(kosakataCount) * 100.0)
     }
 }

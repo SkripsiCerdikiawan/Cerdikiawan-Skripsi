@@ -32,7 +32,11 @@ struct CerdikiawanStoryView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            if viewModel.questionList.isEmpty == false {
+            if viewModel.isLoading {
+                Spacer()
+                ProgressView()
+                Spacer()
+            } else if viewModel.questionList.isEmpty == false {
                 CerdikiawanProgressBar(
                     minimum: 0,
                     maximum: Double(viewModel.questionList.count + 1),
@@ -73,11 +77,13 @@ struct CerdikiawanStoryView: View {
                 }
             }
             else {
+                Spacer()
                 Text("Error! No Story Data")
                     .font(.body)
                     .foregroundStyle(Color(.secondaryLabel))
                     .multilineTextAlignment(.leading)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                Spacer()
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)

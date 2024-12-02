@@ -17,6 +17,7 @@ class StoryViewModel: ObservableObject {
     @Published var currentPageIdx: Int = 0
     @Published var correctCount: Int = 0
     @Published var questionAnsweredFlag: Bool = false
+    @Published var isLoading = false
     
     @Published var questionList: [PracticeEntity] = [] // Index and Content (For ensuring the view re-render on update)
     @Published var activeQuestion: PracticeEntity?
@@ -72,6 +73,7 @@ class StoryViewModel: ObservableObject {
     
     @MainActor
     func fetchQuestionForPractice(userID: String, storyID: String) async throws -> [PracticeEntity] {
+        isLoading = true
         var practiceEntities: [PracticeEntity] = []
         
         // fetch page
@@ -80,6 +82,7 @@ class StoryViewModel: ObservableObject {
         
         guard pageStatus == .success, pages.isEmpty == false else {
             debugPrint("Page did not get fetched")
+            isLoading = false
             return []
         }
         
@@ -92,6 +95,7 @@ class StoryViewModel: ObservableObject {
             
             guard paragraphStatus == .success else {
                 debugPrint("Paragraph did not get fetched")
+                isLoading = false
                 return []
             }
             
@@ -117,6 +121,7 @@ class StoryViewModel: ObservableObject {
             
             guard questionStatus == .success, let randomizedQuestion = questions.randomElement() else {
                 debugPrint("Question did not get fetched")
+                isLoading = false
                 return []
             }
             
@@ -129,6 +134,7 @@ class StoryViewModel: ObservableObject {
                 
                 guard wordBlankStatus == .success, let wordBlankAnswer = answer.first else {
                     debugPrint("Word blank answer cannot be fetched")
+                    isLoading = false
                     return []
                 }
                 
@@ -148,6 +154,7 @@ class StoryViewModel: ObservableObject {
                 
                 guard wordMatchStatus == .success, answer.isEmpty == false else {
                     debugPrint("Word match answer cannot be fetched")
+                    isLoading = false
                     return []
                 }
                 
@@ -171,6 +178,7 @@ class StoryViewModel: ObservableObject {
                 
                 guard wordMatchStatus == .success, answer.isEmpty == false else {
                     debugPrint("Word match answer cannot be fetched")
+                    isLoading = false
                     return []
                 }
                 
@@ -186,11 +194,13 @@ class StoryViewModel: ObservableObject {
                 
             } else {
                 debugPrint("Question type is not supported: \(randomizedQuestion)")
+                isLoading = false
                 return []
             }
             
             guard let chosenQuestion = questionEntity else {
                 debugPrint("Question entity should not be nil")
+                isLoading = false
                 return []
             }
             
@@ -203,6 +213,7 @@ class StoryViewModel: ObservableObject {
         }
         
         debugPrint(practiceEntities)
+        isLoading = false
         return practiceEntities
     }
     
