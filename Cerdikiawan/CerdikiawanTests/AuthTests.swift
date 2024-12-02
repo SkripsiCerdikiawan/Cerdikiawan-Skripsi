@@ -17,7 +17,7 @@ struct AuthTests {
     }
     
     @Test func testRegister() async throws {
-        let request = AuthRequest(email: "test789@test.com", password: "test789")
+        let request = AuthRequest(email: "test783@test.com", password: "test789")
         let (result, status) = try await authRepository.register(request: request)
         
         #expect(status == .success, "Registration failed")

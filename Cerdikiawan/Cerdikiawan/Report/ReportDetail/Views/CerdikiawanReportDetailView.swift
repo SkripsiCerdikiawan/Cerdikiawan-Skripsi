@@ -86,7 +86,7 @@ struct CerdikiawanReportDetailView: View {
             ToolbarItem(placement: .topBarLeading, content: {
                 Button(
                     action: {
-                        appRouter.popToRoot()
+                        appRouter.pop()
                     },
                     label: {
                         Image(systemName: "chevron.left")

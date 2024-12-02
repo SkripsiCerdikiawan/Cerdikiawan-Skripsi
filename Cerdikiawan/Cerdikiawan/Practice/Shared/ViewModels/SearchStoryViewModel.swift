@@ -9,6 +9,7 @@ import Foundation
 
 class SearchStoryViewModel: ObservableObject {
     @Published var searchText: String = ""
+    @Published var savedStories: [StoryEntity] = []
     @Published var searchResult: [StoryEntity] = []
     @Published var isLoading: Bool = false
     
@@ -19,22 +20,20 @@ class SearchStoryViewModel: ObservableObject {
     }
     
     @MainActor
-    public func searchStory() async throws {
+    public func fetchAllStories() async throws {
         isLoading = true
-        searchResult = []
+        savedStories = []
+        
         let (stories, status) = try await storyRepository.fetchStories()
         
         guard status == .success else {
             debugPrint("Fetch unsuccessful")
-            searchResult = []
+            savedStories = []
             return
         }
         
-        let filteredStories = stories.filter { story in
-            story.storyName.lowercased().contains(searchText.lowercased())
-        }
-        for story in filteredStories {
-            searchResult.append(StoryEntity(storyId: story.storyId.uuidString,
+        for story in stories {
+            savedStories.append(StoryEntity(storyId: story.storyId.uuidString,
                                             storyName: story.storyName,
                                             storyDescription: story.storyDescription,
                                             storyImageName: story.storyCoverImagePath,
@@ -42,6 +41,19 @@ class SearchStoryViewModel: ObservableObject {
                                            )
             )
         }
+        
+        isLoading = false
+    }
+    
+    @MainActor
+    public func searchStory() async throws {
+        isLoading = true
+        searchResult = []
+        
+        searchResult = savedStories.filter { story in
+            story.storyName.lowercased().contains(searchText.lowercased())
+        }
+        
         isLoading = false
     }
 }
