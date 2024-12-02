@@ -80,6 +80,7 @@ struct CerdikiawanProfileView: View {
                             
                             if logoutStatus {
                                 sessionData.user = nil
+                                appRouter.startScreen = .login
                                 appRouter.popToRoot()
                             }
                         }

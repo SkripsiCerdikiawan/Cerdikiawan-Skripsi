@@ -10,7 +10,6 @@ import Foundation
 class CerdikiawanRegisterViewModel: ObservableObject {
     @Published var nameText: String = ""
     @Published var dateOfBirthPicker: Date = Date()
-    @Published var dateOfBirthText: String = ""
     @Published var emailText: String = ""
     @Published var passwordText: String = ""
     @Published var confirmPasswordText: String = ""

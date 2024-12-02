@@ -63,7 +63,6 @@ schemes:
     build:
       targets:
         Cerdikiawan: all
-        CerdikiawanTests: all
     test:
       targets:
         - name: CerdikiawanTests

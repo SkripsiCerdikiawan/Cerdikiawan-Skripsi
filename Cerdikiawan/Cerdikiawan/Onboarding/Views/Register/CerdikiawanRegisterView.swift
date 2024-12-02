@@ -93,6 +93,14 @@ struct CerdikiawanRegisterView: View {
                 }
             }
         }
+        .onAppear {
+            viewModel.errorMessage = nil
+            viewModel.nameText = ""
+            viewModel.emailText = ""
+            viewModel.passwordText = ""
+            viewModel.confirmPasswordText = ""
+            viewModel.dateOfBirthPicker = Date()
+        }
     }
 }
 

@@ -61,6 +61,11 @@ struct CerdikiawanSearchStoryView: View {
                 Spacer()
             }
         }
+        .onAppear {
+            Task {
+                try await viewModel.fetchAllStories()
+            }
+        }
         .onChange(of: viewModel.searchText) { _, value in
             Task {
                 try await viewModel.searchStory()
