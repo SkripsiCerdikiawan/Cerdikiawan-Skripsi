@@ -20,7 +20,7 @@ class SearchStoryViewModel: ObservableObject {
     }
     
     @MainActor
-    public func fetchAllStories() async throws {
+    func fetchAllStories() async throws {
         isLoading = true
         savedStories = []
         
@@ -46,7 +46,7 @@ class SearchStoryViewModel: ObservableObject {
     }
     
     @MainActor
-    public func searchStory() async throws {
+    func searchStory() async throws {
         isLoading = true
         searchResult = []
         

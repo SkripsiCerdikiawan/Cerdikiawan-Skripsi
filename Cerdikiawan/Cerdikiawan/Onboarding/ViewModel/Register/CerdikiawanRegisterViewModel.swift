@@ -24,7 +24,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
     }
     
     @MainActor
-    public func register() async throws -> UserEntity? {
+    func register() async throws -> UserEntity? {
         guard validateRegisterInfo(name: nameText, email: emailText, dateOfBirth: dateOfBirthPicker, password: passwordText, confirmPassword: confirmPasswordText) else {
             return nil
         }

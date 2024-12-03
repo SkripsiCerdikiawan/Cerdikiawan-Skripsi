@@ -121,7 +121,7 @@ class SupabaseProfileRepository: SupabaseRepository, ProfileRepository {
             let response = try await client
                 .from("Profile")
                 .delete()
-                .eq("profileId", value: request.profileId)
+                .eq("profileId", value: toBeDeletedProfile.profileId)
                 .execute()
             guard response.status == 200 else {
                 return (.serverError)

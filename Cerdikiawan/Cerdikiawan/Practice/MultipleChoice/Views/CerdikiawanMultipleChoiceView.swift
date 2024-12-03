@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CerdikiawanMultipleChoiceView: View {
-    @StateObject var viewModel: CerdikiawanMultipleChoiceViewModel
+    @StateObject private var viewModel: CerdikiawanMultipleChoiceViewModel
     
     var onValidateAction: (() -> Void)?
     var onContinueButtonAction: (Bool) -> Void

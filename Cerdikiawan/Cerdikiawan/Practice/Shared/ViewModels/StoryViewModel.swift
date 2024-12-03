@@ -242,7 +242,7 @@ class StoryViewModel: ObservableObject {
             
             answerEntities.append(answerEntity)
             
-            if let questionPrompt = answer.questionPrompt {
+            if answer.questionPrompt != nil {
                 key[answer.answerId.uuidString] = answer.answerId.uuidString
             }
         }

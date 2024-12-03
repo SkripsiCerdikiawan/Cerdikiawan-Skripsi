@@ -17,7 +17,7 @@ class CerdikiawanRecordViewModel: ObservableObject {
     @Published var character: CharacterEntity
     @Published var characterState: CerdikiawanRecordDialogueState = .start
     
-    let voiceRecordHelper: VoiceRecordingHelper
+    private let voiceRecordHelper: VoiceRecordingHelper
     private let pageRepository: PageRepository
     
     init(
