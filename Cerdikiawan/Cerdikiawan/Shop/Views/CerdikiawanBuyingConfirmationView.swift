@@ -11,7 +11,7 @@ struct CerdikiawanBuyingConfirmationView: View {
     @EnvironmentObject var appRouter: AppRouter
     @EnvironmentObject var sessionData: SessionData
     
-    @StateObject var viewModel: BuyingConfirmationViewModel
+    @StateObject private var viewModel: BuyingConfirmationViewModel
     
     init(character: ShopCharacterEntity) {
         _viewModel = .init(

@@ -29,7 +29,6 @@ class ResultDataViewModels: ObservableObject {
         self.recordRepository = recordRepository
     }
     
-    // TODO: Replace with repo
     @MainActor
     func saveAttemptData(userID: String, userBalance: Int) async throws -> Bool {
         let attemptId = UUID()

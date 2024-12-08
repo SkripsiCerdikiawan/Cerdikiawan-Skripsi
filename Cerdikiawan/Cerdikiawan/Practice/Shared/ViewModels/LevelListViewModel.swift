@@ -11,7 +11,7 @@ class LevelListViewModel: ObservableObject {
     @Published var levels: [LevelEntity]
     @Published var isLoading: Bool = true
     
-    @Published var storyRepository: StoryRepository
+    private var storyRepository: StoryRepository
     
     init(storyRepository: StoryRepository) {
         levels = []

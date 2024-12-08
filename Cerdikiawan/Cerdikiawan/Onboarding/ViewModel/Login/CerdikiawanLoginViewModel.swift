@@ -21,7 +21,7 @@ class CerdikiawanLoginViewModel: ObservableObject {
     }
     
     @MainActor
-    public func login() async throws -> UserEntity? {
+    func login() async throws -> UserEntity? {
         guard validateLoginInfo(email: emailText, password: passwordText) else {
             return nil
         }

@@ -112,7 +112,7 @@ class ReportDataViewModel: ObservableObject {
         
         for story in stories {
             if var level = levelList.first(where: {$0.level == story.storyLevel}) {
-                var entity = ReportStoryEntity(storyId: story.storyId.uuidString,
+                let entity = ReportStoryEntity(storyId: story.storyId.uuidString,
                                                storyName: story.storyName,
                                                storyDescription: story.storyDescription,
                                                storyImageName: story.storyCoverImagePath,

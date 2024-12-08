@@ -18,7 +18,7 @@ class ApplicationViewModel: ObservableObject {
     }
     
     @MainActor
-    public func fetchLastUserSession() async throws -> UserEntity? {
+    func fetchLastUserSession() async throws -> UserEntity? {
         let (user, userStatus) = try await authRepository.getSession()
         
         guard userStatus == .success, let userSession = user, let userEmail = userSession.email else {
