@@ -31,7 +31,7 @@ class CerdikiawanReportDetailViewModel: NSObject, ObservableObject, AVAudioPlaye
     }
     
     @MainActor
-    public func fetchAttempts() async throws -> [AttemptDataEntity] {
+    func fetchAttempts() async throws -> [AttemptDataEntity] {
         var attemptEntities: [AttemptDataEntity] = []
         
         guard let user = userData else {
@@ -74,7 +74,7 @@ class CerdikiawanReportDetailViewModel: NSObject, ObservableObject, AVAudioPlaye
     }
     
     @MainActor
-    public func playRecordSound() async throws {
+    func playRecordSound() async throws {
         guard let user = userData else {
             debugPrint("User Data not found")
             currentlyPlayedAttemptId = ""
@@ -112,7 +112,7 @@ class CerdikiawanReportDetailViewModel: NSObject, ObservableObject, AVAudioPlaye
         }
     }
     
-    public func stopRecordSound() {
+    func stopRecordSound() {
         audioPlayer?.stop()
         currentlyPlayedAttemptId = ""
     }

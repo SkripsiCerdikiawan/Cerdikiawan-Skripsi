@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 
 class VoiceOverHelper {
-    static let shared: VoiceOverHelper = .init() // Singleton
+    public static let shared: VoiceOverHelper = .init() // Singleton
     
     private let synthesizer: AVSpeechSynthesizer
 

@@ -34,7 +34,7 @@ class CerdikiawanProfileViewModel: ObservableObject {
         self.profileRepository = profileRepository
     }
     
-    public func setUserData(user: UserEntity) {
+    func setUserData(user: UserEntity) {
         self.userData = user
         self.nameText = user.name
         self.dateOfBirthPicker = user.dateOfBirth
@@ -42,7 +42,7 @@ class CerdikiawanProfileViewModel: ObservableObject {
     }
     
     @MainActor
-    public func updateProfile() async throws -> UserEntity? {
+    func updateProfile() async throws -> UserEntity? {
         guard validateUpdateProfile(name: nameText, dateOfBirth: dateOfBirthPicker) else {
             return nil
         }
@@ -98,7 +98,7 @@ class CerdikiawanProfileViewModel: ObservableObject {
         return name.count >= 3
     }
     
-    public func logout() async throws -> Bool {
+    func logout() async throws -> Bool {
         let (status) = try await authRepository.logout()
         if status == .success {
             return true

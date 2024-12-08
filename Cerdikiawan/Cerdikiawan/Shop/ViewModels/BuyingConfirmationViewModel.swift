@@ -23,12 +23,12 @@ class BuyingConfirmationViewModel: ObservableObject {
         self.userCharacterRepository = userCharacterRepository
     }
     
-    public func setUserData(user: UserEntity) {
+    func setUserData(user: UserEntity) {
         self.userData = user
     }
     
     @MainActor
-    public func buyCharacter() async throws -> Bool {
+    func buyCharacter() async throws -> Bool {
         guard let user = userData else {
             errorMessage = "Data user tidak ditemukan"
             return false
