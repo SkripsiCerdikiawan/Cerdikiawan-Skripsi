@@ -10,12 +10,10 @@ import SwiftUI
 @main
 struct CerdikiawanApp: App {
     @StateObject var appRouter: AppRouter = .init()
-    @StateObject var sessionData: SessionData = .init()
-    
-    @StateObject private var viewModel: ApplicationViewModel
+    @StateObject var sessionData: SessionData
     
     init () {
-        _viewModel = .init(
+        _sessionData = .init(
             wrappedValue: .init(
                 authRepository: SupabaseAuthRepository.shared,
                 profileRepository: SupabaseProfileRepository.shared
@@ -42,7 +40,7 @@ struct CerdikiawanApp: App {
                 sessionData.user = .mock()[0]
                 #else
                 Task {
-                    if let user = try await viewModel.fetchLastUserSession() {
+                    if let user = try await sessionData.fetchLastUserSession() {
                         appRouter.startScreen = .home
                         sessionData.user = user
                     } else {
