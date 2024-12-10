@@ -43,7 +43,7 @@ struct CerdikiawanPracticeView: View {
                         .font(.title)
                         .fontWeight(.bold)
                         .onTapGesture {
-                            appRouter.push(.searchLevel)
+                            appRouter.push(.searchLevel(storyList: viewModel.storyList))
                         }
                 }
             }

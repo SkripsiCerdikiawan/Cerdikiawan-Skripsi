@@ -23,7 +23,7 @@ struct CerdikiawanLevelSelectionContainer: View {
             }
             
             ScrollView(.horizontal) {
-                HStack {
+                HStack(alignment: .top) {
                     ForEach(level.stories, id: \.storyId, content: { story in
                         CerdikiawanLevelSelectionCard(
                             imageName: story.storyImageName,
@@ -35,6 +35,7 @@ struct CerdikiawanLevelSelectionContainer: View {
                             }
                         )
                     })
+                    .frame(alignment: .top)
                 }
             }
             .scrollIndicators(.never)
@@ -46,13 +47,16 @@ struct CerdikiawanLevelSelectionContainer: View {
     @Previewable
     @StateObject var appRouter: AppRouter = .init()
     
+    @Previewable
+    @State var levelEntity: LevelEntity = .mock()[0]
+    
     NavigationStack(path: $appRouter.path) {
         ZStack {
             Color(.cGray).ignoresSafeArea()
             VStack {
                 if let first = LevelEntity.mock().first {
                     CerdikiawanLevelSelectionContainer(
-                        level: first
+                        level: levelEntity
                     )
                     .safeAreaPadding(.horizontal, 16)
                 }
@@ -66,4 +70,7 @@ struct CerdikiawanLevelSelectionContainer: View {
     .sheet(item: $appRouter.sheet, content: { sheet in
         appRouter.build(sheet)
     })
+    .onAppear() {
+        levelEntity.stories.append(contentsOf: StoryEntity.mock())
+    }
 }
