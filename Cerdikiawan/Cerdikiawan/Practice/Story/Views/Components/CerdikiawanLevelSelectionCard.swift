@@ -21,18 +21,15 @@ struct CerdikiawanLevelSelectionCard: View {
                 .resizable()
                 .frame(height: 112)
             
-            VStack() {
+            VStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(title)
                         .font(.headline)
                     Text(description)
                         .font(.caption)
-                        .lineLimit(4)
                         .multilineTextAlignment(.leading)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                
-                Spacer()
                 
                 HStack {
                     HStack {
@@ -66,7 +63,8 @@ struct CerdikiawanLevelSelectionCard: View {
                     )
                 )
         )
-        .frame(width: 220, height: 280)
+        .frame(width: 200)
+        .frame(minHeight: 280)
         .onTapGesture {
             onTapGesture()
         }
@@ -76,15 +74,40 @@ struct CerdikiawanLevelSelectionCard: View {
 #Preview {
     ZStack {
         Color(ColorResource.cGray).ignoresSafeArea()
-        CerdikiawanLevelSelectionCard(
-            imageName: "DEBUG_IMAGE",
-            title: "Perjalanan Budi Ke Pasar",
-            description: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
-            availableBalanceToGain: 10,
-            onTapGesture: {
+        ScrollView(.horizontal) {
+            HStack(alignment: .top) {
+                CerdikiawanLevelSelectionCard(
+                    imageName: "DEBUG_IMAGE",
+                    title: "Perjalanan Budi Ke Pasar",
+                    description: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
+                    availableBalanceToGain: 10,
+                    onTapGesture: {
+                        
+                    }
+                )
                 
+                CerdikiawanLevelSelectionCard(
+                    imageName: "DEBUG_IMAGE",
+                    title: "Perjalanan Budi Ke Pasar",
+                    description: "Sunyi House of Coffee di Jakarta memberdayakan difabel dengan lingkungan kerja inklusif dan suportif.",
+                    availableBalanceToGain: 10,
+                    onTapGesture: {
+                        
+                    }
+                )
+                
+                CerdikiawanLevelSelectionCard(
+                    imageName: "DEBUG_IMAGE",
+                    title: "Perjalanan Budi Ke Pasar",
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent congue enim id nibh blandit, et ultricies nunc tempor. Duis sit amet dui iaculis, vestibulum magna nec, lobortis ligula. Fusce faucibus luctus urna, in facilisis nunc rutrum sed. Sed placerat congue quam eget egestas. Donec ac auctor ligula. Etiam eu imperdiet lorem, sit amet laoreet elit. Pellentesque mattis eu turpis at mollis. Aenean vel fermentum arcu, non ultricies sapien. Aliquam luctus leo eu tellus eleifend mollis.",
+                    availableBalanceToGain: 10,
+                    onTapGesture: {
+                        
+                    }
+                )
             }
-        )
+        }
+        .safeAreaPadding(.horizontal, 16)
         
     }
 }
