@@ -30,6 +30,7 @@ struct CerdikiawanLevelSelectionCard: View {
                         .lineLimit(4)
                         .multilineTextAlignment(.leading)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Spacer()
                 
@@ -52,7 +53,6 @@ struct CerdikiawanLevelSelectionCard: View {
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
-            .frame(height: 148, alignment: .topLeading)
         }
         .clipShape(
             RoundedRectangle(cornerRadius: 8)
@@ -66,7 +66,7 @@ struct CerdikiawanLevelSelectionCard: View {
                     )
                 )
         )
-        .frame(width: 224, height: 292)
+        .frame(width: 220, height: 280)
         .onTapGesture {
             onTapGesture()
         }

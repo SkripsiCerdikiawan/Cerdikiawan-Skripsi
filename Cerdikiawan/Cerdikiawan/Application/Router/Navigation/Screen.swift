@@ -11,7 +11,7 @@ enum Screen {
     case login
     case register
     case home
-    case searchLevel
+    case searchLevel(storyList: [StoryEntity])
     case practice(story: StoryEntity)
     case storyCompletion(result: ResultDataEntity, character: CharacterEntity, onCompletion: () -> Void)
     case profile
