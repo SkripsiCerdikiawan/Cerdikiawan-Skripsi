@@ -12,10 +12,15 @@ class LevelListViewModel: ObservableObject {
     @Published var isLoading: Bool = true
     
     private var storyRepository: StoryRepository
+    private var pageRepository: PageRepository
     
-    init(storyRepository: StoryRepository) {
+    init(
+        storyRepository: StoryRepository,
+        pageRepository: PageRepository
+    ) {
         levels = []
         self.storyRepository = storyRepository
+        self.pageRepository = pageRepository
     }
     
     @MainActor
@@ -35,11 +40,16 @@ class LevelListViewModel: ObservableObject {
         }
         
         for story in stories {
+            // get available coin
+            let baseBalance = getLevelbaseBalance(level: story.storyLevel)
+            let availableCoint = try await calculateAvailableCoin(storyID: story.storyId, baseBalance: baseBalance)
+            
             let entity = StoryEntity(storyId: story.storyId.uuidString,
                                      storyName: story.storyName,
                                      storyDescription: story.storyDescription,
                                      storyImageName: story.storyCoverImagePath,
-                                     baseBalance: 10 // MARK: Discuss this more with Hans
+                                     baseBalance: baseBalance,
+                                     availableCoinToGain: availableCoint
             )
             if var level = levelList.first(where: {$0.level == story.storyLevel}) {
                 level.stories.append(entity)
@@ -51,5 +61,32 @@ class LevelListViewModel: ObservableObject {
         }
         
         return levelList
+    }
+    
+    private func calculateAvailableCoin(storyID: UUID, baseBalance: Int) async throws -> Int {
+        // fetch page
+        let pageRequest = PageRequest(storyId: storyID)
+        let (pages, pageStatus) = try await pageRepository.fetchPagesById(request: pageRequest)
+        
+        guard pageStatus == .success, pages.isEmpty == false else {
+            debugPrint("Page did not get fetched")
+            isLoading = false
+            return 1
+        }
+        
+        return pages.count * baseBalance
+    }
+    
+    private func getLevelbaseBalance(level: Int) -> Int {
+        switch level {
+        case 1:
+            return 1
+        case 2:
+            return 5
+        case 3:
+            return 10
+        default:
+            return 1
+        }
     }
 }

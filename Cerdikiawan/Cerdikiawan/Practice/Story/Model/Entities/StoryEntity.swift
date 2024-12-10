@@ -12,11 +12,9 @@ struct StoryEntity {
     let storyName: String
     let storyDescription: String
     let storyImageName: String
-    let baseBalance: Int
     
-    var availableCoinToGain: Int {
-        return baseBalance * 10
-    }
+    let baseBalance: Int
+    var availableCoinToGain: Int
 }
 
 extension StoryEntity {
@@ -27,21 +25,24 @@ extension StoryEntity {
                 storyName: "Perjalanan Budi ke Pasar",
                 storyDescription: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
                 storyImageName: "DEBUG_IMAGE",
-                baseBalance: 1
+                baseBalance: 1,
+                availableCoinToGain: 1
             ),
             .init(
                 storyId: "story-mock-02",
                 storyName: "Perjalanan Amir ke Pasar",
                 storyDescription: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
                 storyImageName: "DEBUG_IMAGE",
-                baseBalance: 5
+                baseBalance: 5,
+                availableCoinToGain: 5
             ),
             .init(
                 storyId: "story-mock-03",
                 storyName: "Perjalanan Budi ke Pasar",
                 storyDescription: "Budi sedang menceritakan pengalamannya di pasar kemarin. Kira - kira ada hal menarik apa ya?",
                 storyImageName: "DEBUG_IMAGE",
-                baseBalance: 10
+                baseBalance: 10,
+                availableCoinToGain: 10
             )
         ]
     }

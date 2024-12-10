@@ -15,7 +15,8 @@ struct CerdikiawanPracticeView: View {
     init() {
         _viewModel = .init(
             wrappedValue: .init(
-                storyRepository: SupabaseStoryRepository.shared
+                storyRepository: SupabaseStoryRepository.shared,
+                pageRepository: SupabasePageRepository.shared
             )
         )
     }
