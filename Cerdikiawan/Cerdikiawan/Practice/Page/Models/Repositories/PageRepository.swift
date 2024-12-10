@@ -10,6 +10,7 @@ import Foundation
 protocol PageRepository {
     func fetchPages() async throws -> ([SupabasePage], ErrorStatus)
     func fetchPagesById(request: PageRequest) async throws -> ([SupabasePage], ErrorStatus)
+    func fetchPagesCount(request: PageRequest) async throws -> (Int, ErrorStatus)
 }
 
 class SupabasePageRepository: SupabaseRepository, PageRepository {
@@ -66,6 +67,24 @@ class SupabasePageRepository: SupabaseRepository, PageRepository {
         }
         
         return (sortedPages, .success)
+    }
+    
+    func fetchPagesCount(request: PageRequest) async throws -> (Int, ErrorStatus) {
+        let response = try await client
+            .from("Page")
+            .select("*", head: true, count: .exact)
+            .eq("storyId", value: request.storyId)
+            .execute()
+        
+        guard response.status == 200 else {
+            return (0, .serverError)
+        }
+        
+        guard let result = response.count else {
+            return (0, .success)
+        }
+        
+        return (result, .success)
     }
     
     
