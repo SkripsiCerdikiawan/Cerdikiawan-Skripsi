@@ -8,13 +8,14 @@
 import Foundation
 
 class LevelListViewModel: ObservableObject {
-    @Published var levels: [LevelEntity]
+    @Published var storyList: [StoryEntity] = []
+    
+    @Published var levels: [LevelEntity] = []
     @Published var isLoading: Bool = true
     
     private var storyRepository: StoryRepository
     
     init(storyRepository: StoryRepository) {
-        levels = []
         self.storyRepository = storyRepository
     }
     
@@ -25,7 +26,6 @@ class LevelListViewModel: ObservableObject {
     
     @MainActor
     func fetchLevel() async throws -> [LevelEntity] {
-        
         var levelList = LevelEntity.mock()
         let (stories, status) = try await storyRepository.fetchStories()
         
@@ -34,21 +34,25 @@ class LevelListViewModel: ObservableObject {
             return []
         }
         
-        for story in stories {
-            let entity = StoryEntity(storyId: story.storyId.uuidString,
-                                     storyName: story.storyName,
-                                     storyDescription: story.storyDescription,
-                                     storyImageName: story.storyCoverImagePath,
-                                     baseBalance: 10 // MARK: Discuss this more with Hans
+        // Map stories into storyList
+        self.storyList = stories.map({ story in
+            let storyEntity = StoryEntity(
+                storyId: story.storyId.uuidString,
+                storyName: story.storyName,
+                storyDescription: story.storyDescription,
+                storyImageName: story.storyCoverImagePath,
+                baseBalance: 10 // MARK: Discuss this more with Hans
             )
-            if var level = levelList.first(where: {$0.level == story.storyLevel}) {
-                level.stories.append(entity)
-                // Update the levelList with the modified level
-                if let index = levelList.firstIndex(where: { $0.level == story.storyLevel }) {
-                    levelList[index] = level
-                }
+            
+            // Append story to level
+            if let idx = levelList.firstIndex(where: {
+                $0.level == story.storyLevel
+            }) {
+                levelList[idx].stories.append(storyEntity)
             }
-        }
+            
+            return storyEntity
+        })
         
         return levelList
     }

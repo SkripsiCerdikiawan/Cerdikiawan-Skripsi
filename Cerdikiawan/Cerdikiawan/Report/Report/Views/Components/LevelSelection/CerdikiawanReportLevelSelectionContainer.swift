@@ -23,7 +23,7 @@ struct CerdikiawanReportLevelSelectionContainer: View {
             }
             
             ScrollView(.horizontal) {
-                HStack {
+                HStack(alignment: .top) {
                     ForEach(level.stories, id: \.storyId, content: { story in
                         CerdikiawanReportLevelCard(
                             imageName: story.storyImageName,

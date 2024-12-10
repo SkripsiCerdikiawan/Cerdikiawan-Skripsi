@@ -64,11 +64,11 @@ class AppRouter: ObservableObject {
                 }
                 .navigationBarBackButtonHidden()
             }
-        case .searchLevel:
+        case .searchLevel(let storyList):
             ZStack {
                 Color(.cGray).ignoresSafeArea()
                 VStack {
-                    CerdikiawanSearchStoryView()
+                    CerdikiawanSearchStoryView(storyList: storyList)
                 }
                 .safeAreaPadding(.horizontal, 16)
                 .navigationBarBackButtonHidden()

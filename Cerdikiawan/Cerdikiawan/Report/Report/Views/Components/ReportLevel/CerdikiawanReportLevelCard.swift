@@ -22,17 +22,15 @@ struct CerdikiawanReportLevelCard: View {
             Image(uiImage: UIImage(named: imageName) ?? UIImage(imageLiteralResourceName: "NOTFOUND_IMAGE"))
                 .resizable().frame(height: 112)
             
-            VStack() {
+            VStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(title)
                         .font(.headline)
                     Text(description)
                         .font(.caption)
-                        .lineLimit(4)
                         .multilineTextAlignment(.leading)
                 }
-                
-                Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack {
                     HStack {
@@ -52,7 +50,6 @@ struct CerdikiawanReportLevelCard: View {
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
-            .frame(height: 148, alignment: .topLeading)
         }
         .clipShape(
             RoundedRectangle(cornerRadius: 8)
@@ -66,7 +63,8 @@ struct CerdikiawanReportLevelCard: View {
                     )
                 )
         )
-        .frame(width: 224, height: 292)
+        .frame(width: 200)
+        .frame(minHeight: 280)
         .onTapGesture {
             onTapGesture()
         }
