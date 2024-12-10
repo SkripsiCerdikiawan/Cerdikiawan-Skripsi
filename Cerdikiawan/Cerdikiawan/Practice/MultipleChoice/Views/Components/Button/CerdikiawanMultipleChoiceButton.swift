@@ -20,22 +20,22 @@ struct CerdikiawanMultipleChoiceButton: View {
                 }
             },
             label: {
-                ZStack(alignment: .leading) {
+                HStack(alignment: .center, spacing: 16) {
                     if let image = type.icon {
                         Image(systemName: image)
                             .imageScale(.medium)
                             .foregroundStyle(type.textColor)
-                            .padding(.leading, 16)
                     }
                     
                     Text(label)
                         .foregroundStyle(type.textColor)
                         .font(type.font)
                         .fontWeight(type.fontWeight)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.horizontal, 16)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .multilineTextAlignment(.leading)
                         .padding(.vertical, 24)
                 }
+                .padding(.horizontal, 16)
             }
         )
         .buttonStyle(
@@ -51,7 +51,7 @@ struct CerdikiawanMultipleChoiceButton: View {
         
         VStack(spacing: 16) {
             CerdikiawanMultipleChoiceButton(
-                label: "Choice",
+                label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 type: .normal,
                 action: {
                     debugPrint("Choice 1 selected")
@@ -65,14 +65,14 @@ struct CerdikiawanMultipleChoiceButton: View {
                 }
             )
             CerdikiawanMultipleChoiceButton(
-                label: "Choice",
+                label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 type: .correct,
                 action: {
                     debugPrint("Choice 3 selected")
                 }
             )
             CerdikiawanMultipleChoiceButton(
-                label: "Choice",
+                label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sagittis arcu ac ullamcorper iaculis. Aenean sagittis sem quam, non eleifend velit iaculis a.",
                 type: .incorrect,
                 action: {
                     debugPrint("Choice 4 selected")

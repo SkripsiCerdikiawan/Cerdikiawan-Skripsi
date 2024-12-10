@@ -80,7 +80,7 @@ enum CerdikiawanMultipleChoiceButtonType {
         case .normal:
             return .regular
         case .selected:
-            return .medium
+            return .regular
         case .correct:
             return .medium
         case .incorrect:
