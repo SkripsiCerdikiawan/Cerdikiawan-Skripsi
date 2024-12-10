@@ -28,6 +28,8 @@ class StoryViewModel: ObservableObject {
     
     @Published var appRouter: AppRouter?
     
+    private var finishButtonPressedStatus: Bool = false
+    
     private var ownedCharacterRepository: ProfileOwnedCharacterRepository
     private var characterRepository: CharacterRepository
     private var pageRepository: PageRepository
@@ -400,9 +402,12 @@ class StoryViewModel: ObservableObject {
                 handleDisplayRecordPage()
             }
             else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
-                    self?.handleDisplayResultData(appRouter: appRouter)
-                })
+                if finishButtonPressedStatus == false {
+                    finishButtonPressedStatus = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.75, execute: { [weak self] in
+                        self?.handleDisplayResultData(appRouter: appRouter)
+                    })
+                }
             }
             return
         }
