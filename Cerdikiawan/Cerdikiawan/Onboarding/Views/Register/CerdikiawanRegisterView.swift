@@ -80,9 +80,9 @@ struct CerdikiawanRegisterView: View {
                     Task {
                         if let user = try await viewModel.register() {
                             sessionData.user = user
+                            appRouter.startScreen = .home
+                            appRouter.popToRoot()
                             
-                            appRouter.pop()
-                            appRouter.push(.home)
                         }
                     }
                 })
