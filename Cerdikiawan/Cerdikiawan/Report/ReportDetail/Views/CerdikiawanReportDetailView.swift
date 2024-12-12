@@ -86,6 +86,7 @@ struct CerdikiawanReportDetailView: View {
             ToolbarItem(placement: .topBarLeading, content: {
                 Button(
                     action: {
+                        viewModel.stopRecordSound()
                         appRouter.pop()
                     },
                     label: {
