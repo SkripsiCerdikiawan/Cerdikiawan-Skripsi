@@ -10,6 +10,7 @@ import Foundation
 protocol CharacterRepository {
     func fetchCharacters() async throws -> ([SupabaseCharacter], ErrorStatus)
     func fetchCharacterById(request: CharacterRequest) async throws -> (SupabaseCharacter?, ErrorStatus)
+    func fetchCharacterByName(request: CharacterNameRequest) async throws -> (SupabaseCharacter?, ErrorStatus)
 }
 
 class SupabaseCharacterRepository: SupabaseRepository, CharacterRepository {
@@ -53,6 +54,30 @@ class SupabaseCharacterRepository: SupabaseRepository, CharacterRepository {
             return (character, .success)
         } else {
             return (nil, .invalidInput)
+        }
+    }
+    
+    func fetchCharacterByName(request: CharacterNameRequest) async throws -> (SupabaseCharacter?, ErrorStatus) {
+        let response = try await client
+            .from("Character")
+            .select()
+            .eq("characterName", value: request.characterName)
+            .execute()
+        
+        guard response.status == 200 else {
+            return (nil, .serverError)
+        }
+        
+        let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseCharacter].self)
+        
+        switch result {
+            case .success(let characters):
+                guard let character = characters.first else {
+                    return (nil, .notFound)
+                }
+                return (character, .success)
+            case .failure(_):
+                return (nil, .jsonError)
         }
     }
     

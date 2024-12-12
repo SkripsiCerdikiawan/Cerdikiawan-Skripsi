@@ -17,7 +17,9 @@ struct CerdikiawanRegisterView: View {
         _viewModel = .init(
             wrappedValue: .init(
                 authRepository: SupabaseAuthRepository.shared,
-                profileRepository: SupabaseProfileRepository.shared
+                profileRepository: SupabaseProfileRepository.shared,
+                characterRepository: SupabaseCharacterRepository.shared,
+                ownedCharacterRepository: SupabaseProfileOwnedCharacterRepository.shared
             )
         )
     }

@@ -56,4 +56,21 @@ struct CharacterTests {
                 "Input must be invalid"
         )
     }
+    
+    @Test func testFetchCharacterByName() async throws {
+        let request = CharacterNameRequest(characterName: "Budi")
+        let (character, status) = try await characterRepository.fetchCharacterByName(request: request)
+        
+        #expect(status == .success,
+                "Fetching function is not successful"
+        )
+        
+        #expect(character != nil,
+                "Character should be fetched"
+        )
+        
+        #expect(character?.characterName == request.characterName,
+                "characterId does not match"
+        )
+    }
 }
