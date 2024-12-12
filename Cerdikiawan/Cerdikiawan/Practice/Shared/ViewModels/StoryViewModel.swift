@@ -290,14 +290,14 @@ class StoryViewModel: ObservableObject {
         // Fetch owned characters
         guard let userId = UUID(uuidString: userID) else {
             debugPrint("User ID is not valid")
-            return CharacterEntity.mock()[1]
+            return CharacterEntity.mock()[0]
         }
         let ownedCharacterRequest = ProfileOwnedCharacterFetchRequest(profileId: userId)
         let (ownedCharacters, ownedCharacterStatus) = try await ownedCharacterRepository.fetchProfileOwnedCharacter(request: ownedCharacterRequest)
         
         guard ownedCharacterStatus == .success, ownedCharacters.isEmpty == false else {
             debugPrint("Failed to fetch user owned character")
-            return CharacterEntity.mock()[1]
+            return CharacterEntity.mock()[0]
         }
         
         var supabaseCharacter: SupabaseProfileOwnedCharacter? = nil
@@ -308,7 +308,7 @@ class StoryViewModel: ObservableObject {
         } else {
             guard let firstCharacter = ownedCharacters.first else {
                 debugPrint("Cannot find character to equip")
-                return CharacterEntity.mock()[1]
+                return CharacterEntity.mock()[0]
             }
             
             let changeStatusRequest = ProfileOwnedCharacterUpdateRequest(profileId: userId,
@@ -318,7 +318,7 @@ class StoryViewModel: ObservableObject {
             
             guard changeStatus == .success else {
                 debugPrint("Failed to change status of character")
-                return CharacterEntity.mock()[1]
+                return CharacterEntity.mock()[0]
             }
             supabaseCharacter = firstCharacter
         }
@@ -326,7 +326,7 @@ class StoryViewModel: ObservableObject {
         // Fetching character data
         guard let activeCharacter = supabaseCharacter else {
             debugPrint("active character did not exist")
-            return CharacterEntity.mock()[1]
+            return CharacterEntity.mock()[0]
         }
         
         let characterRequest = CharacterRequest(characterId: activeCharacter.characterId)
@@ -334,7 +334,7 @@ class StoryViewModel: ObservableObject {
         
         guard characterStatus == .success, let userChosenCharacter = character else {
             debugPrint("Failed to fetch user chosen character")
-            return CharacterEntity.mock()[1]
+            return CharacterEntity.mock()[0]
         }
         
         let characterEntity = CharacterEntity(id: activeCharacter.characterId.uuidString,
