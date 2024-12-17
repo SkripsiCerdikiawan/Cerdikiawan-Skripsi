@@ -61,7 +61,9 @@ struct CerdikiawanProfileView: View {
                 if viewModel.isDataChanged {
                     CerdikiawanButton(type: .primary, label: "Simpan perubahan data", action: {
                         Task {
-                            try await viewModel.updateProfile()
+                            if let user = try await viewModel.updateProfile() {
+                                sessionData.user = user
+                            }
                         }
                     })
                 }
