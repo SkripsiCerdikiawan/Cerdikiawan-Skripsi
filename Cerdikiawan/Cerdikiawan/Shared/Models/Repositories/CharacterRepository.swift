@@ -10,7 +10,6 @@ import Foundation
 protocol CharacterRepository {
     func fetchCharacters() async throws -> ([SupabaseCharacter], ErrorStatus)
     func fetchCharacterById(request: CharacterRequest) async throws -> (SupabaseCharacter?, ErrorStatus)
-    func fetchCharacterByName(request: CharacterNameRequest) async throws -> (SupabaseCharacter?, ErrorStatus)
 }
 
 class SupabaseCharacterRepository: SupabaseRepository, CharacterRepository {
@@ -27,59 +26,58 @@ class SupabaseCharacterRepository: SupabaseRepository, CharacterRepository {
         guard response.status == 200 else {
             return ([], .serverError)
         }
-            
+        
         let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseCharacter].self)
         
         switch result {
-            case .success(let characters):
-                guard characters.isEmpty == false else {
-                    return ([], .notFound)
-                }
-                return (characters, .success)
-            case .failure(_):
-                return ([], .jsonError)
+        case .success(let characters):
+            guard characters.isEmpty == false else {
+                return ([], .notFound)
+            }
+            return (characters, .success)
+        case .failure(_):
+            return ([], .jsonError)
         }
     }
     
     func fetchCharacterById(request: CharacterRequest) async throws -> (SupabaseCharacter?, ErrorStatus) {
-        let (characters, status) = try await fetchCharacters()
-        
-        if let characterId = request.characterId {
-            guard status == .success else {
+        do {
+            guard request.characterId != nil || request.characterName != nil else {
+                return (nil, .invalidInput)
+            }
+            
+            var query = client
+                .from("Character")
+                .select()
+            
+            if let characterId = request.characterId {
+                query = query
+                    .eq("characterId", value: characterId)
+            }
+            
+            if let characterName = request.characterName {
+                query = query
+                    .eq("characterName", value: characterName)
+            }
+            
+            let response = try await query
+                .limit(1)
+                .execute()
+            
+            guard response.status == 200 else {
                 return (nil, .serverError)
             }
-            guard let character = characters.first(where: {$0.characterId == characterId} ) else {
-                return (nil, .notFound)
-            }
-            return (character, .success)
-        } else {
-            return (nil, .invalidInput)
-        }
-    }
-    
-    func fetchCharacterByName(request: CharacterNameRequest) async throws -> (SupabaseCharacter?, ErrorStatus) {
-        let response = try await client
-            .from("Character")
-            .select()
-            .eq("characterName", value: request.characterName)
-            .execute()
-        
-        guard response.status == 200 else {
-            return (nil, .serverError)
-        }
-        
-        let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseCharacter].self)
-        
-        switch result {
-            case .success(let characters):
-                guard let character = characters.first else {
-                    return (nil, .notFound)
-                }
-                return (character, .success)
+            
+            let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseCharacter].self)
+            
+            switch result {
+            case .success(let character):
+                return (character.first, .success)
             case .failure(_):
                 return (nil, .jsonError)
+            }
+        } catch {
+            return (nil, .notFound)
         }
     }
-    
-    
 }

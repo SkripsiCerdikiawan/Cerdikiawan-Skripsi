@@ -30,7 +30,7 @@ struct QuestionTests {
     }
     
     @Test func testFetchQuestionsByQuestionId() async throws {
-        let request = QuestionRequest(questionId: UUID(uuidString: "d0e1622e-d118-423a-b47b-e41c2ada775b"))
+        let request = QuestionRequest(questionId: UUID(uuidString: "023e6f79-461f-42d4-bf9e-710833eb7639"))
         let (questions, status) = try await questionRepository.fetchQuestionsById(request: request)
         
         #expect(status == .success,
@@ -48,7 +48,7 @@ struct QuestionTests {
     }
 
     @Test func testFetchQuestionsByPageId() async throws {
-        let request = QuestionRequest(pageId: UUID(uuidString: "ae244295-e2cc-4279-a32e-e3f3e034a05c"))
+        let request = QuestionRequest(pageId: UUID(uuidString: "4567c8a0-ef17-48ee-987e-03042b0effec"))
         let (questions, status) = try await questionRepository.fetchQuestionsById(request: request)
         
         #expect(status == .success,
@@ -59,7 +59,7 @@ struct QuestionTests {
                 "Question should not be empty"
         )
         
-        #expect(questions.count == 2 &&
+        #expect(questions.count == 3 &&
                 questions.contains(where: { $0.pageId == request.pageId }),
                 "Question should match the intended pageId"
         )

@@ -26,46 +26,60 @@ class SupabaseQuestionRepository: SupabaseRepository, QuestionRepository {
         guard response.status == 200 else {
             return ([], .serverError)
         }
-            
+        
         let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseQuestion].self)
         
         switch result {
-            case .success(let questions):
-                guard questions.isEmpty == false else {
-                    return ([], .notFound)
-                }
-                return (questions, .success)
-            case .failure(_):
-                return ([], .jsonError)
+        case .success(let questions):
+            guard questions.isEmpty == false else {
+                return ([], .notFound)
+            }
+            return (questions, .success)
+        case .failure(_):
+            return ([], .jsonError)
         }
     }
     
     func fetchQuestionsById(request: QuestionRequest) async throws -> ([SupabaseQuestion], ErrorStatus) {
-        let (questions, status) = try await fetchQuestions()
-        
-        guard status == .success else {
-            return ([], .serverError)
-        }
-        
-        guard request.questionId != nil || request.pageId != nil else {
-            return ([], .invalidInput)
-        }
-        
-        var sortedQuestions = questions
-        
-        if let questionId = request.questionId {
-            sortedQuestions = sortedQuestions.filter( {$0.questionId == questionId} )
-        }
-        
-        if let pageId = request.pageId {
-            sortedQuestions = sortedQuestions.filter( {$0.pageId == pageId} )
-        }
-        
-        guard !sortedQuestions.isEmpty else {
+        do {
+            guard request.questionId != nil || request.pageId != nil else {
+                return ([], .invalidInput)
+            }
+            
+            var query = client
+                .from("Question")
+                .select()
+            
+            if let questionId = request.questionId {
+                query = query
+                    .eq("questionId", value: questionId)
+            }
+            
+            if let pageId = request.pageId {
+                query = query
+                    .eq("pageId", value: pageId)
+            }
+            
+            let response = try await query.execute()
+            
+            guard response.status == 200 else {
+                return ([], .serverError)
+            }
+            
+            let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseQuestion].self)
+            
+            switch result {
+            case .success(let question):
+                guard question.isEmpty == false else {
+                    return ([], .notFound)
+                }
+                return (question, .success)
+            case .failure(_):
+                return ([], .jsonError)
+            }
+        } catch {
             return ([], .notFound)
         }
-        
-        return (sortedQuestions, .success)
     }
     
     
