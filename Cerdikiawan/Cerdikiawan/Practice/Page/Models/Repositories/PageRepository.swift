@@ -42,31 +42,46 @@ class SupabasePageRepository: SupabaseRepository, PageRepository {
     }
     
     func fetchPagesById(request: PageRequest) async throws -> ([SupabasePage], ErrorStatus) {
-        let (pages, status) = try await fetchPages()
         
-        guard status == .success else {
-            return ([], .serverError)
-        }
-        
-        guard request.pageId != nil || request.storyId != nil else {
-            return ([], .invalidInput)
-        }
-        
-        var sortedPages = pages
-        
-        if let pageId = request.pageId {
-            sortedPages = sortedPages.filter( {$0.pageId == pageId} )
-        }
-        
-        if let storyId = request.storyId {
-            sortedPages = sortedPages.filter( {$0.storyId == storyId} )
-        }
-        
-        guard !sortedPages.isEmpty else {
+        do {
+            guard request.pageId != nil || request.storyId != nil else {
+                return ([], .invalidInput)
+            }
+            
+            var query = client
+                .from("Page")
+                .select()
+            
+            if let pageId = request.pageId {
+                query = query
+                    .eq("pageId", value: pageId)
+            }
+            
+            if let storyId = request.storyId {
+                query = query
+                    .eq("storyId", value: storyId)
+            }
+            
+            let response = try await query.execute()
+            
+            guard response.status == 200 else {
+                return ([], .serverError)
+            }
+            
+            let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabasePage].self)
+            
+            switch result {
+            case .success(let page):
+                guard page.isEmpty == false else {
+                    return ([], .notFound)
+                }
+                return (page, .success)
+            case .failure(_):
+                return ([], .jsonError)
+            }
+        } catch {
             return ([], .notFound)
         }
-        
-        return (sortedPages, .success)
     }
     
     func fetchPagesCount(request: PageRequest) async throws -> (Int, ErrorStatus) {

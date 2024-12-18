@@ -9,8 +9,5 @@ import Foundation
 
 struct CharacterRequest {
     var characterId: UUID? = nil
-}
-
-struct CharacterNameRequest {
-    var characterName: String
+    var characterName: String?
 }

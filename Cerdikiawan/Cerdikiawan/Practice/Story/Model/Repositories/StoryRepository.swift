@@ -44,18 +44,35 @@ class SupabaseStoryRepository: SupabaseRepository, StoryRepository {
     
     //fetch stories based on storyId
     func fetchStoryById(request: StoryRequest) async throws -> (SupabaseStory?, ErrorStatus) {
-        let (stories, status) = try await fetchStories()
-        
-        if let storyId = request.storyId {
-            guard status == .success else {
+        do {
+            guard request.storyId != nil else {
+                return (nil, .invalidInput)
+            }
+            
+            var query = client
+                .from("Story")
+                .select()
+            
+            if let storyId = request.storyId {
+                query = query
+                    .eq("storyId", value: storyId)
+            }
+            let response = try await query.execute()
+            
+            guard response.status == 200 else {
                 return (nil, .serverError)
             }
-            guard let story = stories.first(where: {$0.storyId == storyId} ) else {
-                return (nil, .notFound)
+            
+            let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseStory].self)
+            
+            switch result {
+            case .success(let story):
+                return (story.first, .success)
+            case .failure(_):
+                return (nil, .jsonError)
             }
-            return (story, .success)
-        } else {
-            return (nil, .invalidInput)
+        } catch {
+            return (nil, .notFound)
         }
     }
 }

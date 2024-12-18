@@ -422,7 +422,6 @@ class StoryViewModel: ObservableObject {
     }
     
     // Function that will be called after the user complete the story (Save Progress Data to user, etc)
-    // TODO: Add Function to repo to save progress data here
     func handleDisplayResultData(appRouter: AppRouter) {
         let resultData = createResultData()
         

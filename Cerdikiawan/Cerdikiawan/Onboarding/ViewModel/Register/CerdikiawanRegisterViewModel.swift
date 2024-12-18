@@ -78,8 +78,8 @@ class CerdikiawanRegisterViewModel: ObservableObject {
     
     private func setUserDefaultCharacter(userID: UUID) async throws {
         // Fetch Default character
-        let characterRequest = CharacterNameRequest(characterName: "Budi")
-        let (character, characterStatus) = try await characterRepository.fetchCharacterByName(request: characterRequest)
+        let characterRequest = CharacterRequest(characterName: "Budi")
+        let (character, characterStatus) = try await characterRepository.fetchCharacterById(request: characterRequest)
         
         guard let fetchedCharacter = character, characterStatus == .success else {
             errorMessage = "Gagal mendapatkan karakter default"

@@ -12,50 +12,12 @@ protocol AnswerRepository {
     func fetchAnswersById<T: SupabaseAnswer>(request: AnswerRequest) async throws -> ([T], ErrorStatus)
 }
 
-internal class SupabaseAnswerRepository: SupabaseRepository, AnswerRepository {
-    
-    internal override init() {}
-    
-    func fetchAnswers() async throws -> ([any SupabaseAnswer], ErrorStatus) {
-        fatalError("This method must be overridden by subclasses")
-    }
-    
-    
-    func fetchAnswersById<T: SupabaseAnswer>(request: AnswerRequest) async throws -> ([T], ErrorStatus) {
-        let (answers, status) = try await fetchAnswers()
-        
-        guard status == .success else {
-            return ([], .serverError)
-        }
-        
-        guard request.questionId != nil || request.answerId != nil else {
-            return ([], .invalidInput)
-        }
-        
-        var sortedAnswers = answers
-        
-        if let questionId = request.questionId {
-            sortedAnswers = sortedAnswers.filter( {$0.questionId == questionId} )
-        }
-        
-        if let answerId = request.answerId {
-            sortedAnswers = sortedAnswers.filter( {$0.answerId == answerId} )
-        }
-        
-        guard !sortedAnswers.isEmpty else {
-            return ([], .notFound)
-        }
-        
-        return (sortedAnswers as![T], .success)
-    }
-}
-
-class SupabaseWordBlankAnswerRepository: SupabaseAnswerRepository {
+class SupabaseWordBlankAnswerRepository: SupabaseRepository, AnswerRepository {
     
     public static let shared = SupabaseWordBlankAnswerRepository()
     private override init() {}
     
-    override func fetchAnswers() async throws -> ([any SupabaseAnswer], ErrorStatus) {
+    func fetchAnswers() async throws -> ([SupabaseAnswer], ErrorStatus) {
         let response = try await client
             .from("WordBlankAnswer")
             .select()
@@ -64,27 +26,73 @@ class SupabaseWordBlankAnswerRepository: SupabaseAnswerRepository {
         guard response.status == 200 else {
             return ([], .serverError)
         }
-            
+        
         let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseWordBlankAnswer].self)
         
         switch result {
-            case .success(let answers):
-                guard answers.isEmpty == false else {
+        case .success(let answers):
+            guard answers.isEmpty == false else {
+                return ([], .notFound)
+            }
+            return (answers, .success)
+        case .failure(_):
+            return ([], .jsonError)
+        }
+    }
+    
+    func fetchAnswersById<T>(request: AnswerRequest) async throws -> ([T], ErrorStatus) where T : SupabaseAnswer {
+        do {
+            guard request.questionId != nil || request.answerId != nil else {
+                return ([], .invalidInput)
+            }
+            
+            var query = client
+                .from("WordBlankAnswer")
+                .select()
+            
+            if let questionId = request.questionId {
+                query = query
+                    .eq("questionId", value: questionId)
+            }
+            
+            if let answerId = request.answerId {
+                query = query
+                    .eq("answerId", value: answerId)
+            }
+            
+            let response = try await query.execute()
+            
+            guard response.status == 200 else {
+                return ([], .serverError)
+            }
+            
+            let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseWordBlankAnswer].self)
+            
+            switch result {
+            case .success(let page):
+                guard page.isEmpty == false else {
                     return ([], .notFound)
                 }
-                return (answers, .success)
+                if let castedPage = page as? [T] {
+                    return (castedPage, .success)
+                } else {
+                    return ([], .jsonError)
+                }
             case .failure(_):
                 return ([], .jsonError)
+            }
+        } catch {
+            return ([], .notFound)
         }
     }
 }
 
-class SupabaseMultiChoiceAnswerRepository: SupabaseAnswerRepository {
+class SupabaseMultiChoiceAnswerRepository: SupabaseRepository, AnswerRepository {
     
     public static let shared = SupabaseMultiChoiceAnswerRepository()
     private override init() {}
     
-    override func fetchAnswers() async throws -> ([any SupabaseAnswer], ErrorStatus) {
+    func fetchAnswers() async throws -> ([SupabaseAnswer], ErrorStatus) {
         let response = try await client
             .from("MultiChoiceAnswer")
             .select()
@@ -93,27 +101,73 @@ class SupabaseMultiChoiceAnswerRepository: SupabaseAnswerRepository {
         guard response.status == 200 else {
             return ([], .serverError)
         }
-            
+        
         let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseMultiChoiceAnswer].self)
         
         switch result {
-            case .success(let answers):
-                guard answers.isEmpty == false else {
+        case .success(let answers):
+            guard answers.isEmpty == false else {
+                return ([], .notFound)
+            }
+            return (answers, .success)
+        case .failure(_):
+            return ([], .jsonError)
+        }
+    }
+    
+    func fetchAnswersById<T>(request: AnswerRequest) async throws -> ([T], ErrorStatus) where T : SupabaseAnswer {
+        do {
+            guard request.questionId != nil || request.answerId != nil else {
+                return ([], .invalidInput)
+            }
+            
+            var query = client
+                .from("MultiChoiceAnswer")
+                .select()
+            
+            if let questionId = request.questionId {
+                query = query
+                    .eq("questionId", value: questionId)
+            }
+            
+            if let answerId = request.answerId {
+                query = query
+                    .eq("answerId", value: answerId)
+            }
+            
+            let response = try await query.execute()
+            
+            guard response.status == 200 else {
+                return ([], .serverError)
+            }
+            
+            let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseMultiChoiceAnswer].self)
+            
+            switch result {
+            case .success(let page):
+                guard page.isEmpty == false else {
                     return ([], .notFound)
                 }
-                return (answers, .success)
+                if let castedPage = page as? [T] {
+                    return (castedPage, .success)
+                } else {
+                    return ([], .jsonError)
+                }
             case .failure(_):
                 return ([], .jsonError)
+            }
+        } catch {
+            return ([], .notFound)
         }
     }
 }
 
-class SupabaseWordMatchAnswerRepository: SupabaseAnswerRepository {
+class SupabaseWordMatchAnswerRepository: SupabaseRepository, AnswerRepository {
     
     public static let shared = SupabaseWordMatchAnswerRepository()
     private override init() {}
     
-    override func fetchAnswers() async throws -> ([any SupabaseAnswer], ErrorStatus) {
+    func fetchAnswers() async throws -> ([SupabaseAnswer], ErrorStatus) {
         let response = try await client
             .from("WordMatchAnswer")
             .select()
@@ -122,17 +176,63 @@ class SupabaseWordMatchAnswerRepository: SupabaseAnswerRepository {
         guard response.status == 200 else {
             return ([], .serverError)
         }
-            
+        
         let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseWordMatchAnswer].self)
         
         switch result {
-            case .success(let answers):
-                guard answers.isEmpty == false else {
+        case .success(let answers):
+            guard answers.isEmpty == false else {
+                return ([], .notFound)
+            }
+            return (answers, .success)
+        case .failure(_):
+            return ([], .jsonError)
+        }
+    }
+    
+    func fetchAnswersById<T>(request: AnswerRequest) async throws -> ([T], ErrorStatus) where T : SupabaseAnswer {
+        do {
+            guard request.questionId != nil || request.answerId != nil else {
+                return ([], .invalidInput)
+            }
+            
+            var query = client
+                .from("WordMatchAnswer")
+                .select()
+            
+            if let questionId = request.questionId {
+                query = query
+                    .eq("questionId", value: questionId)
+            }
+            
+            if let answerId = request.answerId {
+                query = query
+                    .eq("answerId", value: answerId)
+            }
+            
+            let response = try await query.execute()
+            
+            guard response.status == 200 else {
+                return ([], .serverError)
+            }
+            
+            let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseWordMatchAnswer].self)
+            
+            switch result {
+            case .success(let page):
+                guard page.isEmpty == false else {
                     return ([], .notFound)
                 }
-                return (answers, .success)
+                if let castedPage = page as? [T] {
+                    return (castedPage, .success)
+                } else {
+                    return ([], .jsonError)
+                }
             case .failure(_):
                 return ([], .jsonError)
+            }
+        } catch {
+            return ([], .notFound)
         }
     }
 }
