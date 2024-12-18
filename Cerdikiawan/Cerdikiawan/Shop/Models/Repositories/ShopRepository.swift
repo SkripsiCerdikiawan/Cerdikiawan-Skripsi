@@ -41,18 +41,36 @@ class SupabaseShopRepository: SupabaseRepository, ShopRepository {
     }
     
     func fetchShopItemsById(request: ShopRequest) async throws -> (SupabaseShop?, ErrorStatus) {
-        let (shops, status) = try await fetchShopItems()
-        
-        if let shopId = request.characterShopId {
-            guard status == .success else {
+        do {
+            guard request.characterShopId != nil else {
+                return (nil, .invalidInput)
+            }
+            
+            var query = client
+                .from("Shop")
+                .select()
+            
+            if let characterShopId = request.characterShopId {
+                query = query
+                    .eq("characterShopId", value: characterShopId)
+            }
+            
+            let response = try await query.execute()
+            
+            guard response.status == 200 else {
                 return (nil, .serverError)
             }
-            guard let shop = shops.first(where: {$0.characterShopId == shopId} ) else {
-                return (nil, .notFound)
+            
+            let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseShop].self)
+            
+            switch result {
+            case .success(let shop):
+                return (shop.first, .success)
+            case .failure(_):
+                return (nil, .jsonError)
             }
-            return (shop, .success)
-        } else {
-            return (nil, .invalidInput)
+        } catch {
+            return (nil, .notFound)
         }
     }
     

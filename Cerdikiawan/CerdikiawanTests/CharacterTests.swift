@@ -17,7 +17,6 @@ struct CharacterTests {
     }
     
     @Test func testFetchCharacters() async throws {
-        //TODO: Add auth process
         let (characters, status) = try await characterRepository.fetchCharacters()
         
         #expect(status == .success,
@@ -30,7 +29,6 @@ struct CharacterTests {
     }
     
     @Test func testFetchCharacterById() async throws {
-        //TODO: Add auth process
         let request = CharacterRequest(characterId: UUID(uuidString: "30a0a3cf-3c34-432b-83fd-e359e641120d"))
         let (character, status) = try await characterRepository.fetchCharacterById(request: request)
         

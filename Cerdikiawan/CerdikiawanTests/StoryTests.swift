@@ -17,7 +17,6 @@ struct StoryTests {
     }
     
     @Test func testFetchStories() async throws {
-        //TODO: Add auth process
         let (stories, status) = try await storyRepository.fetchStories()
         
         #expect(status == .success,
@@ -30,8 +29,7 @@ struct StoryTests {
     }
     
     @Test func testFetchStoryById() async throws {
-        //TODO: Add auth process
-        let request = StoryRequest(storyId: UUID(uuidString: "ccbed71f-ea39-425d-8238-838f74498a93"))
+        let request = StoryRequest(storyId: UUID(uuidString: "2fa5caf7-c4f9-4f13-9ee1-8c8b2ff8fbfc"))
         let (story, status) = try await storyRepository.fetchStoryById(request: request)
         
         #expect(status == .success,
@@ -42,7 +40,7 @@ struct StoryTests {
                 "Story should be fetched"
         )
         
-        #expect(story?.storyId == UUID(uuidString: "ccbed71f-ea39-425d-8238-838f74498a93"),
+        #expect(story?.storyId == request.storyId,
                 "storyId does not match"
         )
     }

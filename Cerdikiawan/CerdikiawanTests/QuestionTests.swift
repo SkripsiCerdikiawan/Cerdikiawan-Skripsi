@@ -17,7 +17,6 @@ struct QuestionTests {
     }
     
     @Test func testFetchQuestions() async throws {
-        //TODO: Add auth process
         let (questions, status) = try await questionRepository.fetchQuestions()
         
         #expect(status == .success,
