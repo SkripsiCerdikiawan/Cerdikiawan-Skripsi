@@ -29,7 +29,7 @@ struct ParagraphTests {
     }
     
     @Test func testFetchParagraphByParagraphId() async throws {
-        let request = ParagraphRequest(paragraphId: UUID(uuidString: "73628f42-26ab-4c43-ae49-649711fe962d"))
+        let request = ParagraphRequest(paragraphId: UUID(uuidString: "41320247-a91c-4e0e-86df-bc14c151b6d9"))
         let (paragraphs, status) = try await paragraphRepository.fetchParagraphsById(request: request)
         
         #expect(status == .success,
@@ -47,7 +47,7 @@ struct ParagraphTests {
     }
     
     @Test func testFetchParagraphByPageId() async throws {
-        let request = ParagraphRequest(pageId: UUID(uuidString: "ae244295-e2cc-4279-a32e-e3f3e034a05c"))
+        let request = ParagraphRequest(pageId: UUID(uuidString: "c5b15055-52b3-4299-88a3-a9b4b4a873c4"))
         let (paragraphs, status) = try await paragraphRepository.fetchParagraphsById(request: request)
         
         #expect(status == .success,
@@ -58,7 +58,7 @@ struct ParagraphTests {
                 "Paragraphs should not be empty"
         )
         
-        #expect(paragraphs.count == 2 &&
+        #expect(paragraphs.count == 3 &&
                 paragraphs.contains(where: { $0.pageId == request.pageId }),
                 "Paragraphs should match the intended paragraphId"
         )

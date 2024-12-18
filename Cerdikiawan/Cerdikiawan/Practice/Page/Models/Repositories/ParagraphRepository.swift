@@ -41,30 +41,44 @@ class SupabaseParagraphRepository: SupabaseRepository, ParagraphRepository {
     }
     
     func fetchParagraphsById(request: ParagraphRequest) async throws -> ([SupabaseParagraph], ErrorStatus) {
-        let (paragraphs, status) = try await fetchParagraphs()
         
-        guard status == .success else {
-            return ([], .serverError)
-        }
-        
-        guard request.pageId != nil || request.paragraphId != nil else {
-            return ([], .invalidInput)
-        }
-        
-        var sortedParagraphs = paragraphs
-        
-        if let pageId = request.pageId {
-            sortedParagraphs = sortedParagraphs.filter( {$0.pageId == pageId} )
-        }
-        
-        if let paragraphId = request.paragraphId {
-            sortedParagraphs = sortedParagraphs.filter( {$0.paragraphId == paragraphId} )
-        }
-        
-        guard !sortedParagraphs.isEmpty else {
+        do {
+            guard request.pageId != nil || request.paragraphId != nil else {
+                return ([], .invalidInput)
+            }
+            
+            var query = client
+                .from("Paragraph")
+                .select()
+            
+            if let pageId = request.pageId {
+                query = query
+                    .eq("pageId", value: pageId)
+            }
+            
+            if let paragraphId = request.paragraphId {
+                query = query
+                    .eq("paragraphId", value: paragraphId)
+            }
+            let response = try await query.execute()
+            
+            guard response.status == 200 else {
+                return ([], .serverError)
+            }
+            
+            let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseParagraph].self)
+            
+            switch result {
+            case .success(let paragraph):
+                guard paragraph.isEmpty == false else {
+                    return ([], .notFound)
+                }
+                return (paragraph, .success)
+            case .failure(_):
+                return ([], .jsonError)
+            }
+        } catch {
             return ([], .notFound)
         }
-        
-        return (sortedParagraphs, .success)
     }
 }

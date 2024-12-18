@@ -26,10 +26,12 @@ struct PageTests {
         #expect(!pages.isEmpty,
                 "Page should not be empty"
         )
+        
+        debugPrint(pages)
     }
     
     @Test func testFetchPagesByPageId() async throws {
-        let request = PageRequest(pageId: UUID(uuidString: "ae244295-e2cc-4279-a32e-e3f3e034a05c"))
+        let request = PageRequest(pageId: UUID(uuidString: "c329032f-f5Ed-47b8-9a41-e9b3f8688873"))
         let (pages, status) = try await pageRepository.fetchPagesById(request: request)
         
         #expect(status == .success,
@@ -47,7 +49,7 @@ struct PageTests {
     }
     
     @Test func testFetchPagesByStoryId() async throws {
-        let request = PageRequest(storyId: UUID(uuidString: "ccbed71f-ea39-425d-8238-838f74498a93"))
+        let request = PageRequest(storyId: UUID(uuidString: "2fa5caf7-c4f9-4f13-9ee1-8c8b2ff8fbfc"))
         let (pages, status) = try await pageRepository.fetchPagesById(request: request)
         
         #expect(status == .success,
@@ -58,7 +60,7 @@ struct PageTests {
                 "Page should not be empty"
         )
         
-        #expect(pages.count == 2 &&
+        #expect(pages.count == 5 &&
                 pages.allSatisfy( { $0.storyId == request.storyId } ),
                 "Page should match the intended storyId"
         )
