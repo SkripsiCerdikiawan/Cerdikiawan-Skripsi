@@ -1,5 +1,5 @@
 //
-//  PassageEntity.swift
+//  PageEntity.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 20/11/24.

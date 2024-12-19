@@ -26,8 +26,8 @@ struct CerdikiawanQuestionView: View {
     
     var body: some View {
         VStack {
-            // Display Passage first
-            if viewModel.passageDisplayed == false {
+            // Display readings first
+            if viewModel.readingDisplayed == false {
                 VStack {
                     CerdikiawanPageView(page: viewModel.data.page)
                     Spacer()
@@ -51,7 +51,7 @@ struct CerdikiawanQuestionView: View {
                     viewModel.startReadingCountDown()
                 }
             }
-            // Display question after displaying passage
+            // Display question after displaying readings
             else {
                 VStack {
                     switch viewModel.data.question {
