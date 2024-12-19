@@ -15,7 +15,7 @@ struct CerdikiawanHomeView: View {
     var body: some View {
         VStack {
             TabView(selection: $tabSelection) {
-                CerdikiawanPracticeView()
+                CerdikiawanStorySelectionView()
                     .tag(HomeTabSelection.practice)
                     .tabItem({
                         Label(title: {
