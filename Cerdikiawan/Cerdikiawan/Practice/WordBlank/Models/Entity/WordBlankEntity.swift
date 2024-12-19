@@ -12,7 +12,7 @@ struct WordBlankEntity: QuestionProtocol {
     var question: String
     var correctAnswerWord: String
     var letters: [WordBlankLetterEntity]
-    var type: QuestionType
+    var category: QuestionCategory
     var feedback: FeedbackEntity
 }
 
@@ -31,7 +31,7 @@ extension WordBlankEntity {
                     .init(id: "wb-char-5", letter: "O"),
                     .init(id: "wb-char-6", letter: "R"),
                 ],
-                type: .implisit,
+                category: .implisit,
                 feedback: .mock()[0]
             )
         ]

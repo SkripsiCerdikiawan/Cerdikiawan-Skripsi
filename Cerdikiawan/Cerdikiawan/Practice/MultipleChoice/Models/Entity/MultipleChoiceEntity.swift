@@ -12,7 +12,7 @@ struct MultipleChoiceEntity: QuestionProtocol {
     var question: String
     var answer: [MultipleChoiceAnswerEntity]
     var correctAnswerID: String
-    var type: QuestionType
+    var category: QuestionCategory
     var feedback: FeedbackEntity
 }
 
@@ -24,7 +24,7 @@ extension MultipleChoiceEntity {
                 question: "This is an Example Question. Do you understand?",
                 answer: MultipleChoiceAnswerEntity.mock(),
                 correctAnswerID: "mc-answer-01",
-                type: .idePokok,
+                category: .idePokok,
                 feedback: .mock()[0]
             ),
             .init(
@@ -32,7 +32,7 @@ extension MultipleChoiceEntity {
                 question: "This is an Example Question. Do you understand?",
                 answer: MultipleChoiceAnswerEntity.mock(),
                 correctAnswerID: "mc-answer-01",
-                type: .idePokok,
+                category: .idePokok,
                 feedback: .mock()[1]
             ),
         ]

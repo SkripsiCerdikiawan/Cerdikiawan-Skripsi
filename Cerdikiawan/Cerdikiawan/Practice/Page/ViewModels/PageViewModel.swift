@@ -1,5 +1,5 @@
 //
-//  CerdikiawanPageViewModel.swift
+//  PageViewModel.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 20/11/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CerdikiawanPageViewModel: ObservableObject {
+class PageViewModel: ObservableObject {
     @Published var data: PageEntity
     @Published var activeVoiceOverID: String = ""
     

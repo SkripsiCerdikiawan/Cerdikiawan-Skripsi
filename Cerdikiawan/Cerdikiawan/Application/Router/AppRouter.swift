@@ -145,7 +145,7 @@ class AppRouter: ObservableObject {
             ZStack {
                 Color(.cGray).ignoresSafeArea()
                 VStack {
-                    CerdikiawanPageView(page: page)
+                    CerdikiawanReadingView(page: page)
                     CerdikiawanButton(
                         label: "Tutup",
                         action: {

@@ -5,7 +5,7 @@
 //  Created by Hans Arthur Cupiterson on 23/11/24.
 //
 
-enum QuestionType {
+enum QuestionCategory {
     case idePokok
     case implisit
     case kosakata
