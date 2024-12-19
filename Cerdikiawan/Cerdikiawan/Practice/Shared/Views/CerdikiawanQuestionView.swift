@@ -29,7 +29,7 @@ struct CerdikiawanQuestionView: View {
             // Display readings first
             if viewModel.readingDisplayed == false {
                 VStack {
-                    CerdikiawanPageView(page: viewModel.data.page)
+                    CerdikiawanReadingView(page: viewModel.data.page)
                     Spacer()
                     
                     VStack(alignment: .leading, spacing: 8) {

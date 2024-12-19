@@ -1,5 +1,5 @@
 //
-//  CerdikiawanPageView.swift
+//  CerdikiawanReadingView.swift
 //  Cerdikiawan
 //
 //  Created by Hans Arthur Cupiterson on 20/11/24.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct CerdikiawanPageView: View {
-    @StateObject private var viewmodel: CerdikiawanPageViewModel
+struct CerdikiawanReadingView: View {
+    @StateObject private var viewmodel: PageViewModel
     
     init(page: PageEntity) {
-        _viewmodel = StateObject(wrappedValue: CerdikiawanPageViewModel(page: page))
+        _viewmodel = StateObject(wrappedValue: PageViewModel(page: page))
     }
     
     var body: some View {
@@ -55,7 +55,7 @@ struct CerdikiawanPageView: View {
     ZStack {
         Color(.cGray).ignoresSafeArea()
         VStack {
-            CerdikiawanPageView(page: .mock()[0])
+            CerdikiawanReadingView(page: .mock()[0])
         }
         .safeAreaPadding(16)
     }
