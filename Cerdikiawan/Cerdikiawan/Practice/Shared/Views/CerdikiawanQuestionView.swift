@@ -27,7 +27,7 @@ struct CerdikiawanQuestionView: View {
     var body: some View {
         VStack {
             // Display readings first
-            if viewModel.readingDisplayed == false {
+            if viewModel.pageDisplayed == false {
                 VStack {
                     CerdikiawanReadingView(page: viewModel.data.page)
                     Spacer()

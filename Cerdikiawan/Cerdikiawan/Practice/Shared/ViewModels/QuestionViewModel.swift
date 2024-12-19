@@ -11,7 +11,7 @@ class QuestionViewModel: ObservableObject {
     let data: PracticeEntity
     let character: CharacterEntity
     
-    @Published var readingDisplayed: Bool = false
+    @Published var pageDisplayed: Bool = false
     #if DEBUG
     @Published var readingTimeSecond: Int = 0
     #else
@@ -29,7 +29,7 @@ class QuestionViewModel: ObservableObject {
     
     // MARK: - Business Logic
     func handleDisplayQuestion() {
-        self.readingDisplayed = true
+        self.pageDisplayed = true
     }
     
     func startReadingCountDown() {
