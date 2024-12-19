@@ -19,8 +19,8 @@ class StoryViewModel: ObservableObject {
     @Published var questionAnsweredFlag: Bool = false
     @Published var isLoading = false
     
-    @Published var questionList: [PracticeEntity] = [] // Index and Content (For ensuring the view re-render on update)
-    @Published var activeQuestion: PracticeEntity?
+    @Published var practiceList: [PracticeEntity] = [] // Index and Content (For ensuring the view re-render on update)
+    @Published var activePractice: PracticeEntity?
     
     @Published var kosakata: KosakataDataEntity = .init()
     @Published var idePokok: IdePokokDataEntity = .init()
@@ -68,8 +68,8 @@ class StoryViewModel: ObservableObject {
     ) async throws {
         self.userID = userID
         self.userCharacter = try await fetchUserCharacter(userID: userID)
-        self.questionList = try await fetchQuestionForPractice(userID: userID, storyID: story.storyId)
-        self.activeQuestion = questionList.first
+        self.practiceList = try await fetchQuestionForPractice(userID: userID, storyID: story.storyId)
+        self.activePractice = practiceList.first
         self.appRouter = appRouter
     }
     
@@ -144,7 +144,7 @@ class StoryViewModel: ObservableObject {
                                                  question: randomizedQuestion.questionContent,
                                                  correctAnswerWord: wordBlankAnswer.answerContent,
                                                  letters: determineWordBlankAnswer(answer: wordBlankAnswer.answerContent),
-                                                 type: determineQuestionType(type: randomizedQuestion.questionCategory),
+                                                 category: determineQuestionCategory(type: randomizedQuestion.questionCategory),
                                                  feedback: FeedbackEntity(correctFeedback: randomizedQuestion.questionFeedbackIfTrue,
                                                                           incorrectFeedback: randomizedQuestion.questionFeedbackIfFalse
                                                                          )
@@ -168,7 +168,7 @@ class StoryViewModel: ObservableObject {
                                                  questions: questionPromptEntity,
                                                  answers: answerPromptEntity,
                                                  pair: pairValue,
-                                                 type: determineQuestionType(type: randomizedQuestion.questionCategory),
+                                                 category: determineQuestionCategory(type: randomizedQuestion.questionCategory),
                                                  feedback: FeedbackEntity(correctFeedback: randomizedQuestion.questionFeedbackIfTrue,
                                                                           incorrectFeedback: randomizedQuestion.questionFeedbackIfFalse
                                                                          )
@@ -189,7 +189,7 @@ class StoryViewModel: ObservableObject {
                                                       question: randomizedQuestion.questionContent,
                                                       answer: getMultiChoiceAnswer(answers: answer),
                                                       correctAnswerID: answer.first(where: { $0.answerStatus == true })?.answerId.uuidString ?? "",
-                                                      type: determineQuestionType(type: randomizedQuestion.questionCategory),
+                                                      category: determineQuestionCategory(type: randomizedQuestion.questionCategory),
                                                       feedback: FeedbackEntity(correctFeedback: randomizedQuestion.questionFeedbackIfTrue,
                                                                                incorrectFeedback: randomizedQuestion.questionFeedbackIfFalse
                                                                               )
@@ -272,7 +272,7 @@ class StoryViewModel: ObservableObject {
         return results.shuffled()
     }
     
-    private func determineQuestionType(type: String) -> QuestionType {
+    private func determineQuestionCategory(type: String) -> QuestionCategory {
         if type == "Kosakata" {
             return .kosakata
         } else if type == "IdePokok" {
@@ -365,12 +365,12 @@ class StoryViewModel: ObservableObject {
     
     func updateReadingComprehension(isCorrect: Bool) {
         // Calculate Tipe Pemahaman Membaca Data
-        guard let activeQuestion = self.activeQuestion else {
+        guard let practice = self.activePractice else {
             debugPrint("Error! No Active Question Data Detected!")
             return
         }
         
-        switch activeQuestion.question.type {
+        switch practice.question.category {
         case .idePokok:
             if isCorrect {
                 self.idePokok.idePokokCorrect += 1
@@ -396,9 +396,9 @@ class StoryViewModel: ObservableObject {
         }
         
         // Check if user already answered all question
-        guard currentPageIdx < questionList.count else {
+        guard currentPageIdx < practiceList.count else {
             debugPrint("All Question answered")
-            if currentPageIdx == questionList.count {
+            if currentPageIdx == practiceList.count {
                 handleDisplayRecordPage()
             }
             else {
@@ -412,7 +412,7 @@ class StoryViewModel: ObservableObject {
             return
         }
         
-        self.activeQuestion = questionList[currentPageIdx]
+        self.activePractice = practiceList[currentPageIdx]
         
     }
     
@@ -442,8 +442,8 @@ class StoryViewModel: ObservableObject {
     // Function to create result data entity
     func createResultData() -> ResultDataEntity {
         let correctCount = self.correctCount
-        let incorrectCount = self.questionList.count - correctCount
-        let totalQuestions = self.questionList.count
+        let incorrectCount = self.practiceList.count - correctCount
+        let totalQuestions = self.practiceList.count
         
         guard let recordData = VoiceRecordingHelper.shared.getRecordingData() else {
             debugPrint("Recording data not found")
