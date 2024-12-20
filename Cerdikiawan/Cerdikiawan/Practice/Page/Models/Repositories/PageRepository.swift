@@ -15,9 +15,11 @@ protocol PageRepository {
 
 class SupabasePageRepository: SupabaseRepository, PageRepository {
     
+    //singleton
     public static let shared = SupabasePageRepository()
     private override init () {}
     
+    //fetch all available pages
     func fetchPages() async throws -> ([SupabasePage], ErrorStatus) {
         let response = try await client
             .from("Page")
@@ -41,6 +43,7 @@ class SupabasePageRepository: SupabaseRepository, PageRepository {
         }
     }
     
+    //fetch page based on request
     func fetchPagesById(request: PageRequest) async throws -> ([SupabasePage], ErrorStatus) {
         
         do {
@@ -84,6 +87,7 @@ class SupabasePageRepository: SupabaseRepository, PageRepository {
         }
     }
     
+    // fetch page count based on storyId
     func fetchPagesCount(request: PageRequest) async throws -> (Int, ErrorStatus) {
         let response = try await client
             .from("Page")

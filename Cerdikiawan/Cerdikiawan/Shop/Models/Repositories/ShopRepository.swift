@@ -14,9 +14,11 @@ protocol ShopRepository {
 
 class SupabaseShopRepository: SupabaseRepository, ShopRepository {
     
+    // singleton
     public static let shared = SupabaseShopRepository()
     private override init() {}
     
+    // fetch all shop items
     func fetchShopItems() async throws -> ([SupabaseShop], ErrorStatus) {
         let response = try await client
             .from("Shop")
@@ -40,6 +42,7 @@ class SupabaseShopRepository: SupabaseRepository, ShopRepository {
         }
     }
     
+    // fetch shop items based on request
     func fetchShopItemsById(request: ShopRequest) async throws -> (SupabaseShop?, ErrorStatus) {
         do {
             guard request.characterShopId != nil else {

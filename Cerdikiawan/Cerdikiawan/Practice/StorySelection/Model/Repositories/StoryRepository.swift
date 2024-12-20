@@ -15,10 +15,11 @@ protocol StoryRepository {
 
 class SupabaseStoryRepository: SupabaseRepository, StoryRepository {
     
+    // singleton
     public static let shared = SupabaseStoryRepository()
     private override init () {}
     
-    //Fetch all stories
+    // Fetch all stories
     func fetchStories() async throws -> ([SupabaseStory], ErrorStatus) {
         let response = try await client
             .from("Story")
@@ -42,7 +43,7 @@ class SupabaseStoryRepository: SupabaseRepository, StoryRepository {
         }
     }
     
-    //fetch stories based on storyId
+    // Fetch stories based on storyId
     func fetchStoryById(request: StoryRequest) async throws -> (SupabaseStory?, ErrorStatus) {
         do {
             guard request.storyId != nil else {

@@ -14,9 +14,11 @@ protocol ParagraphRepository {
 
 class SupabaseParagraphRepository: SupabaseRepository, ParagraphRepository {
     
+    // singleton
     public static let shared = SupabaseParagraphRepository()
     private override init() {}
     
+    //fetch all available paragraphs
     func fetchParagraphs() async throws -> ([SupabaseParagraph], ErrorStatus) {
         let response = try await client
             .from("Paragraph")
@@ -40,6 +42,7 @@ class SupabaseParagraphRepository: SupabaseRepository, ParagraphRepository {
         }
     }
     
+    //fetch paragraph based on request
     func fetchParagraphsById(request: ParagraphRequest) async throws -> ([SupabaseParagraph], ErrorStatus) {
         
         do {

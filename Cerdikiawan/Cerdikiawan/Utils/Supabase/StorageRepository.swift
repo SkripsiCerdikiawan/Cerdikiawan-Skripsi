@@ -8,6 +8,7 @@
 import Foundation
 import Supabase
 
+// parent class for storage
 class StorageRepository {
     let logger: StorageLogger
     let client: SupabaseStorageClient
