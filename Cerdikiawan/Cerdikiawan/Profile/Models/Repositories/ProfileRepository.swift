@@ -16,9 +16,11 @@ protocol ProfileRepository {
 
 class SupabaseProfileRepository: SupabaseRepository, ProfileRepository {
     
+    //singleton
     public static let shared = SupabaseProfileRepository()
     private override init() {}
     
+    //fetch a particular profile based on profileId
     func fetchProfile(request: ProfileFetchRequest) async throws -> (SupabaseProfile?, ErrorStatus) {
         do {
             let response = try await client
@@ -45,6 +47,7 @@ class SupabaseProfileRepository: SupabaseRepository, ProfileRepository {
         }
     }
     
+    // create new profile
     func createNewProfile(request: ProfileInsertRequest) async throws -> (SupabaseProfile?, ErrorStatus) {
         
         let profile = SupabaseProfile(profileId: request.profileId,
@@ -69,6 +72,7 @@ class SupabaseProfileRepository: SupabaseRepository, ProfileRepository {
         }
     }
     
+    // update profile particular information
     func updateProfile(request: ProfileUpdateRequest) async throws -> (SupabaseProfile?, ErrorStatus) {
         let (profile, status) = try await fetchProfile(request: ProfileFetchRequest(profileId: request.profileId))
         
@@ -100,6 +104,7 @@ class SupabaseProfileRepository: SupabaseRepository, ProfileRepository {
         }
     }
     
+    // function to update certain profile property
     private func updateProfileData<T: Encodable>(updatedColumn: String, updatedValue: T, profileId: UUID) async throws -> SupabaseProfile {
         return try await client
             .from("Profile")
@@ -110,6 +115,7 @@ class SupabaseProfileRepository: SupabaseRepository, ProfileRepository {
             .value
     }
     
+    // function to delete profile
     func deleteProfile(request: ProfileDeleteRequest) async throws -> (ErrorStatus) {
         let (profile, status) = try await fetchProfile(request: ProfileFetchRequest(profileId: request.profileId))
         

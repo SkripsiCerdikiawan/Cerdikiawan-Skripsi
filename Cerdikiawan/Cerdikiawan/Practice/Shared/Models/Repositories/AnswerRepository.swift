@@ -14,9 +14,11 @@ protocol AnswerRepository {
 
 class SupabaseWordBlankAnswerRepository: SupabaseRepository, AnswerRepository {
     
+    //singleton
     public static let shared = SupabaseWordBlankAnswerRepository()
     private override init() {}
     
+    //Fetch all word blank answers
     func fetchAnswers() async throws -> ([SupabaseAnswer], ErrorStatus) {
         let response = try await client
             .from("WordBlankAnswer")
@@ -40,6 +42,7 @@ class SupabaseWordBlankAnswerRepository: SupabaseRepository, AnswerRepository {
         }
     }
     
+    //Fetch all word blank answer based on request
     func fetchAnswersById<T>(request: AnswerRequest) async throws -> ([T], ErrorStatus) where T : SupabaseAnswer {
         do {
             guard request.questionId != nil || request.answerId != nil else {
@@ -89,9 +92,11 @@ class SupabaseWordBlankAnswerRepository: SupabaseRepository, AnswerRepository {
 
 class SupabaseMultiChoiceAnswerRepository: SupabaseRepository, AnswerRepository {
     
+    //singleton
     public static let shared = SupabaseMultiChoiceAnswerRepository()
     private override init() {}
     
+    // fetch all multi choice answer
     func fetchAnswers() async throws -> ([SupabaseAnswer], ErrorStatus) {
         let response = try await client
             .from("MultiChoiceAnswer")
@@ -115,6 +120,7 @@ class SupabaseMultiChoiceAnswerRepository: SupabaseRepository, AnswerRepository 
         }
     }
     
+    //Fetch all multi choice answer based on request
     func fetchAnswersById<T>(request: AnswerRequest) async throws -> ([T], ErrorStatus) where T : SupabaseAnswer {
         do {
             guard request.questionId != nil || request.answerId != nil else {
@@ -164,9 +170,11 @@ class SupabaseMultiChoiceAnswerRepository: SupabaseRepository, AnswerRepository 
 
 class SupabaseWordMatchAnswerRepository: SupabaseRepository, AnswerRepository {
     
+    //singleton
     public static let shared = SupabaseWordMatchAnswerRepository()
     private override init() {}
     
+    // fetch all word match answers
     func fetchAnswers() async throws -> ([SupabaseAnswer], ErrorStatus) {
         let response = try await client
             .from("WordMatchAnswer")
@@ -190,6 +198,7 @@ class SupabaseWordMatchAnswerRepository: SupabaseRepository, AnswerRepository {
         }
     }
     
+    //Fetch all word blank answer based on request
     func fetchAnswersById<T>(request: AnswerRequest) async throws -> ([T], ErrorStatus) where T : SupabaseAnswer {
         do {
             guard request.questionId != nil || request.answerId != nil else {

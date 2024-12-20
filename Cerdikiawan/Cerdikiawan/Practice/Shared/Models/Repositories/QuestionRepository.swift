@@ -14,9 +14,11 @@ protocol QuestionRepository {
 
 class SupabaseQuestionRepository: SupabaseRepository, QuestionRepository {
     
+    // singleton
     public static let shared = SupabaseQuestionRepository()
     private override init() {}
     
+    // function to fetch all available questions
     func fetchQuestions() async throws -> ([SupabaseQuestion], ErrorStatus) {
         let response = try await client
             .from("Question")
@@ -40,6 +42,7 @@ class SupabaseQuestionRepository: SupabaseRepository, QuestionRepository {
         }
     }
     
+    // fetch questions based on request
     func fetchQuestionsById(request: QuestionRequest) async throws -> ([SupabaseQuestion], ErrorStatus) {
         do {
             guard request.questionId != nil || request.pageId != nil else {

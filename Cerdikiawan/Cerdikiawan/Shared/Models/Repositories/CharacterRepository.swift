@@ -14,9 +14,11 @@ protocol CharacterRepository {
 
 class SupabaseCharacterRepository: SupabaseRepository, CharacterRepository {
     
+    //singleton
     public static let shared = SupabaseCharacterRepository()
     private override init() {}
     
+    //fetch all available character
     func fetchCharacters() async throws -> ([SupabaseCharacter], ErrorStatus) {
         let response = try await client
             .from("Character")
@@ -40,6 +42,7 @@ class SupabaseCharacterRepository: SupabaseRepository, CharacterRepository {
         }
     }
     
+    //fetch character based on request
     func fetchCharacterById(request: CharacterRequest) async throws -> (SupabaseCharacter?, ErrorStatus) {
         do {
             guard request.characterId != nil || request.characterName != nil else {

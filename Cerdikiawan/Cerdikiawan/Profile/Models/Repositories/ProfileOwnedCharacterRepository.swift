@@ -15,9 +15,11 @@ protocol ProfileOwnedCharacterRepository {
 
 class SupabaseProfileOwnedCharacterRepository: SupabaseRepository, ProfileOwnedCharacterRepository {
     
+    // singleton
     public static let shared = SupabaseProfileOwnedCharacterRepository()
     private override init() {}
     
+    // fetch all character that the user owns
     func fetchProfileOwnedCharacter(request: ProfileOwnedCharacterFetchRequest) async throws -> ([SupabaseProfileOwnedCharacter], ErrorStatus) {
         
         do {
@@ -52,6 +54,7 @@ class SupabaseProfileOwnedCharacterRepository: SupabaseRepository, ProfileOwnedC
         }
     }
     
+    // insert add new character into user profile
     func insertProfileOwnedCharacter(request: ProfileOwnedCharacterInsertRequest) async throws -> (SupabaseProfileOwnedCharacter?, ErrorStatus) {
         let ownedCharacter = SupabaseProfileOwnedCharacter(profileId: request.profileId,
                                                            characterId: request.characterId,
@@ -74,7 +77,9 @@ class SupabaseProfileOwnedCharacterRepository: SupabaseRepository, ProfileOwnedC
         }
     }
     
+    // update the profile information (generally its about the currently equipped character
     func updateProfileOwnedCharacter(request: ProfileOwnedCharacterUpdateRequest) async throws -> (SupabaseProfileOwnedCharacter?, ErrorStatus) {
+        // get the requested character
         let (ownedCharacter, status) = try await fetchProfileOwnedCharacter(request:
                                                                                 ProfileOwnedCharacterFetchRequest(profileId: request.profileId,
                                                                                                                   characterId: request.characterId
@@ -91,6 +96,7 @@ class SupabaseProfileOwnedCharacterRepository: SupabaseRepository, ProfileOwnedC
         
         var savedCharacter = initialOwnedCharacter
         do {
+            // update the isChosen property of the character
             if let isChosen = request.isChosen, isChosen != savedCharacter.isChosen {
                 savedCharacter = try await updateOwnedCharacterData(updatedColumn: "isChosen", updatedValue: isChosen, profileId: request.profileId, characterId: request.characterId)
             }
@@ -101,6 +107,7 @@ class SupabaseProfileOwnedCharacterRepository: SupabaseRepository, ProfileOwnedC
         }
     }
     
+    //function to update certain property into profileOwnedCharacter
     private func updateOwnedCharacterData<T: Encodable>(updatedColumn: String, updatedValue: T, profileId: UUID, characterId: UUID) async throws -> SupabaseProfileOwnedCharacter {
         return try await client
             .from("ProfileOwnedCharacter")

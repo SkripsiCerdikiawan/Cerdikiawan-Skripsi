@@ -14,30 +14,37 @@ protocol AttemptRepository {
 
 class SupabaseAttemptRepository: SupabaseRepository, AttemptRepository {
     
+    //singleton
     public static let shared = SupabaseAttemptRepository()
     private override init() {}
     
+    // fetch all attempts based on request (profileId is mandatory)
     func fetchAttempts(request: AttemptFetchRequest) async throws -> ([SupabaseAttempt], ErrorStatus) {
         do {
+            // build query here
             var query = client
                 .from("Attempt")
                 .select()
                 .eq("profileId", value: request.profileId)
             
+            //filter query based on attemptId
             if let attemptId = request.attemptId {
                 query = query.eq("attemptId", value: attemptId)
             }
             
+            //filter query based on storyId
             if let storyId = request.storyId {
                 query = query.eq("storyId", value: storyId)
             }
             
+            //execute query
             let response = try await query.execute()
             
             guard response.status == 200 else {
                 return ([], .serverError)
             }
             
+            // parse query Data into the appropriate data model
             let result = JsonManager.shared.loadJSONData(from: response.data, as: [SupabaseAttempt].self)
             
             switch result {
@@ -54,7 +61,9 @@ class SupabaseAttemptRepository: SupabaseRepository, AttemptRepository {
         }
     }
     
+    // make new attempt
     func createNewAttempt(request: AttemptInsertRequest) async throws -> (SupabaseAttempt?, ErrorStatus) {
+        //make new data model object
         let attempt = SupabaseAttempt(attemptId: request.attemptId,
                                       profileId: request.profileId,
                                       storyId: request.storyId,
@@ -66,6 +75,7 @@ class SupabaseAttemptRepository: SupabaseRepository, AttemptRepository {
         )
         
         do {
+            // pass data model object to query
             let response = try await client
                 .from("Attempt")
                 .insert(attempt)
