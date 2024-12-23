@@ -61,6 +61,7 @@ struct CerdikiawanCharacterDialogueContainer: View {
             )
             
         }
+        .fixedSize(horizontal: false, vertical: true)
         .frame(maxWidth: .infinity)
     }
 }
