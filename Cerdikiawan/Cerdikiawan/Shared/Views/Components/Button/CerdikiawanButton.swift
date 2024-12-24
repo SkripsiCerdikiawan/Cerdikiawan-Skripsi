@@ -15,13 +15,19 @@ struct CerdikiawanButton: View {
     var body: some View {
         Button(
             action: {
-                if type != .disabled {
+                if type != .disabled && type != .loading {
                     action()
                 }
             },
             label: {
-                Text(label)
-                    .padding(16)
+                if type == .loading {
+                    ProgressView()
+                        .padding(16)
+                }
+                else {
+                    Text(label)
+                        .padding(16)
+                }
             }
         )
         .buttonStyle(CerdikiawanButtonStyle(type: type))
@@ -60,6 +66,14 @@ struct CerdikiawanButton: View {
             label: "Button",
             action: {
                 debugPrint("Button Pressed")
+            }
+        )
+        
+        CerdikiawanButton(
+            type: .loading,
+            label: "Button",
+            action: {
+                debugPrint("Button Loading Pressed")
             }
         )
     }
