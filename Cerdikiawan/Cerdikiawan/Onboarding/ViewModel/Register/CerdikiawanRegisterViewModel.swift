@@ -38,7 +38,6 @@ class CerdikiawanRegisterViewModel: ObservableObject {
     @MainActor
     func register() async throws -> UserEntity? {
         guard validateRegisterInfo(name: nameText, email: emailText, dateOfBirth: dateOfBirthPicker, password: passwordText, confirmPassword: confirmPasswordText) else {
-            buttonIsPressed = false
             return nil
         }
         let authRequest = AuthRequest(email: emailText, password: passwordText)
@@ -48,7 +47,6 @@ class CerdikiawanRegisterViewModel: ObservableObject {
             
             guard let registeredUser = user, userStatus == .success else {
                 errorMessage = "Akun tidak berhasil dibuat"
-                buttonIsPressed = false
                 return nil
             }
             
@@ -61,7 +59,6 @@ class CerdikiawanRegisterViewModel: ObservableObject {
             
             guard let registeredProfile = profile, profileStatus == .success else {
                 errorMessage = "Akun tidak berhasil dibuat"
-                buttonIsPressed = false
                 return nil
             }
             
@@ -78,20 +75,18 @@ class CerdikiawanRegisterViewModel: ObservableObject {
             
         } catch {
             errorMessage = "Server error"
-            buttonIsPressed = false
             return nil
         }
     }
     
-    private func setUserDefaultCharacter(userID: UUID) async throws {
+    private func setUserDefaultCharacter(userID: UUID) async throws{
         // Fetch Default character
         let characterRequest = CharacterRequest(characterName: "Budi")
         let (character, characterStatus) = try await characterRepository.fetchCharacterById(request: characterRequest)
         
         guard let fetchedCharacter = character, characterStatus == .success else {
             errorMessage = "Gagal mendapatkan karakter default"
-            buttonIsPressed = false
-            return
+            throw ErrorStatus.notFound
         }
         
         // Purchase default character
@@ -104,8 +99,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
         let (ownedCharacter, ownedCharacterStatus) = try await ownedCharacterRepository.insertProfileOwnedCharacter(request: request)
         guard ownedCharacter != nil, ownedCharacterStatus == .success else {
             errorMessage = "Gagal memasang default character"
-            buttonIsPressed = false
-            return
+            throw ErrorStatus.serverError
         }
     }
     

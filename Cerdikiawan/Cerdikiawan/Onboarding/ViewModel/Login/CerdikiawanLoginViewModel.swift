@@ -35,7 +35,6 @@ class CerdikiawanLoginViewModel: ObservableObject {
             
             guard let loggedInUser = user, userStatus == .success else {
                 errorMessage = "Akun tidak ditemukan"
-                buttonIsPressed = false
                 return nil
             }
             
@@ -44,7 +43,6 @@ class CerdikiawanLoginViewModel: ObservableObject {
             
             guard let loggedInProfile = profile, profileStatus == .success else {
                 errorMessage = "Akun tidak ditemukan"
-                buttonIsPressed = false
                 return nil
             }
             errorMessage = nil
@@ -58,7 +56,6 @@ class CerdikiawanLoginViewModel: ObservableObject {
             
         } catch {
             errorMessage = "Server error"
-            buttonIsPressed = false
             return nil
         }
     }

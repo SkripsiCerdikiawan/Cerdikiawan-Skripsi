@@ -66,6 +66,9 @@ struct CerdikiawanLoginView: View {
                                 appRouter.startScreen = .home
                                 appRouter.popToRoot()
                             }
+                            else {
+                                viewModel.buttonIsPressed = false
+                            }
                         }
                     }
                 )
