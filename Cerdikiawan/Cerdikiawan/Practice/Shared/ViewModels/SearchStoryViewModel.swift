@@ -19,7 +19,7 @@ class SearchStoryViewModel: ObservableObject {
     
     func filterStory() {
         searchResult = storyList.filter({
-            $0.storyName.contains(searchText)
+            $0.storyName.localizedCaseInsensitiveContains(searchText)
         })
     }
 }
