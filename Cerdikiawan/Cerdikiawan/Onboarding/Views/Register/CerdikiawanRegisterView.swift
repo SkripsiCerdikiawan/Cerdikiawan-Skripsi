@@ -76,16 +76,22 @@ struct CerdikiawanRegisterView: View {
             }
             
             VStack(spacing: 24) {
-                CerdikiawanButton(type: .primary, label: "Register", action: {
-                    Task {
-                        if let user = try await viewModel.register() {
-                            sessionData.user = user
-                            appRouter.startScreen = .home
-                            appRouter.popToRoot()
-                            
+                CerdikiawanButton(
+                    type: viewModel.determineButtonState(),
+                    label: "Register",
+                    action: {
+                        // Logic to make sure the button only run once
+                        viewModel.buttonIsPressed = true
+                        Task {
+                            if let user = try await viewModel.register() {
+                                sessionData.user = user
+                                appRouter.startScreen = .home
+                                appRouter.popToRoot()
+                            }
                         }
+
                     }
-                })
+                )
                 
                 HStack {
                     Text("Sudah Mempunyai akun?")

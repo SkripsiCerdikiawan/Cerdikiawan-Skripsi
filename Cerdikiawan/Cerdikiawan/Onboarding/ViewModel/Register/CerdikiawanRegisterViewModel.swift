@@ -15,10 +15,13 @@ class CerdikiawanRegisterViewModel: ObservableObject {
     @Published var confirmPasswordText: String = ""
     @Published var errorMessage: String?
     
+    @Published var buttonIsPressed: Bool = false
+    
     private var authRepository: AuthRepository
     private var profileRepository: ProfileRepository
     private var characterRepository: CharacterRepository
     private var ownedCharacterRepository: ProfileOwnedCharacterRepository
+    
     
     init(
         authRepository: AuthRepository,
@@ -35,6 +38,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
     @MainActor
     func register() async throws -> UserEntity? {
         guard validateRegisterInfo(name: nameText, email: emailText, dateOfBirth: dateOfBirthPicker, password: passwordText, confirmPassword: confirmPasswordText) else {
+            buttonIsPressed = false
             return nil
         }
         let authRequest = AuthRequest(email: emailText, password: passwordText)
@@ -44,6 +48,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
             
             guard let registeredUser = user, userStatus == .success else {
                 errorMessage = "Akun tidak berhasil dibuat"
+                buttonIsPressed = false
                 return nil
             }
             
@@ -56,6 +61,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
             
             guard let registeredProfile = profile, profileStatus == .success else {
                 errorMessage = "Akun tidak berhasil dibuat"
+                buttonIsPressed = false
                 return nil
             }
             
@@ -72,6 +78,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
             
         } catch {
             errorMessage = "Server error"
+            buttonIsPressed = false
             return nil
         }
     }
@@ -83,6 +90,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
         
         guard let fetchedCharacter = character, characterStatus == .success else {
             errorMessage = "Gagal mendapatkan karakter default"
+            buttonIsPressed = false
             return
         }
         
@@ -96,6 +104,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
         let (ownedCharacter, ownedCharacterStatus) = try await ownedCharacterRepository.insertProfileOwnedCharacter(request: request)
         guard ownedCharacter != nil, ownedCharacterStatus == .success else {
             errorMessage = "Gagal memasang default character"
+            buttonIsPressed = false
             return
         }
     }
@@ -148,5 +157,14 @@ class CerdikiawanRegisterViewModel: ObservableObject {
     private func isValidEmail(email: String) -> Bool {
         let pattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         return NSPredicate(format: "SELF MATCHES %@", pattern).evaluate(with: email)
+    }
+    
+    // MARK: - UI Logic
+    func determineButtonState() -> CerdikiawanButtonType {
+        if buttonIsPressed {
+            return .loading
+        }
+        
+        return .primary
     }
 }
