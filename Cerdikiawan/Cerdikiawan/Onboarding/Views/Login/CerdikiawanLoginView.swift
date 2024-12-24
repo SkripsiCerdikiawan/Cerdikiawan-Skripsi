@@ -55,15 +55,20 @@ struct CerdikiawanLoginView: View {
             }
             
             VStack(spacing: 24) {
-                CerdikiawanButton(type: .primary, label: "Masuk", action: {
-                    Task {
-                        if let user = try await viewModel.login() {
-                            sessionData.user = user
-                            appRouter.startScreen = .home
-                            appRouter.popToRoot()
+                CerdikiawanButton(
+                    type: viewModel.determineButtonState(),
+                    label: "Masuk",
+                    action: {
+                        viewModel.buttonIsPressed = true
+                        Task {
+                            if let user = try await viewModel.login() {
+                                sessionData.user = user
+                                appRouter.startScreen = .home
+                                appRouter.popToRoot()
+                            }
                         }
                     }
-                })
+                )
                 
                 HStack {
                     Text("Tidak Mempunyai akun?")

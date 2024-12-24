@@ -12,6 +12,8 @@ class CerdikiawanLoginViewModel: ObservableObject {
     @Published var passwordText: String = ""
     @Published var errorMessage: String?
     
+    @Published var buttonIsPressed: Bool = false
+    
     private var authRepository: AuthRepository
     private var profileRepository: ProfileRepository
     
@@ -23,6 +25,7 @@ class CerdikiawanLoginViewModel: ObservableObject {
     @MainActor
     func login() async throws -> UserEntity? {
         guard validateLoginInfo(email: emailText, password: passwordText) else {
+            buttonIsPressed = false
             return nil
         }
         let authRequest = AuthRequest(email: emailText, password: passwordText)
@@ -32,6 +35,7 @@ class CerdikiawanLoginViewModel: ObservableObject {
             
             guard let loggedInUser = user, userStatus == .success else {
                 errorMessage = "Akun tidak ditemukan"
+                buttonIsPressed = false
                 return nil
             }
             
@@ -40,6 +44,7 @@ class CerdikiawanLoginViewModel: ObservableObject {
             
             guard let loggedInProfile = profile, profileStatus == .success else {
                 errorMessage = "Akun tidak ditemukan"
+                buttonIsPressed = false
                 return nil
             }
             errorMessage = nil
@@ -53,6 +58,7 @@ class CerdikiawanLoginViewModel: ObservableObject {
             
         } catch {
             errorMessage = "Server error"
+            buttonIsPressed = false
             return nil
         }
     }
@@ -77,5 +83,10 @@ class CerdikiawanLoginViewModel: ObservableObject {
     private func isValidEmail(valid: String) -> Bool {
         let pattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         return NSPredicate(format: "SELF MATCHES %@", pattern).evaluate(with: valid)
+    }
+    
+    // MARK: - UI Logic
+    func determineButtonState() -> CerdikiawanButtonType {
+        return buttonIsPressed ? .loading : .primary
     }
 }

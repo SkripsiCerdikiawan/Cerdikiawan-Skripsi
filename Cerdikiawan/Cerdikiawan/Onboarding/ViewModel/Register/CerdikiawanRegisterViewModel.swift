@@ -161,10 +161,6 @@ class CerdikiawanRegisterViewModel: ObservableObject {
     
     // MARK: - UI Logic
     func determineButtonState() -> CerdikiawanButtonType {
-        if buttonIsPressed {
-            return .loading
-        }
-        
-        return .primary
+        return buttonIsPressed ? .loading : .primary
     }
 }
