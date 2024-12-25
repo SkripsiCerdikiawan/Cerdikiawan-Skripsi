@@ -77,7 +77,7 @@ struct CerdikiawanRegisterView: View {
             
             VStack(spacing: 24) {
                 CerdikiawanButton(
-                    type: viewModel.determineButtonState(),
+                    type: .primary,
                     label: "Register",
                     action: {
                         // Logic to make sure the button only run once
@@ -112,6 +112,22 @@ struct CerdikiawanRegisterView: View {
             viewModel.confirmPasswordText = ""
             viewModel.dateOfBirthPicker = Date()
         }
+        .overlay(content: {
+            // Show loading bar overlay when updating data
+            // To make sure the user won't do any operation
+            if viewModel.connectDBStatus {
+                ZStack {
+                    Color.gray.opacity(0.5)
+                    ProgressView("Menghubungkan...")
+                        .padding(16)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .foregroundStyle(Color.black)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .ignoresSafeArea()
+            }
+        })
     }
 }
 

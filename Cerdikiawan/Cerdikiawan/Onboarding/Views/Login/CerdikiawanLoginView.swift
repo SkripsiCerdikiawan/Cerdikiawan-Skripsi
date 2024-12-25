@@ -56,7 +56,7 @@ struct CerdikiawanLoginView: View {
             
             VStack(spacing: 24) {
                 CerdikiawanButton(
-                    type: viewModel.determineButtonState(),
+                    type: .primary,
                     label: "Masuk",
                     action: {
                         viewModel.connectDBStatus = true
@@ -86,6 +86,23 @@ struct CerdikiawanLoginView: View {
             viewModel.passwordText = ""
             viewModel.errorMessage = nil
         }
+        .overlay(content: {
+            // Show loading bar overlay when updating data
+            // To make sure the user won't do any operation
+            if viewModel.connectDBStatus {
+                ZStack {
+                    Color.gray.opacity(0.5)
+                    ProgressView("Menghubungkan...")
+                        .padding(16)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .foregroundStyle(Color.black)
+                        .frame(maxWidth: 200)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .ignoresSafeArea()
+            }
+        })
     }
 }
 
