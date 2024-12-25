@@ -59,13 +59,19 @@ struct CerdikiawanProfileView: View {
             
             VStack(spacing: 16) {
                 if viewModel.isDataChanged {
-                    CerdikiawanButton(type: .primary, label: "Simpan perubahan data", action: {
-                        Task {
-                            if let user = try await viewModel.updateProfile() {
-                                sessionData.user = user
+                    CerdikiawanButton(
+                        type: viewModel.determineButtonState(),
+                        label: "Simpan perubahan data",
+                        action: {
+                            viewModel.connectDBStatus = true
+                            Task {
+                                if let user = try await viewModel.updateProfile() {
+                                    sessionData.user = user
+                                }
+                                viewModel.connectDBStatus = false
                             }
                         }
-                    })
+                    )
                 }
                 
                 CerdikiawanButton(type: .destructive, label: "Keluar", action: {
@@ -102,7 +108,9 @@ struct CerdikiawanProfileView: View {
             ToolbarItem(placement: .topBarLeading, content: {
                 Button(
                     action: {
-                        appRouter.popToRoot()
+                        if !viewModel.connectDBStatus {
+                            appRouter.popToRoot()
+                        }
                     },
                     label: {
                         Image(systemName: "chevron.left")
@@ -113,6 +121,22 @@ struct CerdikiawanProfileView: View {
             })
         }
         .toolbarBackground(.visible, for: .navigationBar)
+        .overlay(content: {
+            // Show loading bar overlay when updating data
+            // To make sure the user won't do any operation
+            if viewModel.connectDBStatus {
+                ZStack {
+                    Color.gray.opacity(0.5)
+                    ProgressView("Sedang mengubah data...")
+                        .padding(16)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .foregroundStyle(Color.black)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .ignoresSafeArea()
+            }
+        })
     }
 }
 
