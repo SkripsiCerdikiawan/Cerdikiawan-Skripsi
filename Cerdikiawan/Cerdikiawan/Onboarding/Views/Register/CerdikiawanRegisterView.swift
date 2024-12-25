@@ -81,7 +81,7 @@ struct CerdikiawanRegisterView: View {
                     label: "Register",
                     action: {
                         // Logic to make sure the button only run once
-                        viewModel.buttonIsPressed = true
+                        viewModel.connectDBStatus = true
                         Task {
                             if let user = try await viewModel.register() {
                                 sessionData.user = user
@@ -89,7 +89,7 @@ struct CerdikiawanRegisterView: View {
                                 appRouter.popToRoot()
                             }
                             else {
-                                viewModel.buttonIsPressed = false
+                                viewModel.connectDBStatus = false
                             }
                         }
 

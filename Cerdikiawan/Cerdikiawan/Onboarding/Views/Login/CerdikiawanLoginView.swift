@@ -59,7 +59,7 @@ struct CerdikiawanLoginView: View {
                     type: viewModel.determineButtonState(),
                     label: "Masuk",
                     action: {
-                        viewModel.buttonIsPressed = true
+                        viewModel.connectDBStatus = true
                         Task {
                             if let user = try await viewModel.login() {
                                 sessionData.user = user
@@ -67,7 +67,7 @@ struct CerdikiawanLoginView: View {
                                 appRouter.popToRoot()
                             }
                             else {
-                                viewModel.buttonIsPressed = false
+                                viewModel.connectDBStatus = false
                             }
                         }
                     }

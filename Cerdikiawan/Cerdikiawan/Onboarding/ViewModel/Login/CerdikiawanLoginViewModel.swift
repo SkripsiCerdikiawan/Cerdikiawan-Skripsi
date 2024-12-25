@@ -12,7 +12,7 @@ class CerdikiawanLoginViewModel: ObservableObject {
     @Published var passwordText: String = ""
     @Published var errorMessage: String?
     
-    @Published var buttonIsPressed: Bool = false
+    @Published var connectDBStatus: Bool = false
     
     private var authRepository: AuthRepository
     private var profileRepository: ProfileRepository
@@ -25,7 +25,7 @@ class CerdikiawanLoginViewModel: ObservableObject {
     @MainActor
     func login() async throws -> UserEntity? {
         guard validateLoginInfo(email: emailText, password: passwordText) else {
-            buttonIsPressed = false
+            connectDBStatus = false
             return nil
         }
         let authRequest = AuthRequest(email: emailText, password: passwordText)
@@ -84,6 +84,6 @@ class CerdikiawanLoginViewModel: ObservableObject {
     
     // MARK: - UI Logic
     func determineButtonState() -> CerdikiawanButtonType {
-        return buttonIsPressed ? .loading : .primary
+        return connectDBStatus ? .loading : .primary
     }
 }

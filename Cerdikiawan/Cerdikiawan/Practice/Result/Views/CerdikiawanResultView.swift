@@ -71,7 +71,7 @@ struct CerdikiawanResultView: View {
                         type: viewModel.determineButtonState(),
                         label: "Kembali ke halaman awal",
                         action: {
-                            viewModel.buttonIsPressed = true
+                            viewModel.connectDBStatus = true
                             Task {
                                 if let userId = sessionData.user?.id, let userBalance = sessionData.user?.balance {
                                     if try await viewModel.saveAttemptData(userID: userId, userBalance: userBalance) {
@@ -80,7 +80,7 @@ struct CerdikiawanResultView: View {
                                     }
                                 }
                                 else {
-                                    viewModel.buttonIsPressed = false
+                                    viewModel.connectDBStatus = false
                                 }
                             }
                         }

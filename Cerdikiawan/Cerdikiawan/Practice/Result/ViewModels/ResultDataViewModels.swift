@@ -11,7 +11,7 @@ class ResultDataViewModels: ObservableObject {
     let character: CharacterEntity
     @Published var resultEntity: ResultDataEntity
     
-    @Published var buttonIsPressed: Bool = false
+    @Published var connectDBStatus: Bool = false
     
     private var attemptRepository: AttemptRepository
     private var profileRepository: ProfileRepository
@@ -96,6 +96,6 @@ class ResultDataViewModels: ObservableObject {
     
     // MARK: - UI Logic
     func determineButtonState() -> CerdikiawanButtonType {
-        return buttonIsPressed ? .loading : .primary
+        return connectDBStatus ? .loading : .primary
     }
 }
