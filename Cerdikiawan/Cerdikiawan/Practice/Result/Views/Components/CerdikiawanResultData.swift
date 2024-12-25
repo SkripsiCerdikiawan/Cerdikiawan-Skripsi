@@ -116,7 +116,7 @@ private struct ResultGainedBalanceBox: View {
                 
                 VStack(alignment: .trailing) {
                     Text("Kamu mendapatkan")
-                    Text("\(Int(result.baseBalance * result.correctCount)) koin")
+                    Text("\(Int(result.baseBalance * result.correctCount)) poin")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(Color(.cDarkBlue))

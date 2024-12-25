@@ -68,14 +68,19 @@ struct CerdikiawanResultView: View {
                     )
                     
                     CerdikiawanButton(
+                        type: viewModel.determineButtonState(),
                         label: "Kembali ke halaman awal",
                         action: {
+                            viewModel.connectDBStatus = true
                             Task {
                                 if let userId = sessionData.user?.id, let userBalance = sessionData.user?.balance {
                                     if try await viewModel.saveAttemptData(userID: userId, userBalance: userBalance) {
                                         sessionData.user?.balance += viewModel.resultEntity.correctCount * viewModel.resultEntity.baseBalance
                                         onCompletionTap()
                                     }
+                                }
+                                else {
+                                    viewModel.connectDBStatus = false
                                 }
                             }
                         }
@@ -102,7 +107,10 @@ struct CerdikiawanResultView: View {
     @Previewable
     @StateObject var appRouter: AppRouter = .init()
     @Previewable
-    @StateObject var sessionData: SessionData = .init()
+    @StateObject var sessionData: SessionData = .init(
+        authRepository: SupabaseAuthRepository.shared,
+        profileRepository: SupabaseProfileRepository.shared
+    )
     
     NavigationStack(path: $appRouter.path) {
         ZStack {

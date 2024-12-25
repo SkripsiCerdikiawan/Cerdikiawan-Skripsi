@@ -15,5 +15,4 @@ struct SupabaseQuestion: Codable {
     let questionContent: String
     let questionFeedbackIfTrue: String
     let questionFeedbackIfFalse: String
-    let questionPointGain: Int
 }

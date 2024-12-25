@@ -36,10 +36,10 @@ struct CerdikiawanStoryView: View {
                 Spacer()
                 ProgressView()
                 Spacer()
-            } else if viewModel.questionList.isEmpty == false {
+            } else if viewModel.practiceList.isEmpty == false {
                 CerdikiawanProgressBar(
                     minimum: 0,
-                    maximum: Double(viewModel.questionList.count + 1),
+                    maximum: Double(viewModel.practiceList.count + 1),
                     value: $viewModel.currentPageIdx
                 )
                 .padding(.horizontal, 16)
@@ -55,7 +55,7 @@ struct CerdikiawanStoryView: View {
                         }
                     )
                 }
-                else if let question = viewModel.activeQuestion {
+                else if let question = viewModel.activePractice {
                     CerdikiawanQuestionView(
                         data: question,
                         character: viewModel.userCharacter ?? .mock()[0],
@@ -125,7 +125,10 @@ struct CerdikiawanStoryView: View {
     @Previewable
     @StateObject var appRouter: AppRouter = .init()
     @Previewable
-    @StateObject var sessionData: SessionData = .init()
+    @StateObject var sessionData: SessionData = .init(
+        authRepository: SupabaseAuthRepository.shared,
+        profileRepository: SupabaseProfileRepository.shared
+    )
     
     NavigationStack(path: $appRouter.path) {
         ZStack {

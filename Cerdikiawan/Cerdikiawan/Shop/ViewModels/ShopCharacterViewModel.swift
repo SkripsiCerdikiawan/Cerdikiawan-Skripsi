@@ -38,7 +38,6 @@ class ShopCharacterViewModel: ObservableObject {
     ) async throws {
         // Fetch Data from Repo
         userBalance = user.balance
-        activeCharacterID = try await fetchActiveCharacterID(userID: user.id)
         ownedCharacterID = try await fetchOwnedCharacterID(userID: user.id)
         characterList = try await fetchAllAvailableCharacter()
         
@@ -87,30 +86,12 @@ class ShopCharacterViewModel: ObservableObject {
         
         for character in ownedCharacters {
             charactersId.append(character.characterId.uuidString)
+            if character.isChosen {
+                self.activeCharacterID = character.characterId.uuidString
+            }
         }
         
         return charactersId
-    }
-    
-    @MainActor
-    func fetchActiveCharacterID(userID: String) async throws -> String {
-        guard let loggedInUserId = UUID(uuidString: "\(userID)") else {
-            debugPrint("User Id cannot be resolved")
-            return ""
-        }
-        let request = ProfileOwnedCharacterFetchRequest(profileId: loggedInUserId)
-        let (ownedCharacters, status) = try await ownedCharacterRepository.fetchProfileOwnedCharacter(request: request)
-        
-        guard status == .success else {
-            debugPrint("Error fetching owned characters")
-            return ""
-        }
-        
-        if let activeCharacter = ownedCharacters.first(where: {$0.isChosen == true}) {
-            return activeCharacter.characterId.uuidString
-        } else {
-            return ""
-        }
     }
     
     @MainActor

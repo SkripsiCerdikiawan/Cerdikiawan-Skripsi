@@ -55,48 +55,55 @@ struct CerdikiawanShopView: View {
             ScrollView {
                 VStack(spacing: 32) {
                     if viewModel.characterList.isEmpty == false {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Karakter yang dimiliki")
-                                .font(.body)
-                                .foregroundStyle(Color(.secondaryLabel))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            ForEach(viewModel.displayedOwnedCharacterList, id: \.character.id, content: { shopCharacter in
-                                CerdikiawanCharacterShopCard(
-                                    shopCharacter: shopCharacter,
-                                    type: viewModel.determineCharacterState(shopCharacter: shopCharacter),
-                                    onTapAction: {
-                                        Task {
-                                            if let user = sessionData.user {
-                                                try await viewModel.setActiveCharacter(
-                                                    userID: user.id,
-                                                    character: shopCharacter.character
-                                                )
+                        // Display owned character list column if there's any data
+                        if viewModel.displayedOwnedCharacterList.isEmpty == false {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Karakter yang dimiliki")
+                                    .font(.body)
+                                    .foregroundStyle(Color(.secondaryLabel))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                ForEach(viewModel.displayedOwnedCharacterList, id: \.character.id, content: { shopCharacter in
+                                    CerdikiawanCharacterShopCard(
+                                        shopCharacter: shopCharacter,
+                                        type: viewModel.determineCharacterState(shopCharacter: shopCharacter),
+                                        onTapAction: {
+                                            Task {
+                                                if let user = sessionData.user {
+                                                    try await viewModel.setActiveCharacter(
+                                                        userID: user.id,
+                                                        character: shopCharacter.character
+                                                    )
+                                                }
                                             }
                                         }
-                                    }
-                                )
-                            })
+                                    )
+                                })
+                            }
                         }
                         
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Karakter yang belum dimiliki")
-                                .font(.body)
-                                .foregroundStyle(Color(.secondaryLabel))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            ForEach(viewModel.displayedUnownedCharacterList, id: \.character.id, content: { shopCharacter in
-                                CerdikiawanCharacterShopCard(
-                                    shopCharacter: shopCharacter,
-                                    type: viewModel.determineCharacterState(shopCharacter: shopCharacter),
-                                    onTapAction: {
-                                        let canBuy = viewModel.validateUserBalance(shopCharacter: shopCharacter)
-                                        if canBuy {
-                                            appRouter.push(.buyConfirmation(shopCharacter: shopCharacter))
+                        // Display unowned character list column if there's any data
+                        if viewModel.displayedUnownedCharacterList.isEmpty == false {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Karakter yang belum dimiliki")
+                                    .font(.body)
+                                    .foregroundStyle(Color(.secondaryLabel))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                ForEach(viewModel.displayedUnownedCharacterList, id: \.character.id, content: { shopCharacter in
+                                    CerdikiawanCharacterShopCard(
+                                        shopCharacter: shopCharacter,
+                                        type: viewModel.determineCharacterState(shopCharacter: shopCharacter),
+                                        onTapAction: {
+                                            let canBuy = viewModel.validateUserBalance(shopCharacter: shopCharacter)
+                                            if canBuy {
+                                                appRouter.push(.buyConfirmation(shopCharacter: shopCharacter))
+                                            }
                                         }
-                                    }
-                                )
-                            })
+                                    )
+                                })
+
+                            }
                         }
                     }
                     else {
@@ -136,7 +143,10 @@ struct CerdikiawanShopView: View {
     @Previewable
     @StateObject var appRouter: AppRouter = .init()
     @Previewable
-    @StateObject var sessionData: SessionData = .init()
+    @StateObject var sessionData: SessionData = .init(
+        authRepository: SupabaseAuthRepository.shared,
+        profileRepository: SupabaseProfileRepository.shared
+    )
     
     NavigationStack(path: $appRouter.path) {
         ZStack {

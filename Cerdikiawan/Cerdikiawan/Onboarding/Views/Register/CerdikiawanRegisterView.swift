@@ -17,7 +17,9 @@ struct CerdikiawanRegisterView: View {
         _viewModel = .init(
             wrappedValue: .init(
                 authRepository: SupabaseAuthRepository.shared,
-                profileRepository: SupabaseProfileRepository.shared
+                profileRepository: SupabaseProfileRepository.shared,
+                characterRepository: SupabaseCharacterRepository.shared,
+                ownedCharacterRepository: SupabaseProfileOwnedCharacterRepository.shared
             )
         )
     }
@@ -74,16 +76,25 @@ struct CerdikiawanRegisterView: View {
             }
             
             VStack(spacing: 24) {
-                CerdikiawanButton(type: .primary, label: "Register", action: {
-                    Task {
-                        if let user = try await viewModel.register() {
-                            sessionData.user = user
-                            
-                            appRouter.pop()
-                            appRouter.push(.home)
+                CerdikiawanButton(
+                    type: .primary,
+                    label: "Register",
+                    action: {
+                        // Logic to make sure the button only run once
+                        viewModel.connectDBStatus = true
+                        Task {
+                            if let user = try await viewModel.register() {
+                                sessionData.user = user
+                                appRouter.startScreen = .home
+                                appRouter.popToRoot()
+                            }
+                            else {
+                                viewModel.connectDBStatus = false
+                            }
                         }
+
                     }
-                })
+                )
                 
                 HStack {
                     Text("Sudah Mempunyai akun?")
@@ -101,6 +112,22 @@ struct CerdikiawanRegisterView: View {
             viewModel.confirmPasswordText = ""
             viewModel.dateOfBirthPicker = Date()
         }
+        .overlay(content: {
+            // Show loading bar overlay when updating data
+            // To make sure the user won't do any operation
+            if viewModel.connectDBStatus {
+                ZStack {
+                    Color.gray.opacity(0.5)
+                    ProgressView("Menghubungkan...")
+                        .padding(16)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .foregroundStyle(Color.black)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .ignoresSafeArea()
+            }
+        })
     }
 }
 
@@ -108,7 +135,10 @@ struct CerdikiawanRegisterView: View {
     @Previewable
     @StateObject var appRouter: AppRouter = .init()
     @Previewable
-    @StateObject var sessionData: SessionData = .init()
+    @StateObject var sessionData: SessionData = .init(
+        authRepository: SupabaseAuthRepository.shared,
+        profileRepository: SupabaseProfileRepository.shared
+    )
     
     NavigationStack(path: $appRouter.path) {
         ZStack {

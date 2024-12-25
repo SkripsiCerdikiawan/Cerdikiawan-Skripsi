@@ -17,7 +17,6 @@ struct CharacterTests {
     }
     
     @Test func testFetchCharacters() async throws {
-        //TODO: Add auth process
         let (characters, status) = try await characterRepository.fetchCharacters()
         
         #expect(status == .success,
@@ -30,8 +29,7 @@ struct CharacterTests {
     }
     
     @Test func testFetchCharacterById() async throws {
-        //TODO: Add auth process
-        let request = CharacterRequest(characterId: UUID(uuidString: "07532921-149d-431a-bc2e-0251d5b06afd"))
+        let request = CharacterRequest(characterId: UUID(uuidString: "30a0a3cf-3c34-432b-83fd-e359e641120d"))
         let (character, status) = try await characterRepository.fetchCharacterById(request: request)
         
         #expect(status == .success,
@@ -54,6 +52,23 @@ struct CharacterTests {
         #expect(story == nil &&
                 status == .invalidInput,
                 "Input must be invalid"
+        )
+    }
+    
+    @Test func testFetchCharacterByName() async throws {
+        let request = CharacterRequest(characterName: "Juan")
+        let (character, status) = try await characterRepository.fetchCharacterById(request: request)
+        
+        #expect(status == .success,
+                "Fetching function is not successful"
+        )
+        
+        #expect(character != nil,
+                "Character should be fetched"
+        )
+        
+        #expect(character?.characterName == request.characterName,
+                "characterId does not match"
         )
     }
 }

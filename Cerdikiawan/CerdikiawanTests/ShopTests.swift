@@ -17,7 +17,6 @@ struct ShopTests {
     }
     
     @Test func testFetchShopItems() async throws {
-        //TODO: Add auth process
         let (shops, status) = try await shopRepository.fetchShopItems()
         
         #expect(status == .success,
@@ -30,8 +29,7 @@ struct ShopTests {
     }
     
     @Test func testFetchShopItemByCharacterId() async throws {
-        //TODO: Add auth process
-        let request = ShopRequest(characterShopId: UUID(uuidString: "07532921-149d-431a-bc2e-0251d5b06afd"))
+        let request = ShopRequest(characterShopId: UUID(uuidString: "2b44a843-4115-49bd-9840-e19155b76afe"))
         let (shop, status) = try await shopRepository.fetchShopItemsById(request: request)
         
         #expect(status == .success,

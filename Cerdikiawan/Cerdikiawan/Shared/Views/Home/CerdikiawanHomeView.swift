@@ -15,7 +15,7 @@ struct CerdikiawanHomeView: View {
     var body: some View {
         VStack {
             TabView(selection: $tabSelection) {
-                CerdikiawanPracticeView()
+                CerdikiawanStorySelectionView()
                     .tag(HomeTabSelection.practice)
                     .tabItem({
                         Label(title: {
@@ -53,7 +53,10 @@ struct CerdikiawanHomeView: View {
     @Previewable
     @StateObject var appRouter: AppRouter = .init()
     @Previewable
-    @StateObject var sessionData: SessionData = .init()
+    @StateObject var sessionData: SessionData = .init(
+        authRepository: SupabaseAuthRepository.shared,
+        profileRepository: SupabaseProfileRepository.shared
+    )
     
     NavigationStack(path: $appRouter.path) {
         ZStack {

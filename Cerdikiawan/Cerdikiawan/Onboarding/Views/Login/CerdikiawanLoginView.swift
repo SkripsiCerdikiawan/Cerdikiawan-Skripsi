@@ -55,15 +55,23 @@ struct CerdikiawanLoginView: View {
             }
             
             VStack(spacing: 24) {
-                CerdikiawanButton(type: .primary, label: "Masuk", action: {
-                    Task {
-                        if let user = try await viewModel.login() {
-                            sessionData.user = user
-                            appRouter.startScreen = .home
-                            appRouter.popToRoot()
+                CerdikiawanButton(
+                    type: .primary,
+                    label: "Masuk",
+                    action: {
+                        viewModel.connectDBStatus = true
+                        Task {
+                            if let user = try await viewModel.login() {
+                                sessionData.user = user
+                                appRouter.startScreen = .home
+                                appRouter.popToRoot()
+                            }
+                            else {
+                                viewModel.connectDBStatus = false
+                            }
                         }
                     }
-                })
+                )
                 
                 HStack {
                     Text("Tidak Mempunyai akun?")
@@ -78,6 +86,23 @@ struct CerdikiawanLoginView: View {
             viewModel.passwordText = ""
             viewModel.errorMessage = nil
         }
+        .overlay(content: {
+            // Show loading bar overlay when updating data
+            // To make sure the user won't do any operation
+            if viewModel.connectDBStatus {
+                ZStack {
+                    Color.gray.opacity(0.5)
+                    ProgressView("Menghubungkan...")
+                        .padding(16)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .foregroundStyle(Color.black)
+                        .frame(maxWidth: 200)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .ignoresSafeArea()
+            }
+        })
     }
 }
 
@@ -85,7 +110,10 @@ struct CerdikiawanLoginView: View {
     @Previewable
     @StateObject var appRouter: AppRouter = .init()
     @Previewable
-    @StateObject var sessionData: SessionData = .init()
+    @StateObject var sessionData: SessionData = .init(
+        authRepository: SupabaseAuthRepository.shared,
+        profileRepository: SupabaseProfileRepository.shared
+    )
     
     NavigationStack(path: $appRouter.path) {
         ZStack {

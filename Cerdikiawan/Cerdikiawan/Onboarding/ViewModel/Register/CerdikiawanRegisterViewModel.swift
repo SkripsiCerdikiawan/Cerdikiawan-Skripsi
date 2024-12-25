@@ -15,12 +15,24 @@ class CerdikiawanRegisterViewModel: ObservableObject {
     @Published var confirmPasswordText: String = ""
     @Published var errorMessage: String?
     
+    @Published var connectDBStatus: Bool = false
+    
     private var authRepository: AuthRepository
     private var profileRepository: ProfileRepository
+    private var characterRepository: CharacterRepository
+    private var ownedCharacterRepository: ProfileOwnedCharacterRepository
     
-    init(authRepository: AuthRepository, profileRepository: ProfileRepository) {
+    
+    init(
+        authRepository: AuthRepository,
+        profileRepository: ProfileRepository,
+        characterRepository: CharacterRepository,
+        ownedCharacterRepository: ProfileOwnedCharacterRepository
+    ) {
         self.authRepository = authRepository
         self.profileRepository = profileRepository
+        self.characterRepository = characterRepository
+        self.ownedCharacterRepository = ownedCharacterRepository
     }
     
     @MainActor
@@ -49,7 +61,10 @@ class CerdikiawanRegisterViewModel: ObservableObject {
                 errorMessage = "Akun tidak berhasil dibuat"
                 return nil
             }
+            
             errorMessage = nil
+            try await setUserDefaultCharacter(userID: registeredUser.uid)
+            
             return UserEntity.init(
                 id: registeredUser.uid.uuidString,
                 name: registeredProfile.profileName,
@@ -61,6 +76,30 @@ class CerdikiawanRegisterViewModel: ObservableObject {
         } catch {
             errorMessage = "Server error"
             return nil
+        }
+    }
+    
+    private func setUserDefaultCharacter(userID: UUID) async throws{
+        // Fetch Default character
+        let characterRequest = CharacterRequest(characterName: "Budi")
+        let (character, characterStatus) = try await characterRepository.fetchCharacterById(request: characterRequest)
+        
+        guard let fetchedCharacter = character, characterStatus == .success else {
+            errorMessage = "Gagal mendapatkan karakter default"
+            throw ErrorStatus.notFound
+        }
+        
+        // Purchase default character
+        let request = ProfileOwnedCharacterInsertRequest(
+            profileId: userID,
+            characterId: fetchedCharacter.characterId,
+            isChosen: true
+        )
+        
+        let (ownedCharacter, ownedCharacterStatus) = try await ownedCharacterRepository.insertProfileOwnedCharacter(request: request)
+        guard ownedCharacter != nil, ownedCharacterStatus == .success else {
+            errorMessage = "Gagal memasang default character"
+            throw ErrorStatus.serverError
         }
     }
     

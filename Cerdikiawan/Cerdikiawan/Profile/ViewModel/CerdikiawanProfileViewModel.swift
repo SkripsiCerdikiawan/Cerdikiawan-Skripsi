@@ -17,6 +17,8 @@ class CerdikiawanProfileViewModel: ObservableObject {
     
     @Published var showLogoutConfirmation: Bool = false
     
+    @Published var connectDBStatus: Bool = false
+    
     var isDataChanged: Bool {
         if let user = userData {
             if user.name != nameText || user.dateOfBirth != dateOfBirthPicker || user.email != emailText {
@@ -105,5 +107,10 @@ class CerdikiawanProfileViewModel: ObservableObject {
         }
         
         return false
+    }
+    
+    // MARK: - UI Logic
+    func determineButtonState() -> CerdikiawanButtonType {
+        return connectDBStatus ? .loading : .primary
     }
 }

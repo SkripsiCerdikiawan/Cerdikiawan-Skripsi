@@ -58,21 +58,26 @@ struct CerdikiawanReportDetailView: View {
                     ScrollView {
                         VStack {
                             ForEach(viewModel.attempts, id: \.attemptId) { value in
-                                CerdikiawanAttemptCard(date: value.date,
-                                                       kosakataPercentage: value.kosakataPercentage,
-                                                       idePokokPercentage: value.idePokokPercentage,
-                                                       implisitPercentage: value.implisitPercentage,
-                                                       buttonStyle: value.attemptId == viewModel.currentlyPlayedAttemptId ? .secondary : .primary,
-                                                       onTapButtonAction: {
-                                    if viewModel.currentlyPlayedAttemptId == value.attemptId {
-                                        viewModel.stopRecordSound()
-                                    } else {
-                                        viewModel.currentlyPlayedAttemptId = value.attemptId
-                                        Task {
-                                            try await viewModel.playRecordSound()
+                                CerdikiawanAttemptCard(
+                                    date: value.date,
+                                    kosakataPercentage: value.kosakataPercentage,
+                                    idePokokPercentage: value.idePokokPercentage,
+                                    implisitPercentage: value.implisitPercentage,
+                                    buttonStyle:
+                                        value.attemptId ==
+                                            viewModel.currentlyPlayedAttemptId ? .secondary : .primary,
+                                    onTapButtonAction: {
+                                        if viewModel.currentlyPlayedAttemptId == value.attemptId {
+                                            viewModel.stopRecordSound()
+                                        } else {
+                                            viewModel.stopRecordSound()
+                                            viewModel.currentlyPlayedAttemptId = value.attemptId
+                                            Task {
+                                                try await viewModel.playRecordSound()
+                                            }
                                         }
                                     }
-                                })
+                                )
                             }
                         }
                     }
@@ -86,6 +91,7 @@ struct CerdikiawanReportDetailView: View {
             ToolbarItem(placement: .topBarLeading, content: {
                 Button(
                     action: {
+                        viewModel.stopRecordSound()
                         appRouter.pop()
                     },
                     label: {
@@ -109,7 +115,10 @@ struct CerdikiawanReportDetailView: View {
     @Previewable
     @StateObject var appRouter: AppRouter = .init()
     @Previewable
-    @StateObject var sessionData: SessionData = .init()
+    @StateObject var sessionData: SessionData = .init(
+        authRepository: SupabaseAuthRepository.shared,
+        profileRepository: SupabaseProfileRepository.shared
+    )
     
     NavigationStack(path: $appRouter.path) {
         ZStack {

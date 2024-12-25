@@ -9,4 +9,5 @@ import Foundation
 
 struct CharacterRequest {
     var characterId: UUID? = nil
+    var characterName: String?
 }

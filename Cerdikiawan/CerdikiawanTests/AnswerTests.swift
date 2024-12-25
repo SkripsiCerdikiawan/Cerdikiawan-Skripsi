@@ -61,7 +61,7 @@ struct AnswerTests {
     }
     
     @Test func testFetchWordMatchAnswersByQuestionId() async throws {
-        let request = AnswerRequest(questionId: UUID(uuidString: "1948f888-ab76-45b4-90ad-b32b264b3a28"))
+        let request = AnswerRequest(questionId: UUID(uuidString: "64524e76-b42e-49a7-8feb-af9cc5899aab"))
         
         let (wordBlankAnswer, wordBlankStatus): ([SupabaseWordBlankAnswer], ErrorStatus) = try await wordBlankAnswerRepository.fetchAnswersById(request: request)
         #expect(wordBlankStatus != .success && wordBlankAnswer.isEmpty, "There should be no word match answer found in word blank table")
@@ -86,7 +86,7 @@ struct AnswerTests {
     }
     
     @Test func testFetchWordBlankAnswersByQuestionId() async throws {
-        let request = AnswerRequest(questionId: UUID(uuidString: "d0e1622e-d118-423a-b47b-e41c2ada775b"))
+        let request = AnswerRequest(questionId: UUID(uuidString: "5cf13e7e-6c12-4af6-acc4-b92199cbe0e8"))
         
         let (wordMatchAnswer, wordMatchStatus): ([SupabaseWordMatchAnswer], ErrorStatus) = try await wordMatchAnswerRepository.fetchAnswersById(request: request)
         #expect(wordMatchStatus != .success && wordMatchAnswer.isEmpty, "There should be no word blank answer found in word match table")
@@ -111,7 +111,7 @@ struct AnswerTests {
     }
     
     @Test func testFetchMultiChoiceAnswersByQuestionId() async throws {
-        let request = AnswerRequest(questionId: UUID(uuidString: "c41bcd9e-9ae4-4fbf-964f-92dcd93b2113"))
+        let request = AnswerRequest(questionId: UUID(uuidString: "33b38785-6f94-42a2-9353-8dfce7314d36"))
         
         let (wordMatchAnswer, wordMatchStatus): ([SupabaseWordMatchAnswer], ErrorStatus) = try await wordMatchAnswerRepository.fetchAnswersById(request: request)
         #expect(wordMatchStatus != .success && wordMatchAnswer.isEmpty, "There should be no multi choice answer found in word match table")
@@ -136,7 +136,7 @@ struct AnswerTests {
     }
     
     @Test func testDeterminingAnswersBasedOnStoryId() async throws {
-        let questionRequest = QuestionRequest(questionId: UUID(uuidString: "b0098289-4617-4c69-9591-ec60a250e36b"))
+        let questionRequest = QuestionRequest(questionId: UUID(uuidString: "33b38785-6f94-42a2-9353-8dfce7314d36"))
         let (questions, questionStatus) = try await questionRepository.fetchQuestionsById(request: questionRequest)
         
         #expect(questionStatus == .success, "Failed to fetch questions")
