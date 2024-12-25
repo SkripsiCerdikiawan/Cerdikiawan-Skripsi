@@ -120,7 +120,7 @@ struct CerdikiawanBuyingConfirmationView: View {
             if viewModel.connectDBStatus {
                 ZStack {
                     Color.gray.opacity(0.5)
-                    ProgressView("Sedang menyimpan data...")
+                    ProgressView("Menghubungkan...")
                         .padding(16)
                         .background(Color.white)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
