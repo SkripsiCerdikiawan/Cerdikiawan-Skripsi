@@ -12,10 +12,11 @@ enum CerdikiawanButtonType {
     case secondary
     case destructive
     case disabled
+    case loading
     
     var labelColor: Color {
         switch self {
-        case .disabled:
+        case .disabled, .loading:
             return Color(.secondaryLabel)
         default:
             return Color(.cWhite)
@@ -30,14 +31,14 @@ enum CerdikiawanButtonType {
             return Color(.cDarkOrange)
         case .destructive:
             return Color(.cDarkRed)
-        case .disabled:
+        case .disabled, .loading:
             return Color(.systemFill)
         }
     }
     
     var scaleEffect: CGFloat {
         switch self {
-        case .disabled:
+        case .disabled, .loading:
             return 1
         default:
             return 0.9

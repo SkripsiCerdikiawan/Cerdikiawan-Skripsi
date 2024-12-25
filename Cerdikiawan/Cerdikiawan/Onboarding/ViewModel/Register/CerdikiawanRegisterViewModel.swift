@@ -15,10 +15,13 @@ class CerdikiawanRegisterViewModel: ObservableObject {
     @Published var confirmPasswordText: String = ""
     @Published var errorMessage: String?
     
+    @Published var connectDBStatus: Bool = false
+    
     private var authRepository: AuthRepository
     private var profileRepository: ProfileRepository
     private var characterRepository: CharacterRepository
     private var ownedCharacterRepository: ProfileOwnedCharacterRepository
+    
     
     init(
         authRepository: AuthRepository,
@@ -76,14 +79,14 @@ class CerdikiawanRegisterViewModel: ObservableObject {
         }
     }
     
-    private func setUserDefaultCharacter(userID: UUID) async throws {
+    private func setUserDefaultCharacter(userID: UUID) async throws{
         // Fetch Default character
         let characterRequest = CharacterRequest(characterName: "Budi")
         let (character, characterStatus) = try await characterRepository.fetchCharacterById(request: characterRequest)
         
         guard let fetchedCharacter = character, characterStatus == .success else {
             errorMessage = "Gagal mendapatkan karakter default"
-            return
+            throw ErrorStatus.notFound
         }
         
         // Purchase default character
@@ -96,7 +99,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
         let (ownedCharacter, ownedCharacterStatus) = try await ownedCharacterRepository.insertProfileOwnedCharacter(request: request)
         guard ownedCharacter != nil, ownedCharacterStatus == .success else {
             errorMessage = "Gagal memasang default character"
-            return
+            throw ErrorStatus.serverError
         }
     }
     

@@ -14,6 +14,8 @@ class BuyingConfirmationViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var confirmationAlertShowed: Bool = false
     
+    @Published var connectDBStatus: Bool = false
+    
     private var profileRepository: ProfileRepository
     private var userCharacterRepository: ProfileOwnedCharacterRepository
     

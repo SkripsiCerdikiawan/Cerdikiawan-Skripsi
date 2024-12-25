@@ -11,6 +11,8 @@ class ResultDataViewModels: ObservableObject {
     let character: CharacterEntity
     @Published var resultEntity: ResultDataEntity
     
+    @Published var connectDBStatus: Bool = false
+    
     private var attemptRepository: AttemptRepository
     private var profileRepository: ProfileRepository
     private var recordRepository: RecordSoundStorageRepository
@@ -90,5 +92,10 @@ class ResultDataViewModels: ObservableObject {
         
         debugPrint("Saving user data...")
         return true
+    }
+    
+    // MARK: - UI Logic
+    func determineButtonState() -> CerdikiawanButtonType {
+        return connectDBStatus ? .loading : .primary
     }
 }

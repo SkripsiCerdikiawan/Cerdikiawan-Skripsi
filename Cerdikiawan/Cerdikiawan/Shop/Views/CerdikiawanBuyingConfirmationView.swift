@@ -77,16 +77,21 @@ struct CerdikiawanBuyingConfirmationView: View {
                             .foregroundStyle(Color(.cDarkRed))
                             .padding(.leading, 8)
                     }
-                    CerdikiawanButton(type: .primary, label: "Konfirmasi Beli", action: {
-                        Task{
-                            let result = try await viewModel.buyCharacter()
-                            
-                            if result {
-                                sessionData.user?.balance -= viewModel.shopCharacter.price
-                                viewModel.confirmationAlertShowed = true
+                    CerdikiawanButton(
+                        type: .primary,
+                        label: "Konfirmasi Beli",
+                        action: {
+                            viewModel.connectDBStatus = true
+                            Task{
+                                let result = try await viewModel.buyCharacter()
+                                if result {
+                                    sessionData.user?.balance -= viewModel.shopCharacter.price
+                                    viewModel.confirmationAlertShowed = true
+                                }
+                                viewModel.connectDBStatus = false
                             }
                         }
-                    })
+                    )
                 }
                 
                 
@@ -109,6 +114,22 @@ struct CerdikiawanBuyingConfirmationView: View {
                 viewModel.setUserData(user: user)
             }
         }
+        .overlay(content: {
+            // Show loading bar overlay when updating data
+            // To make sure the user won't do any operation
+            if viewModel.connectDBStatus {
+                ZStack {
+                    Color.gray.opacity(0.5)
+                    ProgressView("Menghubungkan...")
+                        .padding(16)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .foregroundStyle(Color.black)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .ignoresSafeArea()
+            }
+        })
     }
 }
 
