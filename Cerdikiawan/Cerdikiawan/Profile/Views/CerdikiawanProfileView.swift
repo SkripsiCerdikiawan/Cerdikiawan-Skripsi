@@ -83,6 +83,7 @@ struct CerdikiawanProfileView: View {
         .alert("Konfirmasi Keluar", isPresented: $viewModel.showLogoutConfirmation) {
                     Button("Batalkan", role: .cancel) { }
                     Button("Keluar", role: .destructive) {
+                        viewModel.connectDBStatus = true
                         Task {
                             let logoutStatus = try await viewModel.logout()
                             
@@ -91,6 +92,7 @@ struct CerdikiawanProfileView: View {
                                 appRouter.startScreen = .login
                                 appRouter.popToRoot()
                             }
+                            viewModel.connectDBStatus = false
                         }
                     }
                 } message: {
@@ -127,7 +129,7 @@ struct CerdikiawanProfileView: View {
             if viewModel.connectDBStatus {
                 ZStack {
                     Color.gray.opacity(0.5)
-                    ProgressView("Sedang mengubah data...")
+                    ProgressView("Menghubungkan...")
                         .padding(16)
                         .background(Color.white)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
