@@ -53,7 +53,7 @@ class CerdikiawanRegisterViewModel: ObservableObject {
             let profileRequest = ProfileInsertRequest(profileId: registeredUser.uid,
                                                       profileName: nameText,
                                                       profileBalance: 0,
-                                                      profileBirthDate: dateOfBirthPicker.description
+                                                      profileBirthDate: DateUtils.getDatabaseDate(from: dateOfBirthPicker)
             )
             let (profile, profileStatus) = try await profileRepository.createNewProfile(request: profileRequest)
             

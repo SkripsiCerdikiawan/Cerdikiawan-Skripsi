@@ -58,6 +58,11 @@ targets:
       base:
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Cerdikiawan.app/Cerdikiawan"
         BUNDLE_LOADER: "$(TEST_HOST)"
+      configs:
+        Debug:
+          APP_NAME: "TinyTales"
+        Release:
+          APP_NAME: "TinyTales"
 schemes:
   Cerdikiawan:
     build:
