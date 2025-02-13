@@ -15,9 +15,24 @@ struct CerdikiawanReportLevelSelectionContainer: View {
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
-                Text("Level \(level.level)")
-                    .font(.title2)
-                    .fontWeight(.semibold)
+                switch(level.level) {
+                    case 1:
+                    Text("Tingkatan Mudah")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    case 2:
+                    Text("Tingkatan Sedang")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    case 3:
+                    Text("Tingkatan Sulit")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    default:
+                    Text("Tingkatan Cerita")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                }
                 Text(level.levelDescription)
                     .font(.subheadline)
             }
