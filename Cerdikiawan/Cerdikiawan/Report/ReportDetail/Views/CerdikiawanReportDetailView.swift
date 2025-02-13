@@ -33,8 +33,8 @@ struct CerdikiawanReportDetailView: View {
                         .foregroundStyle(.gray)
                     VStack(spacing: 4) {
                         CerdikiawanReportDetailInformationRow(
-                            label: "Level",
-                            content: "\(viewModel.story.storyLevel)",
+                            label: "Tingkatan",
+                            content: viewModel.story.storyLevel == 1 ? "Mudah" : viewModel.story.storyLevel == 2 ? "Sedang" : "Sulit",
                             style: .top
                         )
                         CerdikiawanReportDetailInformationRow(
