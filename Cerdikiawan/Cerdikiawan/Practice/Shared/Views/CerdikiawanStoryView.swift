@@ -11,7 +11,7 @@ struct CerdikiawanStoryView: View {
     @EnvironmentObject var appRouter: AppRouter
     @EnvironmentObject var sessionData: SessionData
     
-    @StateObject private var viewModel: StoryViewModel
+    @StateObject private var viewModel: PracticeViewModel
     
     init (
         story: StoryEntity

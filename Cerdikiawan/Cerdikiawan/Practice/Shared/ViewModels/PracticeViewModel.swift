@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class StoryViewModel: ObservableObject {
+class PracticeViewModel: ObservableObject {
     // User Data
     @Published var userID: String?
     @Published var userCharacter: CharacterEntity?
@@ -143,7 +143,7 @@ class StoryViewModel: ObservableObject {
                 questionEntity = WordBlankEntity(id: randomizedQuestion.questionId.uuidString,
                                                  question: randomizedQuestion.questionContent,
                                                  correctAnswerWord: wordBlankAnswer.answerContent,
-                                                 letters: determineWordBlankAnswer(answer: wordBlankAnswer.answerContent),
+                                                 letters: setWordBlankAnswer(answer: wordBlankAnswer.answerContent),
                                                  category: determineQuestionCategory(type: randomizedQuestion.questionCategory),
                                                  feedback: FeedbackEntity(correctFeedback: randomizedQuestion.questionFeedbackIfTrue,
                                                                           incorrectFeedback: randomizedQuestion.questionFeedbackIfFalse
@@ -161,7 +161,7 @@ class StoryViewModel: ObservableObject {
                     return []
                 }
                 
-                let (questionPromptEntity, answerPromptEntity, pairValue) = getWordMatchQuestion(answers: answer)
+                let (questionPromptEntity, answerPromptEntity, pairValue) = setWordMatchQuestion(answers: answer)
                 
                 questionEntity = WordMatchEntity(id: randomizedQuestion.questionId.uuidString,
                                                  prompt: randomizedQuestion.questionContent,
@@ -187,7 +187,7 @@ class StoryViewModel: ObservableObject {
                 
                 questionEntity = MultipleChoiceEntity(id: randomizedQuestion.questionId.uuidString,
                                                       question: randomizedQuestion.questionContent,
-                                                      answer: getMultiChoiceAnswer(answers: answer),
+                                                      answer: setMultiChoiceAnswer(answers: answer),
                                                       correctAnswerID: answer.first(where: { $0.answerStatus == true })?.answerId.uuidString ?? "",
                                                       category: determineQuestionCategory(type: randomizedQuestion.questionCategory),
                                                       feedback: FeedbackEntity(correctFeedback: randomizedQuestion.questionFeedbackIfTrue,
@@ -220,7 +220,7 @@ class StoryViewModel: ObservableObject {
         return practiceEntities
     }
     
-    private func getMultiChoiceAnswer(answers: [SupabaseMultiChoiceAnswer]) -> [MultipleChoiceAnswerEntity] {
+    private func setMultiChoiceAnswer(answers: [SupabaseMultiChoiceAnswer]) -> [MultipleChoiceAnswerEntity] {
         var results: [MultipleChoiceAnswerEntity] = []
         
         for answer in answers {
@@ -230,7 +230,7 @@ class StoryViewModel: ObservableObject {
         return results.shuffled()
     }
     
-    private func getWordMatchQuestion(answers: [SupabaseWordMatchAnswer]) -> ([WordMatchTextEntity], [WordMatchTextEntity], [String : String]) {
+    private func setWordMatchQuestion(answers: [SupabaseWordMatchAnswer]) -> ([WordMatchTextEntity], [WordMatchTextEntity], [String : String]) {
         var questionEntities: [WordMatchTextEntity] = []
         var answerEntities: [WordMatchTextEntity] = []
         var key: [String : String] = [:]
@@ -252,7 +252,7 @@ class StoryViewModel: ObservableObject {
         return(questionEntities.shuffled(), answerEntities.shuffled(), key)
     }
     
-    private func determineWordBlankAnswer(answer: String) -> [WordBlankLetterEntity] {
+    private func setWordBlankAnswer(answer: String) -> [WordBlankLetterEntity] {
         var results: [WordBlankLetterEntity] = []
         let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         
